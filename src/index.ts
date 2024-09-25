@@ -18,3 +18,4 @@ export * from './useErrorParser';
 export * from './useImports';
 export * from './usePriceUpdateTxn';
 export * from './useSynthetix';
+export * from './usePerpsMetadata';
