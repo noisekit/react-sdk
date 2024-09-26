@@ -13,6 +13,7 @@ import { importRewardsDistributors } from './importRewardsDistributors';
 import { importSpotMarketProxy } from './importSpotMarketProxy';
 import { importSynthTokens } from './importSynthTokens';
 import { importSystemToken } from './importSystemToken';
+import { importWeth } from './importWeth';
 import { useSynthetix } from './useSynthetix';
 
 export function useImportContract(
@@ -172,6 +173,26 @@ export function useImportCollateralTokens() {
           throw 'OMFG';
         }
         return importCollateralTokens(chainId, preset);
+      },
+      staleTime: 60 * 60 * 1000,
+      refetchInterval: false,
+    },
+    queryClient
+  );
+}
+
+export function useImportWethContract() {
+  const { chainId, preset, queryClient } = useSynthetix();
+
+  return useQuery(
+    {
+      queryKey: ['ImportWethContract', chainId, preset],
+      enabled: Boolean(chainId && preset),
+      queryFn: () => {
+        if (!(chainId && preset)) {
+          throw 'OMFG';
+        }
+        return importWeth(chainId, preset);
       },
       staleTime: 60 * 60 * 1000,
       refetchInterval: false,
