@@ -6,7 +6,7 @@ export function usePerpsSelectedAccountId({
   provider,
   walletAddress,
   perpsAccountId,
-}: { provider?: ethers.providers.BaseProvider; walletAddress?: string; perpsAccountId?: string }) {
+}: { provider?: ethers.providers.BaseProvider; walletAddress?: string; perpsAccountId?: string }): ethers.BigNumber | undefined {
   const { data: accounts } = usePerpsAccounts({ provider, walletAddress });
 
   return React.useMemo(() => {

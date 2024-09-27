@@ -15,7 +15,7 @@ export function usePerpsAccounts({
   const { data: PerpsAccountProxyContract } = useImportContract('PerpsAccountProxy');
   const errorParser = useErrorParser();
 
-  return useQuery({
+  return useQuery<ethers.BigNumber[]>({
     enabled: Boolean(chainId && provider && walletAddress && PerpsAccountProxyContract?.address),
     queryKey: [chainId, 'Perps Accounts', { PerpsAccountProxy: PerpsAccountProxyContract?.address }, { ownerAddress: walletAddress }],
     queryFn: async () => {

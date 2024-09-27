@@ -1,6 +1,5 @@
 import { EvmPriceServiceConnection } from '@pythnetwork/pyth-evm-js';
 
-// TODO: CHECK THIS
 const PYTH_MAINNET_ENDPOINT = process.env.PYTH_MAINNET_ENDPOINT || 'https://hermes.pyth.network';
 
 export async function getPythPrice({ feedId }: { feedId: string }) {

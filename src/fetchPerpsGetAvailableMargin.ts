@@ -11,8 +11,8 @@ export async function fetchPerpsGetAvailableMargin({
 }) {
   const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
   console.time('fetchPerpsGetAvailableMargin');
-  const accountAvailableCollateral = await PerpsMarketProxy.getAvailableMargin(perpsAccountId);
+  const availableMargin = await PerpsMarketProxy.getAvailableMargin(perpsAccountId);
   console.timeEnd('fetchPerpsGetAvailableMargin');
-  console.log({ accountAvailableCollateral });
-  return accountAvailableCollateral;
+  console.log({ availableMargin });
+  return availableMargin;
 }

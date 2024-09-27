@@ -5,19 +5,23 @@ import { useImportWethContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
 export function useWethDeposit({
-  onSuccess,
   provider,
   walletAddress,
   perpsAccountId,
+  tokenAddress,
+  onSuccess,
 }: {
-  onSuccess: () => void;
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
   perpsAccountId?: ethers.BigNumber;
+  tokenAddress?: string;
+  onSuccess: () => void;
 }) {
-  const { chainId } = useSynthetix();
-  const errorParser = useErrorParser();
+  const { chainId, queryClient } = useSynthetix();
+
   const { data: WethContract } = useImportWethContract();
+
+  const errorParser = useErrorParser();
 
   return useMutation({
     mutationFn: async (amount: ethers.BigNumber) => {
@@ -31,6 +35,7 @@ export function useWethDeposit({
         value: amount,
       });
       const txResult = await tx.wait();
+      console.log({ txResult });
       return txResult;
     },
     throwOnError: (error) => {
@@ -39,6 +44,14 @@ export function useWethDeposit({
       return false;
     },
     onSuccess: () => {
+      if (!queryClient) return;
+
+      queryClient.invalidateQueries({
+        queryKey: [chainId, 'Balance', { tokenAddress, ownerAddress: walletAddress }],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [chainId, 'EthBalance', { ownerAddress: walletAddress }],
+      });
       onSuccess();
     },
   });

@@ -27,3 +27,5 @@ export * from './useWethDeposit';
 export * from './usePerpsGetAvailableMargin';
 export * from './usePerpsSelectedAccountId';
 export * from './usePerpsCommitOrder';
+export * from './useCollateralTokens';
+export * from './useSelectedCollateralType';

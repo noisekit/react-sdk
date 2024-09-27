@@ -27,12 +27,14 @@ export function usePerpsCommitOrder({
   walletAddress?: string;
   feedId?: string;
   settlementStrategyId?: string;
-  onSuccess: ({ priceUpdated }: { priceUpdated: boolean }) => void;
+  onSuccess: () => void;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, queryClient } = useSynthetix();
+
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
   const { data: MulticallContract } = useImportContract('Multicall');
   const { data: PythERC7412WrapperContract } = useImportContract('PythERC7412Wrapper');
+
   const errorParser = useErrorParser();
 
   return useMutation({
@@ -72,7 +74,7 @@ export function usePerpsCommitOrder({
       const totalCollateralValue = await fetchPerpsTotalCollateralValue({
         provider,
         PerpsMarketProxyContract,
-        accountId: perpsAccountId,
+        perpsAccountId,
       });
 
       if (totalCollateralValue.lt(sizeDelta)) {
@@ -109,17 +111,17 @@ export function usePerpsCommitOrder({
           orderCommitmentArgs,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
-      } else {
-        console.log('-> fetchPerpsCommitOrder');
-        await fetchPerpsCommitOrder({
-          walletAddress,
-          provider,
-          PerpsMarketProxyContract,
-          orderCommitmentArgs,
-        });
+        return { priceUpdated: true };
       }
 
-      return { priceUpdated: true };
+      console.log('-> fetchPerpsCommitOrder');
+      await fetchPerpsCommitOrder({
+        walletAddress,
+        provider,
+        PerpsMarketProxyContract,
+        orderCommitmentArgs,
+      });
+      return { priceUpdated: false };
     },
     throwOnError: (error) => {
       // TODO: show toast
@@ -127,7 +129,20 @@ export function usePerpsCommitOrder({
       return false;
     },
     onSuccess: ({ priceUpdated }) => {
-      onSuccess({ priceUpdated });
+      if (!queryClient) return;
+
+      if (priceUpdated) {
+        queryClient.invalidateQueries({
+          queryKey: [chainId, 'PriceUpdateTxn', { priceIds: priceIds?.map((p) => p.slice(0, 8)) }],
+        });
+      }
+      queryClient.invalidateQueries({
+        queryKey: [chainId, 'PerpsGetOrder', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [chainId, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+      });
+      onSuccess();
     },
   });
 }
