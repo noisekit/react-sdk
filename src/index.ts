@@ -24,3 +24,6 @@ export * from './usePerpsMetadata';
 export * from './usePerpsAccounts';
 export * from './useMintUsd';
 export * from './useWethDeposit';
+export * from './usePerpsGetAvailableMargin';
+export * from './usePerpsSelectedAccountId';
+export * from './usePerpsCommitOrder';
