@@ -6,14 +6,17 @@ export async function fetchPriceUpdateTxn({
   MulticallContract,
   PythERC7412WrapperContract,
   priceIds,
+  stalenessTolerance: stalenessToleranceFromSpotPriceData,
 }: {
   provider: ethers.providers.BaseProvider;
   MulticallContract: { address: string; abi: string[] };
   PythERC7412WrapperContract: { address: string; abi: string[] };
   priceIds: string[];
+  stalenessTolerance?: ethers.BigNumber;
 }) {
   console.time('fetchPriceUpdateTxn');
-  const stalenessTolerance = 1800; // half of 3600 required tolerance
+  const defaultStalenessTolerance = 1800; // half of 3600 required tolerance
+  const stalenessTolerance = stalenessToleranceFromSpotPriceData || defaultStalenessTolerance;
 
   const MulticallInterface = new ethers.utils.Interface(MulticallContract.abi);
   const PythERC7412WrapperInterface = new ethers.utils.Interface(PythERC7412WrapperContract.abi);

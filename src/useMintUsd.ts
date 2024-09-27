@@ -3,13 +3,13 @@ import type { ethers } from 'ethers';
 import { fetchMintUsd } from './fetchMintUsd';
 import { fetchMintUsdWithPriceUpdate } from './fetchMintUsdWithPriceUpdate';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
+import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract, useImportSystemToken } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
 export function useMintUsd({
   provider,
-  priceIds,
   walletAddress,
   accountId,
   collateralTokenAddress,
@@ -17,7 +17,6 @@ export function useMintUsd({
   onSuccess,
 }: {
   provider?: ethers.providers.Web3Provider;
-  priceIds?: string[];
   walletAddress?: string;
   accountId?: ethers.BigNumber;
   collateralTokenAddress?: string;
@@ -26,6 +25,7 @@ export function useMintUsd({
 }) {
   const { chainId, queryClient } = useSynthetix();
   const { data: systemToken } = useImportSystemToken();
+  const { data: priceIds } = useAllPriceFeeds();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
   const { data: MulticallContract } = useImportContract('Multicall');

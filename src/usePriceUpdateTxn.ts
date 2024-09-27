@@ -1,19 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import type { ethers } from 'ethers';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
+import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
 export function usePriceUpdateTxn({
   provider,
-  priceIds,
 }: {
   provider?: ethers.providers.BaseProvider;
-  priceIds?: string[];
 }) {
   const { chainId, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
+  const { data: priceIds } = useAllPriceFeeds();
+
   const { data: MulticallContract } = useImportContract('Multicall');
   const { data: PythERC7412WrapperContract } = useImportContract('PythERC7412Wrapper');
 

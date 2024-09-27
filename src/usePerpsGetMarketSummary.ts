@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { ethers } from 'ethers';
 import { fetchPerpsGetMarketSummary } from './fetchPerpsGetMarketSummary';
 import { fetchPerpsGetMarketSummaryWithPriceUpdate } from './fetchPerpsGetMarketSummaryWithPriceUpdate';
+import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
@@ -9,13 +10,15 @@ import { useSynthetix } from './useSynthetix';
 
 export function usePerpsGetMarketSummary({
   provider,
-  priceIds,
   perpsMarketId,
-}: { provider?: ethers.providers.BaseProvider; priceIds?: string[]; perpsMarketId: ethers.BigNumber }) {
+}: { provider?: ethers.providers.BaseProvider; perpsMarketId: ethers.BigNumber }) {
   const { chainId } = useSynthetix();
+  const { data: priceIds } = useAllPriceFeeds();
+  const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider });
+
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
   const { data: MulticallContract } = useImportContract('Multicall');
-  const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider, priceIds });
+
   const errorParser = useErrorParser();
 
   return useQuery({

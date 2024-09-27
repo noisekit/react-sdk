@@ -6,6 +6,7 @@ import { fetchPerpsGetAvailableMargin } from './fetchPerpsGetAvailableMargin';
 import { fetchPerpsTotalCollateralValue } from './fetchPerpsTotalCollateralValue';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
 import { getPythPrice } from './getPythPrice';
+import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
@@ -13,7 +14,6 @@ import { useSynthetix } from './useSynthetix';
 export function usePerpsCommitOrder({
   perpsAccountId,
   marketId,
-  priceIds,
   provider,
   walletAddress,
   feedId,
@@ -22,7 +22,6 @@ export function usePerpsCommitOrder({
 }: {
   perpsAccountId?: ethers.BigNumber;
   marketId: string;
-  priceIds?: string[];
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
   feedId?: string;
@@ -30,6 +29,7 @@ export function usePerpsCommitOrder({
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
+  const { data: priceIds } = useAllPriceFeeds();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
   const { data: MulticallContract } = useImportContract('Multicall');
