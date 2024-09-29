@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import type { ethers } from 'ethers';
 import { fetchPerpsGetMarketSummary } from './fetchPerpsGetMarketSummary';
 import { fetchPerpsGetMarketSummaryWithPriceUpdate } from './fetchPerpsGetMarketSummaryWithPriceUpdate';
-import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
@@ -13,7 +12,6 @@ export function usePerpsGetMarketSummary({
   perpsMarketId,
 }: { provider?: ethers.providers.BaseProvider; perpsMarketId: ethers.BigNumber }) {
   const { chainId } = useSynthetix();
-  const { data: priceIds } = useAllPriceFeeds();
   const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider });
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
@@ -23,7 +21,7 @@ export function usePerpsGetMarketSummary({
 
   return useQuery({
     enabled: Boolean(
-      chainId && provider && priceIds && perpsMarketId && PerpsMarketProxyContract?.address && MulticallContract?.address && priceUpdateTxn
+      chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address && MulticallContract?.address && priceUpdateTxn
     ),
     queryKey: [
       chainId,
@@ -32,17 +30,7 @@ export function usePerpsGetMarketSummary({
       { perpsMarketId: perpsMarketId.toString() },
     ],
     queryFn: async () => {
-      if (
-        !(
-          chainId &&
-          provider &&
-          priceIds &&
-          perpsMarketId &&
-          PerpsMarketProxyContract?.address &&
-          MulticallContract?.address &&
-          priceUpdateTxn
-        )
-      ) {
+      if (!(chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address && MulticallContract?.address && priceUpdateTxn)) {
         throw 'OMFG';
       }
 
