@@ -2,10 +2,9 @@ import { useMutation } from '@tanstack/react-query';
 import type { ethers } from 'ethers';
 import { fetchMintUsd } from './fetchMintUsd';
 import { fetchMintUsdWithPriceUpdate } from './fetchMintUsdWithPriceUpdate';
-import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
-import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract, useImportSystemToken } from './useImports';
+import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
 
 export function useMintUsd({
@@ -25,11 +24,11 @@ export function useMintUsd({
 }) {
   const { chainId, queryClient } = useSynthetix();
   const { data: systemToken } = useImportSystemToken();
-  const { data: priceIds } = useAllPriceFeeds();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
   const { data: MulticallContract } = useImportContract('Multicall');
-  const { data: PythERC7412WrapperContract } = useImportContract('PythERC7412Wrapper');
+
+  const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider });
 
   const errorParser = useErrorParser();
 
@@ -43,8 +42,7 @@ export function useMintUsd({
           walletAddress &&
           CoreProxyContract &&
           MulticallContract &&
-          PythERC7412WrapperContract &&
-          priceIds &&
+          priceUpdateTxn &&
           accountId &&
           poolId &&
           collateralTokenAddress
@@ -57,15 +55,9 @@ export function useMintUsd({
         throw new Error('Amount required');
       }
 
-      const freshPriceUpdateTxn = await fetchPriceUpdateTxn({
-        provider,
-        MulticallContract,
-        PythERC7412WrapperContract,
-        priceIds,
-      });
-      console.log({ freshPriceUpdateTxn });
+      console.log({ priceUpdateTxn });
 
-      if (freshPriceUpdateTxn.value) {
+      if (priceUpdateTxn.value) {
         console.log('-> fetchMintUsdWithPriceUpdate');
         await fetchMintUsdWithPriceUpdate({
           provider,
@@ -76,7 +68,7 @@ export function useMintUsd({
           poolId,
           tokenAddress: collateralTokenAddress,
           mintUsdAmount,
-          priceUpdateTxn: freshPriceUpdateTxn,
+          priceUpdateTxn,
         });
         return { priceUpdated: true };
       }
@@ -102,7 +94,7 @@ export function useMintUsd({
 
       if (priceUpdated) {
         queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn', { priceIds: priceIds?.map((p) => p.slice(0, 8)) }],
+          queryKey: [chainId, 'PriceUpdateTxn'],
         });
       }
 

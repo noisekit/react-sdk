@@ -4,11 +4,10 @@ import { fetchPerpsCommitOrder } from './fetchPerpsCommitOrder';
 import { fetchPerpsCommitOrderWithPriceUpdate } from './fetchPerpsCommitOrderWithPriceUpdate';
 import { fetchPerpsGetAvailableMargin } from './fetchPerpsGetAvailableMargin';
 import { fetchPerpsTotalCollateralValue } from './fetchPerpsTotalCollateralValue';
-import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
 import { getPythPrice } from './getPythPrice';
-import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
+import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
 
 export function usePerpsCommitOrder({
@@ -29,11 +28,11 @@ export function usePerpsCommitOrder({
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
-  const { data: priceIds } = useAllPriceFeeds();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
   const { data: MulticallContract } = useImportContract('Multicall');
-  const { data: PythERC7412WrapperContract } = useImportContract('PythERC7412Wrapper');
+
+  const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider });
 
   const errorParser = useErrorParser();
 
@@ -45,10 +44,9 @@ export function usePerpsCommitOrder({
           chainId &&
           perpsAccountId &&
           settlementStrategyId &&
-          priceIds &&
           PerpsMarketProxyContract?.address &&
           MulticallContract?.address &&
-          PythERC7412WrapperContract?.address &&
+          priceUpdateTxn &&
           walletAddress &&
           feedId &&
           provider
@@ -93,15 +91,9 @@ export function usePerpsCommitOrder({
         trackingCode: ethers.utils.formatBytes32String('VD'),
       };
 
-      const freshPriceUpdateTxn = await fetchPriceUpdateTxn({
-        provider,
-        MulticallContract,
-        PythERC7412WrapperContract,
-        priceIds,
-      });
-      console.log('freshPriceUpdateTxn', freshPriceUpdateTxn);
+      console.log('priceUpdateTxn', priceUpdateTxn);
 
-      if (freshPriceUpdateTxn.value) {
+      if (priceUpdateTxn.value) {
         console.log('-> fetchPerpsCommitOrderWithPriceUpdate');
         await fetchPerpsCommitOrderWithPriceUpdate({
           walletAddress,
@@ -109,7 +101,7 @@ export function usePerpsCommitOrder({
           PerpsMarketProxyContract,
           MulticallContract,
           orderCommitmentArgs,
-          priceUpdateTxn: freshPriceUpdateTxn,
+          priceUpdateTxn,
         });
         return { priceUpdated: true };
       }
@@ -133,7 +125,7 @@ export function usePerpsCommitOrder({
 
       if (priceUpdated) {
         queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn', { priceIds: priceIds?.map((p) => p.slice(0, 8)) }],
+          queryKey: [chainId, 'PriceUpdateTxn'],
         });
       }
       queryClient.invalidateQueries({
