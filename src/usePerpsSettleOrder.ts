@@ -7,20 +7,19 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { usePerpsGetOrder } from './usePerpsGetOrder';
 import { usePerpsGetSettlementStrategy } from './usePerpsGetSettlementStrategy';
-import { usePerpsSelectedAccountId } from './usePerpsSelectedAccountId';
 import { useSynthetix } from './useSynthetix';
 
 export function usePerpsSettleOrder({
   provider,
   walletAddress,
   perpsMarketId,
-  perpsAccountIdFromParams,
+  perpsAccountId,
   settlementStrategyId,
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
   perpsMarketId?: string;
-  perpsAccountIdFromParams?: string;
+  perpsAccountId?: ethers.BigNumber;
   settlementStrategyId?: string;
 }) {
   const { chainId, queryClient } = useSynthetix();
@@ -28,7 +27,6 @@ export function usePerpsSettleOrder({
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
   const { data: MulticallContract } = useImportContract('Multicall');
   const { data: PythERC7412WrapperContract } = useImportContract('PythERC7412Wrapper');
-  const perpsAccountId = usePerpsSelectedAccountId({ provider, walletAddress, perpsAccountId: perpsAccountIdFromParams });
   const { data: settlementStrategy } = usePerpsGetSettlementStrategy({ provider, perpsMarketId, settlementStrategyId });
   const { data: order } = usePerpsGetOrder({ provider, perpsAccountId });
 

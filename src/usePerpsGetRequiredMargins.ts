@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import type { ethers } from 'ethers';
-import { fetchPerpsGetAvailableMargin } from './fetchPerpsGetAvailableMargin';
+import { fetchPerpsGetRequiredMargins } from './fetchPerpsGetRequiredMargins';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-export function usePerpsGetAvailableMargin({
+export function usePerpsGetRequiredMargins({
   provider,
   perpsAccountId,
 }: { provider?: ethers.providers.BaseProvider; perpsAccountId?: ethers.BigNumber }) {
@@ -14,18 +14,22 @@ export function usePerpsGetAvailableMargin({
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
 
-  return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && perpsAccountId && PerpsMarketProxyContract?.address),
-    queryKey: [chainId, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+  return useQuery<{
+    maxLiquidationReward: ethers.BigNumber;
+    requiredInitialMargin: ethers.BigNumber;
+    requiredMaintenanceMargin: ethers.BigNumber;
+  }>({
+    enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address && perpsAccountId),
+    queryKey: [chainId, 'PerpsGetRequiredMargins', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
     queryFn: async () => {
-      if (!(chainId && provider && perpsAccountId && PerpsMarketProxyContract?.address)) {
+      if (!(chainId && provider && PerpsMarketProxyContract?.address && perpsAccountId)) {
         throw 'OMFG';
       }
 
-      return await fetchPerpsGetAvailableMargin({
+      return await fetchPerpsGetRequiredMargins({
         provider,
-        perpsAccountId,
         PerpsMarketProxyContract,
+        perpsAccountId,
       });
     },
     throwOnError: (error) => {
