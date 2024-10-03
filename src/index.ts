@@ -67,6 +67,7 @@ export * from './useCreateAccount';
 export * from './useDelegateCollateral';
 export * from './useDeposit';
 export * from './useErrorParser';
+export * from './useEthBalance';
 export * from './useImports';
 export * from './useMintUsd';
 export * from './usePerpsAccounts';
