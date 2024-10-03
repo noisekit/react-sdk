@@ -10,8 +10,8 @@ export async function fetchPerpsCommitOrder({
   provider: ethers.providers.Web3Provider;
   PerpsMarketProxyContract: { address: string; abi: string[] };
   orderCommitmentArgs: {
-    marketId: string;
-    accountId: ethers.BigNumber;
+    perpsMarketId: string;
+    perpsAccountId: ethers.BigNumber;
     sizeDelta: ethers.BigNumber;
     settlementStrategyId: string;
     acceptablePrice: ethers.BigNumber;
@@ -23,7 +23,15 @@ export async function fetchPerpsCommitOrder({
   const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, signer);
 
   console.time('fetchPerpsCommitOrder');
-  const tx: ethers.ContractTransaction = await PerpsMarketProxy.commitOrder(orderCommitmentArgs);
+  const tx: ethers.ContractTransaction = await PerpsMarketProxy.commitOrder({
+    marketId: orderCommitmentArgs.perpsMarketId,
+    accountId: orderCommitmentArgs.perpsAccountId,
+    sizeDelta: orderCommitmentArgs.sizeDelta,
+    settlementStrategyId: orderCommitmentArgs.settlementStrategyId,
+    acceptablePrice: orderCommitmentArgs.acceptablePrice,
+    referrer: orderCommitmentArgs.referrer,
+    trackingCode: orderCommitmentArgs.trackingCode,
+  });
   console.timeEnd('fetchPerpsCommitOrder');
   const txResult = await tx.wait();
   console.log({ txResult });

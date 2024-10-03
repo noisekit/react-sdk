@@ -13,8 +13,8 @@ export async function fetchPerpsCommitOrderWithPriceUpdate({
   PerpsMarketProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
   orderCommitmentArgs: {
-    marketId: string;
-    accountId: ethers.BigNumber;
+    perpsMarketId: string;
+    perpsAccountId: ethers.BigNumber;
     sizeDelta: ethers.BigNumber;
     settlementStrategyId: string;
     acceptablePrice: ethers.BigNumber;
@@ -33,7 +33,17 @@ export async function fetchPerpsCommitOrderWithPriceUpdate({
 
   const commitOrderTxn = {
     target: PerpsMarketProxyContract.address,
-    callData: PerpsMarketPoxyInterface.encodeFunctionData('commitOrder', [orderCommitmentArgs]),
+    callData: PerpsMarketPoxyInterface.encodeFunctionData('commitOrder', [
+      {
+        marketId: orderCommitmentArgs.perpsMarketId,
+        accountId: orderCommitmentArgs.perpsAccountId,
+        sizeDelta: orderCommitmentArgs.sizeDelta,
+        settlementStrategyId: orderCommitmentArgs.settlementStrategyId,
+        acceptablePrice: orderCommitmentArgs.acceptablePrice,
+        referrer: orderCommitmentArgs.referrer,
+        trackingCode: orderCommitmentArgs.trackingCode,
+      },
+    ]),
     value: 0,
     requireSuccess: true,
   };

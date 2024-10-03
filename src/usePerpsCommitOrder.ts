@@ -82,8 +82,8 @@ export function usePerpsCommitOrder({
       const pythPrice = await getPythPrice({ feedId });
 
       const orderCommitmentArgs = {
-        marketId: perpsMarketId,
-        accountId: perpsAccountId,
+        perpsMarketId,
+        perpsAccountId,
         sizeDelta,
         settlementStrategyId,
         acceptablePrice: ethers.utils.parseEther(Math.floor(pythPrice * (sizeDelta.gt(0) ? 1.05 : 0.95)).toString()),
