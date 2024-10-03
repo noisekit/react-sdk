@@ -6,7 +6,6 @@ import { fetchSpotWrap } from './fetchSpotWrap';
 import { fetchSpotWrapWithPriceUpdate } from './fetchSpotWrapWithPriceUpdate';
 import { fetchTokenAllowance } from './fetchTokenAllowance';
 import { fetchTokenBalance } from './fetchTokenBalance';
-import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSpotGetPriceData } from './useSpotGetPriceData';
@@ -37,7 +36,6 @@ export function useSpotWrap({
   const { data: MulticallContract } = useImportContract('Multicall');
   const { data: PythERC7412WrapperContract } = useImportContract('PythERC7412Wrapper');
 
-  const { data: priceIds } = useAllPriceFeeds();
   const { data: priceData } = useSpotGetPriceData({ provider, synthMarketId });
   const { data: spotSettlementStrategy } = useSpotGetSettlementStrategy({
     provider,
@@ -138,7 +136,7 @@ export function useSpotWrap({
 
       if (priceUpdated) {
         await queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn', { priceIds: priceIds?.map((p) => p.slice(0, 8)) }],
+          queryKey: [chainId, 'PriceUpdateTxn'],
         });
       }
       queryClient.invalidateQueries({

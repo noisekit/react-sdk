@@ -21,7 +21,7 @@ export function usePriceUpdateTxn({
   return useQuery(
     {
       enabled: Boolean(chainId && provider && priceIds && MulticallContract && PythERC7412WrapperContract),
-      queryKey: [chainId, 'PriceUpdateTxn', { priceIds: priceIds?.map((p) => p.slice(0, 8)) }],
+      queryKey: [chainId, 'PriceUpdateTxn', { priceIds: priceIds?.map((p) => p.slice(2, 8)).sort() }],
       queryFn: async (): Promise<{
         target: string;
         callData: string;
