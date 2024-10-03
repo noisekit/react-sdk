@@ -96,4 +96,3 @@ export * from './useTokenAllowance';
 export * from './useTokenBalance';
 export * from './useWethDeposit';
 export * from './useWithdraw';
-export * from './useWithdrawTimer';
