@@ -10,7 +10,7 @@ export async function fetchPerpsCommitOrder({
   provider: ethers.providers.Web3Provider;
   PerpsMarketProxyContract: { address: string; abi: string[] };
   orderCommitmentArgs: {
-    perpsMarketId: string;
+    marketId: string;
     accountId: ethers.BigNumber;
     sizeDelta: ethers.BigNumber;
     settlementStrategyId: string;

@@ -13,7 +13,7 @@ export async function fetchPerpsCommitOrderWithPriceUpdate({
   PerpsMarketProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
   orderCommitmentArgs: {
-    perpsMarketId: string;
+    marketId: string;
     accountId: ethers.BigNumber;
     sizeDelta: ethers.BigNumber;
     settlementStrategyId: string;

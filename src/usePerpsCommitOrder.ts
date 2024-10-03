@@ -82,7 +82,7 @@ export function usePerpsCommitOrder({
       const pythPrice = await getPythPrice({ feedId });
 
       const orderCommitmentArgs = {
-        perpsMarketId,
+        marketId: perpsMarketId,
         accountId: perpsAccountId,
         sizeDelta,
         settlementStrategyId,
@@ -90,6 +90,8 @@ export function usePerpsCommitOrder({
         referrer: ethers.constants.AddressZero,
         trackingCode: ethers.utils.formatBytes32String('VD'),
       };
+
+      console.log({ orderCommitmentArgs });
 
       console.log('priceUpdateTxn', priceUpdateTxn);
 
