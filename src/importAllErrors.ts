@@ -29,10 +29,6 @@ export async function importAllErrors(chainId: number, preset: string): Promise<
       const [{ default: abi }] = await Promise.all([import('@synthetixio/v3-contracts/421614-main/AllErrors.readable.json')]);
       return { address: '0x', abi };
     }
-    case '42161-arbthetix': {
-      const [{ default: abi }] = await Promise.all([import('@synthetixio/v3-contracts/42161-arbthetix/AllErrors.readable.json')]);
-      return { address: '0x', abi };
-    }
     default: {
       throw new Error(`Unsupported deployment ${deployment} for AllErrors`);
     }

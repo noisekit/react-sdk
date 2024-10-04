@@ -39,10 +39,6 @@ export async function importMintableTokens(
       const [{ default: mintableTokens }] = await Promise.all([import('@synthetixio/v3-contracts/421614-main/mintableTokens.json')]);
       return mintableTokens;
     }
-    case '42161-arbthetix': {
-      const [{ default: mintableTokens }] = await Promise.all([import('@synthetixio/v3-contracts/42161-arbthetix/mintableTokens.json')]);
-      return mintableTokens;
-    }
     default: {
       throw new Error(`Unsupported deployment ${deployment} for MintableTokens`);
     }
