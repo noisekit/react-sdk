@@ -5,17 +5,17 @@ export async function fetchPositionDebt({
   CoreProxyContract,
   accountId,
   poolId,
-  tokenAddress,
+  collateralTypeTokenAddress,
 }: {
-  provider: ethers.providers.Web3Provider;
+  provider: ethers.providers.BaseProvider;
   CoreProxyContract: { address: string; abi: string[] };
-  accountId: ethers.BigNumber;
-  poolId: ethers.BigNumber;
-  tokenAddress: string;
+  accountId: ethers.BigNumberish;
+  poolId: ethers.BigNumberish;
+  collateralTypeTokenAddress: string;
 }) {
   const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
   console.time('fetchPositionDebt');
-  const positionDebt = await CoreProxy.callStatic.getPositionDebt(accountId, poolId, tokenAddress);
+  const positionDebt = await CoreProxy.callStatic.getPositionDebt(accountId, poolId, collateralTypeTokenAddress);
   console.timeEnd('fetchPositionDebt');
   return positionDebt;
 }

@@ -7,7 +7,7 @@ export async function fetchMintUsdWithPriceUpdate({
   MulticallContract,
   accountId,
   poolId,
-  tokenAddress,
+  collateralTypeTokenAddress,
   mintUsdAmount,
   priceUpdateTxn,
 }: {
@@ -15,14 +15,14 @@ export async function fetchMintUsdWithPriceUpdate({
   walletAddress: string;
   CoreProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
-  accountId: ethers.BigNumber;
-  poolId: ethers.BigNumber;
-  tokenAddress: string;
-  mintUsdAmount: ethers.BigNumber;
+  accountId: ethers.BigNumberish;
+  poolId: ethers.BigNumberish;
+  collateralTypeTokenAddress: string;
+  mintUsdAmount: ethers.BigNumberish;
   priceUpdateTxn: {
     target: string;
     callData: string;
-    value: number;
+    value: ethers.BigNumberish;
     requireSuccess: boolean;
   };
 }) {
@@ -33,7 +33,7 @@ export async function fetchMintUsdWithPriceUpdate({
     //
     accountId,
     poolId,
-    tokenAddress,
+    collateralTypeTokenAddress,
     mintUsdAmount,
   ];
   console.log({ mintUsdTxnArgs });

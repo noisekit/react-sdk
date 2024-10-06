@@ -18,9 +18,9 @@ export function usePerpsSettleOrder({
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
-  perpsMarketId?: string;
-  perpsAccountId?: ethers.BigNumber;
-  settlementStrategyId?: string;
+  perpsMarketId?: ethers.BigNumberish;
+  perpsAccountId?: ethers.BigNumberish;
+  settlementStrategyId?: ethers.BigNumberish;
 }) {
   const { chainId, queryClient } = useSynthetix();
   const errorParser = useErrorParser();

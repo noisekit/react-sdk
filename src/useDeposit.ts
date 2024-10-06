@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { depositCollateral } from './depositCollateral';
 import { fetchApproveToken } from './fetchApproveToken';
 import { fetchTokenAllowance } from './fetchTokenAllowance';
@@ -18,8 +18,8 @@ export function useDeposit({
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
-  accountId?: ethers.BigNumber;
-  poolId?: ethers.BigNumber;
+  accountId?: ethers.BigNumberish;
+  poolId?: ethers.BigNumberish;
   collateralTypeTokenAddress?: string;
   onSuccess: () => void;
 }) {
@@ -29,19 +29,19 @@ export function useDeposit({
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
 
   return useMutation({
-    mutationFn: async (depositAmount: ethers.BigNumber) => {
+    mutationFn: async (depositAmount: ethers.BigNumberish) => {
       if (!(chainId && provider && CoreProxyContract && walletAddress && accountId && poolId && collateralTypeTokenAddress)) {
         throw 'OMFG';
       }
 
-      if (depositAmount.lte(0)) {
+      if (ethers.BigNumber.from(depositAmount).lte(0)) {
         throw new Error('Amount required');
       }
 
       const freshBalance = await fetchTokenBalance({
         provider,
         ownerAddress: walletAddress,
-        tokenAddress: collateralTypeTokenAddress,
+        collateralTypeTokenAddress,
       });
       console.log('freshBalance', freshBalance);
 
@@ -52,7 +52,7 @@ export function useDeposit({
       const freshAllowance = await fetchTokenAllowance({
         provider,
         ownerAddress: walletAddress,
-        tokenAddress: collateralTypeTokenAddress,
+        collateralTypeTokenAddress,
         spenderAddress: CoreProxyContract?.address,
       });
       console.log('freshAllowance', freshAllowance);
@@ -61,9 +61,9 @@ export function useDeposit({
         await fetchApproveToken({
           provider,
           walletAddress,
-          tokenAddress: collateralTypeTokenAddress,
+          collateralTypeTokenAddress,
           spenderAddress: CoreProxyContract.address,
-          allowance: depositAmount.sub(freshAllowance),
+          allowance: ethers.BigNumber.from(depositAmount).sub(freshAllowance),
         });
       }
 
@@ -73,7 +73,7 @@ export function useDeposit({
         walletAddress,
         CoreProxyContract,
         accountId,
-        tokenAddress: collateralTypeTokenAddress,
+        collateralTypeTokenAddress,
         depositAmount,
       });
     },
@@ -92,8 +92,8 @@ export function useDeposit({
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress: collateralTypeTokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -103,14 +103,14 @@ export function useDeposit({
           'PositionCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            poolId: poolId?.toHexString(),
-            tokenAddress: collateralTypeTokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            poolId: poolId ? ethers.BigNumber.from(poolId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { tokenAddress: collateralTypeTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress, ownerAddress: walletAddress }],
       });
 
       onSuccess();

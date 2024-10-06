@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { delegateCollateral } from './delegateCollateral';
 import { delegateCollateralWithPriceUpdate } from './delegateCollateralWithPriceUpdate';
 import { fetchAccountAvailableCollateral } from './fetchAccountAvailableCollateral';
@@ -21,8 +21,8 @@ export function useDelegateCollateral({
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
   collateralTypeTokenAddress?: string;
-  poolId?: ethers.BigNumber;
-  accountId?: ethers.BigNumber;
+  poolId?: ethers.BigNumberish;
+  accountId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
@@ -36,7 +36,7 @@ export function useDelegateCollateral({
 
   return useMutation({
     retry: false,
-    mutationFn: async (delegateAmountDelta: ethers.BigNumber) => {
+    mutationFn: async (delegateAmountDelta: ethers.BigNumberish) => {
       if (
         !(
           chainId &&
@@ -54,7 +54,7 @@ export function useDelegateCollateral({
         throw 'OMFG';
       }
 
-      if (delegateAmountDelta.eq(0)) {
+      if (ethers.BigNumber.from(delegateAmountDelta).eq(0)) {
         throw new Error('Amount required');
       }
 
@@ -70,7 +70,7 @@ export function useDelegateCollateral({
         provider,
         CoreProxyContract,
         accountId,
-        tokenAddress: collateralTypeTokenAddress,
+        collateralTypeTokenAddress,
       });
       console.log('freshAccountAvailableCollateral', freshAccountAvailableCollateral);
 
@@ -84,7 +84,7 @@ export function useDelegateCollateral({
         CoreProxyContract,
         accountId,
         poolId,
-        tokenAddress: collateralTypeTokenAddress,
+        collateralTypeTokenAddress,
       });
       console.log('freshPositionCollateral', freshPositionCollateral);
 
@@ -100,7 +100,7 @@ export function useDelegateCollateral({
           MulticallContract,
           accountId,
           poolId,
-          tokenAddress: collateralTypeTokenAddress,
+          collateralTypeTokenAddress,
           delegateAmount,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
@@ -113,7 +113,7 @@ export function useDelegateCollateral({
         CoreProxyContract,
         accountId,
         poolId,
-        tokenAddress: collateralTypeTokenAddress,
+        collateralTypeTokenAddress,
         delegateAmount,
       });
 
@@ -140,8 +140,8 @@ export function useDelegateCollateral({
           'AccountCollateral',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress: collateralTypeTokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -151,8 +151,8 @@ export function useDelegateCollateral({
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress: collateralTypeTokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -162,9 +162,9 @@ export function useDelegateCollateral({
           'PositionCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            poolId: poolId?.toHexString(),
-            tokenAddress: collateralTypeTokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            poolId: poolId ? ethers.BigNumber.from(poolId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -174,8 +174,8 @@ export function useDelegateCollateral({
           'PositionDebt',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress: collateralTypeTokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });

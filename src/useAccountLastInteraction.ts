@@ -9,7 +9,7 @@ export function useAccountLastInteraction({
   accountId,
 }: {
   provider?: ethers.providers.BaseProvider;
-  accountId?: ethers.BigNumber;
+  accountId?: ethers.BigNumberish;
 }) {
   const { chainId } = useSynthetix();
   const errorParser = useErrorParser();
@@ -18,7 +18,12 @@ export function useAccountLastInteraction({
 
   return useQuery({
     enabled: Boolean(chainId && provider && CoreProxyContract?.address && accountId),
-    queryKey: [chainId, 'AccountLastInteraction', { CoreProxy: CoreProxyContract?.address }, { accountId: accountId?.toHexString() }],
+    queryKey: [
+      chainId,
+      'AccountLastInteraction',
+      { CoreProxy: CoreProxyContract?.address },
+      { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined },
+    ],
     queryFn: async () => {
       if (!(chainId && provider && CoreProxyContract?.address && accountId)) {
         throw 'OMFG';

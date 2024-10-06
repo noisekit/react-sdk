@@ -12,7 +12,7 @@ export async function fetchPriceUpdateTxn({
   MulticallContract: { address: string; abi: string[] };
   PythERC7412WrapperContract: { address: string; abi: string[] };
   priceIds: string[];
-  stalenessTolerance?: ethers.BigNumber;
+  stalenessTolerance?: ethers.BigNumberish;
 }) {
   console.time('fetchPriceUpdateTxn');
   const defaultStalenessTolerance = 1800; // half of 3600 required tolerance

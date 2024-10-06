@@ -19,12 +19,12 @@ export function usePerpsCommitOrder({
   settlementStrategyId,
   onSuccess,
 }: {
-  perpsAccountId?: ethers.BigNumber;
-  perpsMarketId: string;
+  perpsAccountId?: ethers.BigNumberish;
+  perpsMarketId: ethers.BigNumberish;
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
   feedId?: string;
-  settlementStrategyId?: string;
+  settlementStrategyId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
@@ -38,7 +38,7 @@ export function usePerpsCommitOrder({
 
   return useMutation({
     retry: false,
-    mutationFn: async (sizeDelta: ethers.BigNumber) => {
+    mutationFn: async (sizeDelta: ethers.BigNumberish) => {
       if (
         !(
           chainId &&
@@ -55,7 +55,7 @@ export function usePerpsCommitOrder({
         throw 'OMFG';
       }
 
-      if (sizeDelta.lte(0)) {
+      if (ethers.BigNumber.from(sizeDelta).lte(0)) {
         throw new Error('Amount required');
       }
 
@@ -86,7 +86,7 @@ export function usePerpsCommitOrder({
         perpsAccountId,
         sizeDelta,
         settlementStrategyId,
-        acceptablePrice: ethers.utils.parseEther(Math.floor(pythPrice * (sizeDelta.gt(0) ? 1.05 : 0.95)).toString()),
+        acceptablePrice: ethers.utils.parseEther(Math.floor(pythPrice * (ethers.BigNumber.from(sizeDelta).gt(0) ? 1.05 : 0.95)).toString()),
         referrer: ethers.constants.AddressZero,
         trackingCode: ethers.utils.formatBytes32String('VD'),
       };

@@ -7,7 +7,7 @@ export async function fetchBurnUsdWithPriceUpdate({
   MulticallContract,
   accountId,
   poolId,
-  tokenAddress,
+  collateralTypeTokenAddress,
   burnUsdAmount,
   priceUpdateTxn,
 }: {
@@ -15,14 +15,14 @@ export async function fetchBurnUsdWithPriceUpdate({
   walletAddress: string;
   CoreProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
-  accountId: ethers.BigNumber;
-  poolId: ethers.BigNumber;
-  tokenAddress: string;
-  burnUsdAmount: ethers.BigNumber;
+  accountId: ethers.BigNumberish;
+  poolId: ethers.BigNumberish;
+  collateralTypeTokenAddress: string;
+  burnUsdAmount: ethers.BigNumberish;
   priceUpdateTxn: {
     target: string;
     callData: string;
-    value: number;
+    value: ethers.BigNumberish;
     requireSuccess: boolean;
   };
 }) {
@@ -33,7 +33,7 @@ export async function fetchBurnUsdWithPriceUpdate({
     //
     accountId,
     poolId,
-    tokenAddress,
+    collateralTypeTokenAddress,
     burnUsdAmount,
   ];
   console.log('burnUsdTxnArgs', burnUsdTxnArgs);

@@ -13,7 +13,7 @@ export function usePerpsModifyCollateral({
   provider,
   walletAddress,
   perpsAccountId,
-}: { provider?: ethers.providers.Web3Provider; walletAddress?: string; perpsAccountId?: ethers.BigNumber }) {
+}: { provider?: ethers.providers.Web3Provider; walletAddress?: string; perpsAccountId?: ethers.BigNumberish }) {
   const { chainId, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
   const { data: systemToken } = useImportSystemToken();
@@ -21,18 +21,18 @@ export function usePerpsModifyCollateral({
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
 
   return useMutation({
-    mutationFn: async (depositAmount: ethers.BigNumber) => {
+    mutationFn: async (depositAmount: ethers.BigNumberish) => {
       if (!(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && systemToken)) {
         throw 'OMFG';
       }
-      if (depositAmount.lte(0)) {
+      if (ethers.BigNumber.from(depositAmount).lte(0)) {
         throw new Error('Amount required');
       }
 
       const freshBalance = await fetchTokenBalance({
         provider,
         ownerAddress: walletAddress,
-        tokenAddress: systemToken?.address,
+        collateralTypeTokenAddress: systemToken?.address,
       });
 
       if (freshBalance.lt(depositAmount)) {
@@ -42,7 +42,7 @@ export function usePerpsModifyCollateral({
       const freshAllowance = await fetchTokenAllowance({
         provider,
         ownerAddress: walletAddress,
-        tokenAddress: systemToken.address,
+        collateralTypeTokenAddress: systemToken.address,
         spenderAddress: PerpsMarketProxyContract.address,
       });
 
@@ -52,9 +52,9 @@ export function usePerpsModifyCollateral({
         await fetchApproveToken({
           provider,
           walletAddress,
-          tokenAddress: systemToken.address,
+          collateralTypeTokenAddress: systemToken.address,
           spenderAddress: PerpsMarketProxyContract.address,
-          allowance: depositAmount.sub(freshAllowance),
+          allowance: ethers.BigNumber.from(depositAmount).sub(freshAllowance),
         });
       }
 
@@ -86,7 +86,7 @@ export function usePerpsModifyCollateral({
       });
 
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { tokenAddress: systemToken?.address, ownerAddress: walletAddress }],
+        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: systemToken?.address, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
         queryKey: [chainId, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],

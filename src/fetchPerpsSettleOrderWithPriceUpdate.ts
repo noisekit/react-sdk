@@ -9,14 +9,14 @@ export async function fetchPerpsSettleOrderWithPriceUpdate({
   priceUpdateTxn,
 }: {
   provider: ethers.providers.Web3Provider;
-  walletAddress?: string;
+  walletAddress: string;
   PerpsMarketProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
-  perpsAccountId: ethers.BigNumber;
+  perpsAccountId: ethers.BigNumberish;
   priceUpdateTxn: {
     target: string;
     callData: string;
-    value: ethers.BigNumber;
+    value: ethers.BigNumberish;
     requireSuccess: boolean;
   };
 }) {

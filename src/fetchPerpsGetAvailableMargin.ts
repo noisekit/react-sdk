@@ -5,8 +5,8 @@ export async function fetchPerpsGetAvailableMargin({
   perpsAccountId,
   PerpsMarketProxyContract,
 }: {
-  provider?: ethers.providers.BaseProvider;
-  perpsAccountId: ethers.BigNumber;
+  provider: ethers.providers.BaseProvider;
+  perpsAccountId: ethers.BigNumberish;
   PerpsMarketProxyContract: { address: string; abi: string[] };
 }) {
   const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);

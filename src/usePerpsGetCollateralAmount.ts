@@ -11,7 +11,7 @@ export function usePerpsGetCollateralAmount({
   perpsAccountId,
 }: {
   provider?: ethers.providers.BaseProvider;
-  perpsAccountId?: ethers.BigNumber;
+  perpsAccountId?: ethers.BigNumberish;
 }) {
   const { chainId } = useSynthetix();
 

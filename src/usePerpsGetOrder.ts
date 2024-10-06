@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { type BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
@@ -7,20 +7,20 @@ import { useSynthetix } from './useSynthetix';
 export function usePerpsGetOrder({
   provider,
   perpsAccountId,
-}: { provider?: ethers.providers.BaseProvider; perpsAccountId?: ethers.BigNumber }) {
+}: { provider?: ethers.providers.BaseProvider; perpsAccountId?: ethers.BigNumberish }) {
   const { chainId } = useSynthetix();
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
 
   const errorParser = useErrorParser();
 
   return useQuery<{
-    commitmentTime: BigNumber;
+    commitmentTime: ethers.BigNumber;
     request: {
-      marketId: BigNumber;
-      accountId: BigNumber;
-      sizeDelta: BigNumber;
-      settlementStrategyId: BigNumber;
-      acceptablePrice: BigNumber;
+      marketId: ethers.BigNumber;
+      accountId: ethers.BigNumber;
+      sizeDelta: ethers.BigNumber;
+      settlementStrategyId: ethers.BigNumber;
+      acceptablePrice: ethers.BigNumber;
       trackingCode: string;
       referrer: string;
     };

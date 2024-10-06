@@ -11,11 +11,11 @@ import { useSynthetix } from './useSynthetix';
 export function useAccountCollateral({
   provider,
   accountId,
-  tokenAddress,
+  collateralTypeTokenAddress,
 }: {
-  provider: ethers.providers.Web3Provider;
-  accountId?: ethers.BigNumber;
-  tokenAddress?: string;
+  provider: ethers.providers.BaseProvider;
+  accountId?: ethers.BigNumberish;
+  collateralTypeTokenAddress?: string;
 }) {
   const { chainId } = useSynthetix();
   const errorParser = useErrorParser();
@@ -27,17 +27,31 @@ export function useAccountCollateral({
 
   return useQuery({
     enabled: Boolean(
-      chainId && provider && CoreProxyContract?.address && MulticallContract?.address && accountId && tokenAddress && priceUpdateTxn
+      chainId &&
+        provider &&
+        CoreProxyContract?.address &&
+        MulticallContract?.address &&
+        accountId &&
+        collateralTypeTokenAddress &&
+        priceUpdateTxn
     ),
     queryKey: [
       chainId,
       'AccountCollateral',
       { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
-      { accountId: accountId?.toHexString(), tokenAddress },
+      { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined, collateralTypeTokenAddress },
     ],
     queryFn: async () => {
       if (
-        !(chainId && provider && CoreProxyContract?.address && MulticallContract?.address && accountId && tokenAddress && priceUpdateTxn)
+        !(
+          chainId &&
+          provider &&
+          CoreProxyContract?.address &&
+          MulticallContract?.address &&
+          accountId &&
+          collateralTypeTokenAddress &&
+          priceUpdateTxn
+        )
       ) {
         throw 'OMFG';
       }
@@ -46,7 +60,7 @@ export function useAccountCollateral({
         CoreProxyContract,
         MulticallContract,
         accountId,
-        tokenAddress,
+        collateralTypeTokenAddress,
         priceUpdateTxn,
       });
 
@@ -57,7 +71,7 @@ export function useAccountCollateral({
           CoreProxyContract,
           MulticallContract,
           accountId,
-          tokenAddress,
+          collateralTypeTokenAddress,
           priceUpdateTxn,
         });
       }
@@ -66,7 +80,7 @@ export function useAccountCollateral({
         provider,
         CoreProxyContract,
         accountId,
-        tokenAddress,
+        collateralTypeTokenAddress,
       });
     },
     throwOnError: (error) => {

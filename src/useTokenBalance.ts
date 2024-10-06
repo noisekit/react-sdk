@@ -6,24 +6,24 @@ import { useSynthetix } from './useSynthetix';
 
 export function useTokenBalance({
   provider,
-  tokenAddress,
+  collateralTypeTokenAddress,
   ownerAddress,
 }: {
   provider?: ethers.providers.BaseProvider;
-  tokenAddress?: string;
+  collateralTypeTokenAddress?: string;
   ownerAddress?: string;
 }) {
   const { chainId } = useSynthetix();
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && tokenAddress && ownerAddress),
-    queryKey: [chainId, 'Balance', { tokenAddress, ownerAddress }],
+    enabled: Boolean(chainId && provider && collateralTypeTokenAddress && ownerAddress),
+    queryKey: [chainId, 'Balance', { collateralTypeTokenAddress, ownerAddress }],
     queryFn: async () => {
-      if (!(chainId && provider && tokenAddress && ownerAddress)) {
+      if (!(chainId && provider && collateralTypeTokenAddress && ownerAddress)) {
         throw 'OMFG';
       }
-      return fetchTokenBalance({ provider, tokenAddress, ownerAddress });
+      return fetchTokenBalance({ provider, collateralTypeTokenAddress, ownerAddress });
     },
     throwOnError: (error) => {
       // TODO: show toast

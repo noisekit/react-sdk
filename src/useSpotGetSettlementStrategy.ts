@@ -8,7 +8,7 @@ export function useSpotGetSettlementStrategy({
   provider,
   synthMarketId,
   settlementStrategyId,
-}: { provider?: ethers.providers.BaseProvider; synthMarketId?: string; settlementStrategyId?: string }) {
+}: { provider?: ethers.providers.BaseProvider; synthMarketId?: ethers.BigNumberish; settlementStrategyId?: ethers.BigNumberish }) {
   const { chainId } = useSynthetix();
 
   const { data: SpotMarketProxyContract } = useImportContract('SpotMarketProxy');

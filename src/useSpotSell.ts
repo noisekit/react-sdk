@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { fetchApproveToken } from './fetchApproveToken';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
 import { fetchSpotSell } from './fetchSpotSell';
@@ -23,8 +23,8 @@ export function useSpotSell({
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
-  synthMarketId?: string;
-  settlementStrategyId?: string;
+  synthMarketId?: ethers.BigNumberish;
+  settlementStrategyId?: ethers.BigNumberish;
   synthTokenAddress?: string;
   onSuccess: () => void;
 }) {
@@ -44,7 +44,7 @@ export function useSpotSell({
   const { data: priceData } = useSpotGetPriceData({ provider, synthMarketId });
 
   return useMutation({
-    mutationFn: async (amount: ethers.BigNumber) => {
+    mutationFn: async (amount: ethers.BigNumberish) => {
       if (
         !(
           chainId &&
@@ -64,14 +64,14 @@ export function useSpotSell({
         throw 'OMFG';
       }
 
-      if (amount.lte(0)) {
+      if (ethers.BigNumber.from(amount).lte(0)) {
         throw new Error('Amount required');
       }
 
       const freshBalance = await fetchTokenBalance({
         provider,
         ownerAddress: walletAddress,
-        tokenAddress: synthTokenAddress,
+        collateralTypeTokenAddress: synthTokenAddress,
       });
 
       if (freshBalance.lt(amount)) {
@@ -81,7 +81,7 @@ export function useSpotSell({
       const freshAllowance = await fetchTokenAllowance({
         provider,
         ownerAddress: walletAddress,
-        tokenAddress: synthTokenAddress,
+        collateralTypeTokenAddress: synthTokenAddress,
         spenderAddress: SpotMarketProxyContract.address,
       });
 
@@ -89,9 +89,9 @@ export function useSpotSell({
         await fetchApproveToken({
           provider,
           walletAddress,
-          tokenAddress: synthTokenAddress,
+          collateralTypeTokenAddress: synthTokenAddress,
           spenderAddress: SpotMarketProxyContract.address,
-          allowance: amount.sub(freshAllowance),
+          allowance: ethers.BigNumber.from(amount).sub(freshAllowance),
         });
       }
 
@@ -142,10 +142,10 @@ export function useSpotSell({
         });
       }
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { tokenAddress: systemToken?.address, ownerAddress: walletAddress }],
+        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: systemToken?.address, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { tokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
       });
       onSuccess();
     },

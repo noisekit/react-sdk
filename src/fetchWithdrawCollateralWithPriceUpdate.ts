@@ -6,7 +6,7 @@ export async function fetchWithdrawCollateralWithPriceUpdate({
   CoreProxyContract,
   MulticallContract,
   accountId,
-  tokenAddress,
+  collateralTypeTokenAddress,
   withdrawAmount,
   priceUpdateTxn,
 }: {
@@ -14,13 +14,13 @@ export async function fetchWithdrawCollateralWithPriceUpdate({
   walletAddress: string;
   CoreProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
-  accountId: ethers.BigNumber;
-  tokenAddress: string;
-  withdrawAmount: ethers.BigNumber;
+  accountId: ethers.BigNumberish;
+  collateralTypeTokenAddress: string;
+  withdrawAmount: ethers.BigNumberish;
   priceUpdateTxn: {
     target: string;
     callData: string;
-    value: number;
+    value: ethers.BigNumberish;
     requireSuccess: boolean;
   };
 }) {
@@ -30,7 +30,7 @@ export async function fetchWithdrawCollateralWithPriceUpdate({
   const withdrawCollateralTxnArgs = [
     //
     accountId,
-    tokenAddress,
+    collateralTypeTokenAddress,
     withdrawAmount,
   ];
   console.log({ withdrawCollateralTxnArgs });

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { fetchMintUsd } from './fetchMintUsd';
 import { fetchMintUsdWithPriceUpdate } from './fetchMintUsdWithPriceUpdate';
 import { useErrorParser } from './useErrorParser';
@@ -11,15 +11,15 @@ export function useMintUsd({
   provider,
   walletAddress,
   accountId,
-  collateralTokenAddress,
+  collateralTypeTokenAddress,
   poolId,
   onSuccess,
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
-  accountId?: ethers.BigNumber;
-  collateralTokenAddress?: string;
-  poolId?: ethers.BigNumber;
+  accountId?: ethers.BigNumberish;
+  collateralTypeTokenAddress?: string;
+  poolId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
@@ -34,7 +34,7 @@ export function useMintUsd({
 
   return useMutation({
     retry: false,
-    mutationFn: async (mintUsdAmount: ethers.BigNumber) => {
+    mutationFn: async (mintUsdAmount: ethers.BigNumberish) => {
       if (
         !(
           chainId &&
@@ -45,13 +45,13 @@ export function useMintUsd({
           priceUpdateTxn &&
           accountId &&
           poolId &&
-          collateralTokenAddress
+          collateralTypeTokenAddress
         )
       ) {
         throw 'OMFG';
       }
 
-      if (mintUsdAmount.eq(0)) {
+      if (ethers.BigNumber.from(mintUsdAmount).eq(0)) {
         throw new Error('Amount required');
       }
 
@@ -66,7 +66,7 @@ export function useMintUsd({
           MulticallContract,
           accountId,
           poolId,
-          tokenAddress: collateralTokenAddress,
+          collateralTypeTokenAddress,
           mintUsdAmount,
           priceUpdateTxn,
         });
@@ -79,7 +79,7 @@ export function useMintUsd({
         CoreProxyContract,
         accountId,
         poolId,
-        tokenAddress: collateralTokenAddress,
+        collateralTypeTokenAddress,
         mintUsdAmount,
       });
       return { priceUpdated: false };
@@ -105,8 +105,8 @@ export function useMintUsd({
           'PositionDebt',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress: collateralTokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -116,13 +116,18 @@ export function useMintUsd({
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress: systemToken?.address,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress: systemToken?.address,
           },
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'AccountLastInteraction', { CoreProxy: CoreProxyContract?.address }, { accountId: accountId?.toHexString() }],
+        queryKey: [
+          chainId,
+          'AccountLastInteraction',
+          { CoreProxy: CoreProxyContract?.address },
+          { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined },
+        ],
       });
 
       onSuccess();

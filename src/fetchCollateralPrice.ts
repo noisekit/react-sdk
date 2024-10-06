@@ -3,15 +3,15 @@ import { ethers } from 'ethers';
 export async function fetchCollateralPrice({
   provider,
   CoreProxyContract,
-  tokenAddress,
+  collateralTypeTokenAddress,
 }: {
-  provider: ethers.providers.Web3Provider;
+  provider: ethers.providers.BaseProvider;
   CoreProxyContract: { address: string; abi: string[] };
-  tokenAddress: string;
+  collateralTypeTokenAddress: string;
 }) {
   const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
   console.time('fetchCollateralPrice');
-  const collateralPrice = await CoreProxy.getCollateralPrice(tokenAddress);
+  const collateralPrice = await CoreProxy.getCollateralPrice(collateralTypeTokenAddress);
   console.timeEnd('fetchCollateralPrice');
   return collateralPrice;
 }

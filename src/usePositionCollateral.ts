@@ -9,11 +9,11 @@ export function usePositionCollateral({
   provider,
   accountId,
   poolId,
-  tokenAddress,
+  collateralTypeTokenAddress,
 }: {
-  accountId?: ethers.BigNumber;
-  poolId?: ethers.BigNumber;
-  tokenAddress?: string;
+  accountId?: ethers.BigNumberish;
+  poolId?: ethers.BigNumberish;
+  collateralTypeTokenAddress?: string;
   provider?: ethers.providers.BaseProvider;
 }) {
   const { chainId } = useSynthetix();
@@ -22,19 +22,19 @@ export function usePositionCollateral({
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && CoreProxyContract?.address && provider && accountId && poolId && tokenAddress),
+    enabled: Boolean(chainId && CoreProxyContract?.address && provider && accountId && poolId && collateralTypeTokenAddress),
     queryKey: [
       chainId,
       'PositionCollateral',
       { CoreProxy: CoreProxyContract?.address },
       {
-        accountId: accountId?.toHexString(),
-        poolId: poolId?.toHexString(),
-        tokenAddress,
+        accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+        poolId: poolId ? ethers.BigNumber.from(poolId).toHexString() : undefined,
+        collateralTypeTokenAddress,
       },
     ],
     queryFn: async () => {
-      if (!(chainId && CoreProxyContract?.address && provider && accountId && poolId && tokenAddress)) {
+      if (!(chainId && CoreProxyContract?.address && provider && accountId && poolId && collateralTypeTokenAddress)) {
         throw 'OMFG';
       }
       return fetchPositionCollateral({
@@ -42,7 +42,7 @@ export function usePositionCollateral({
         CoreProxyContract,
         accountId,
         poolId,
-        tokenAddress,
+        collateralTypeTokenAddress,
       });
     },
     throwOnError: (error) => {

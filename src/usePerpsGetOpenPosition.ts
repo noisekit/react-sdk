@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { type BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
@@ -9,17 +9,22 @@ export function usePerpsGetOpenPosition({
   walletAddress,
   perpsAccountId,
   perpsMarketId,
-}: { provider?: ethers.providers.Web3Provider; walletAddress?: string; perpsAccountId?: ethers.BigNumber; perpsMarketId?: string }) {
+}: {
+  provider?: ethers.providers.BaseProvider;
+  walletAddress?: string;
+  perpsAccountId?: ethers.BigNumberish;
+  perpsMarketId?: ethers.BigNumberish;
+}) {
   const { chainId } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
 
   return useQuery<{
-    accruedFunding: BigNumber;
-    owedInterest: BigNumber;
-    positionSize: BigNumber;
-    totalPnl: BigNumber;
+    accruedFunding: ethers.BigNumber;
+    owedInterest: ethers.BigNumber;
+    positionSize: ethers.BigNumber;
+    totalPnl: ethers.BigNumber;
   }>({
     enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId),
     queryKey: [
@@ -33,8 +38,7 @@ export function usePerpsGetOpenPosition({
         throw 'OMFG';
       }
 
-      const signer = provider.getSigner(walletAddress);
-      const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, signer);
+      const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const openPosition = await PerpsMarketProxy.getOpenPosition(perpsAccountId, perpsMarketId);
       console.log({ openPosition });
       return openPosition;

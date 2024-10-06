@@ -6,16 +6,16 @@ export async function fetchBurnUsd({
   CoreProxyContract,
   accountId,
   poolId,
-  tokenAddress,
+  collateralTypeTokenAddress,
   burnUsdAmount,
 }: {
   provider: ethers.providers.Web3Provider;
   walletAddress: string;
   CoreProxyContract: { address: string; abi: string[] };
-  accountId: ethers.BigNumber;
-  poolId: ethers.BigNumber;
-  tokenAddress: string;
-  burnUsdAmount: ethers.BigNumber;
+  accountId: ethers.BigNumberish;
+  poolId: ethers.BigNumberish;
+  collateralTypeTokenAddress: string;
+  burnUsdAmount: ethers.BigNumberish;
 }) {
   const signer = provider.getSigner(walletAddress);
   const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, signer);
@@ -24,7 +24,7 @@ export async function fetchBurnUsd({
     //
     accountId,
     poolId,
-    tokenAddress,
+    collateralTypeTokenAddress,
     burnUsdAmount,
   ];
   console.log({ burnUsdTxnArgs });

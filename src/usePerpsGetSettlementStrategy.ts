@@ -8,7 +8,7 @@ export function usePerpsGetSettlementStrategy({
   provider,
   settlementStrategyId,
   perpsMarketId,
-}: { settlementStrategyId?: string; provider?: ethers.providers.BaseProvider; perpsMarketId?: string }) {
+}: { settlementStrategyId?: ethers.BigNumberish; provider?: ethers.providers.BaseProvider; perpsMarketId?: ethers.BigNumberish }) {
   const { chainId } = useSynthetix();
   const errorParser = useErrorParser();
 

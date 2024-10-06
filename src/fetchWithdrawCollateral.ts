@@ -5,15 +5,15 @@ export async function fetchWithdrawCollateral({
   walletAddress,
   CoreProxyContract,
   accountId,
-  tokenAddress,
+  collateralTypeTokenAddress,
   withdrawAmount,
 }: {
   provider: ethers.providers.Web3Provider;
   walletAddress: string;
   CoreProxyContract: { address: string; abi: string[] };
-  accountId: ethers.BigNumber;
-  tokenAddress: string;
-  withdrawAmount: ethers.BigNumber;
+  accountId: ethers.BigNumberish;
+  collateralTypeTokenAddress: string;
+  withdrawAmount: ethers.BigNumberish;
 }) {
   const signer = provider.getSigner(walletAddress);
   const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, signer);
@@ -21,7 +21,7 @@ export async function fetchWithdrawCollateral({
   const withdrawCollateralTxnArgs = [
     //
     accountId,
-    tokenAddress,
+    collateralTypeTokenAddress,
     withdrawAmount,
   ];
   console.log({ withdrawCollateralTxnArgs });

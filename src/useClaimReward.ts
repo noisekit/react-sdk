@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { fetchAccountAvailableCollateral } from './fetchAccountAvailableCollateral';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
 import { fetchWithdrawCollateral } from './fetchWithdrawCollateral';
@@ -12,14 +12,14 @@ import { useSynthetix } from './useSynthetix';
 export function useClaimReward({
   provider,
   walletAddress,
-  tokenAddress,
+  collateralTypeTokenAddress,
   accountId,
   onSuccess,
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
-  tokenAddress?: string;
-  accountId?: ethers.BigNumber;
+  collateralTypeTokenAddress?: string;
+  accountId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
@@ -33,14 +33,14 @@ export function useClaimReward({
 
   return useMutation({
     retry: false,
-    mutationFn: async (withdrawAmount: ethers.BigNumber) => {
+    mutationFn: async (withdrawAmount: ethers.BigNumberish) => {
       if (
         !(
           chainId &&
           provider &&
           walletAddress &&
           accountId &&
-          tokenAddress &&
+          collateralTypeTokenAddress &&
           CoreProxyContract &&
           MulticallContract &&
           PythERC7412WrapperContract &&
@@ -50,7 +50,7 @@ export function useClaimReward({
         throw 'OMFG';
       }
 
-      if (withdrawAmount.eq(0)) {
+      if (ethers.BigNumber.from(withdrawAmount).eq(0)) {
         throw new Error('Amount required');
       }
 
@@ -66,7 +66,7 @@ export function useClaimReward({
         provider,
         CoreProxyContract,
         accountId,
-        tokenAddress,
+        collateralTypeTokenAddress,
       });
       console.log('freshAccountAvailableCollateral', freshAccountAvailableCollateral);
 
@@ -83,7 +83,7 @@ export function useClaimReward({
           CoreProxyContract,
           MulticallContract,
           accountId,
-          tokenAddress,
+          collateralTypeTokenAddress,
           withdrawAmount,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
@@ -96,7 +96,7 @@ export function useClaimReward({
         walletAddress,
         CoreProxyContract,
         accountId,
-        tokenAddress,
+        collateralTypeTokenAddress,
         withdrawAmount,
       });
       return { priceUpdated: false };
@@ -122,8 +122,8 @@ export function useClaimReward({
           'AccountCollateral',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -133,8 +133,8 @@ export function useClaimReward({
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -143,7 +143,7 @@ export function useClaimReward({
           chainId,
           'Balance',
           {
-            tokenAddress,
+            collateralTypeTokenAddress,
             ownerAddress: walletAddress,
           },
         ],

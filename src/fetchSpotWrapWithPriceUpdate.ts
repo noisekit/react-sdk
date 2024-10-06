@@ -13,12 +13,12 @@ export async function fetchSpotWrapWithPriceUpdate({
   walletAddress: string;
   SpotMarketProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
-  synthMarketId: string;
-  amount: ethers.BigNumber;
+  synthMarketId: ethers.BigNumberish;
+  amount: ethers.BigNumberish;
   priceUpdateTxn: {
     target: string;
     callData: string;
-    value: number;
+    value: ethers.BigNumberish;
     requireSuccess: boolean;
   };
 }) {

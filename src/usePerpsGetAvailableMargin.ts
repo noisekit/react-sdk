@@ -8,7 +8,7 @@ import { useSynthetix } from './useSynthetix';
 export function usePerpsGetAvailableMargin({
   provider,
   perpsAccountId,
-}: { provider?: ethers.providers.BaseProvider; perpsAccountId?: ethers.BigNumber }) {
+}: { provider?: ethers.providers.BaseProvider; perpsAccountId?: ethers.BigNumberish }) {
   const { chainId } = useSynthetix();
   const errorParser = useErrorParser();
 

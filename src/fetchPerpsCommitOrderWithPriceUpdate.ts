@@ -1,30 +1,30 @@
 import { ethers } from 'ethers';
 
 export async function fetchPerpsCommitOrderWithPriceUpdate({
-  walletAddress,
   provider,
+  walletAddress,
   PerpsMarketProxyContract,
   MulticallContract,
   orderCommitmentArgs,
   priceUpdateTxn,
 }: {
-  walletAddress?: string;
   provider: ethers.providers.Web3Provider;
+  walletAddress: string;
   PerpsMarketProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
   orderCommitmentArgs: {
-    perpsMarketId: string;
-    perpsAccountId: ethers.BigNumber;
-    sizeDelta: ethers.BigNumber;
-    settlementStrategyId: string;
-    acceptablePrice: ethers.BigNumber;
+    perpsMarketId: ethers.BigNumberish;
+    perpsAccountId: ethers.BigNumberish;
+    sizeDelta: ethers.BigNumberish;
+    settlementStrategyId: ethers.BigNumberish;
+    acceptablePrice: ethers.BigNumberish;
     referrer: string;
     trackingCode: string;
   };
   priceUpdateTxn: {
     target: string;
     callData: string;
-    value: number;
+    value: ethers.BigNumberish;
     requireSuccess: boolean;
   };
 }) {

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { fetchAccountAvailableCollateral } from './fetchAccountAvailableCollateral';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
 import { fetchWithdrawCollateral } from './fetchWithdrawCollateral';
@@ -13,13 +13,13 @@ export function useWithdraw({
   provider,
   walletAddress,
   accountId,
-  tokenAddress,
+  collateralTypeTokenAddress,
   onSuccess,
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
-  accountId?: ethers.BigNumber;
-  tokenAddress?: string;
+  accountId?: ethers.BigNumberish;
+  collateralTypeTokenAddress?: string;
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
@@ -33,14 +33,14 @@ export function useWithdraw({
 
   return useMutation({
     retry: false,
-    mutationFn: async (withdrawAmount: ethers.BigNumber) => {
+    mutationFn: async (withdrawAmount: ethers.BigNumberish) => {
       if (
         !(
           chainId &&
           provider &&
           walletAddress &&
           accountId &&
-          tokenAddress &&
+          collateralTypeTokenAddress &&
           CoreProxyContract &&
           MulticallContract &&
           PythERC7412WrapperContract &&
@@ -50,7 +50,7 @@ export function useWithdraw({
         throw 'OMFG';
       }
 
-      if (withdrawAmount.eq(0)) {
+      if (ethers.BigNumber.from(withdrawAmount).eq(0)) {
         throw new Error('Amount required');
       }
 
@@ -66,7 +66,7 @@ export function useWithdraw({
         provider,
         CoreProxyContract,
         accountId,
-        tokenAddress,
+        collateralTypeTokenAddress,
       });
       console.log('freshAccountAvailableCollateral', freshAccountAvailableCollateral);
 
@@ -83,7 +83,7 @@ export function useWithdraw({
           CoreProxyContract,
           MulticallContract,
           accountId,
-          tokenAddress,
+          collateralTypeTokenAddress,
           withdrawAmount,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
@@ -94,7 +94,7 @@ export function useWithdraw({
           walletAddress,
           CoreProxyContract,
           accountId,
-          tokenAddress,
+          collateralTypeTokenAddress,
           withdrawAmount,
         });
       }
@@ -121,8 +121,8 @@ export function useWithdraw({
           'AccountCollateral',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -132,8 +132,8 @@ export function useWithdraw({
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -142,7 +142,7 @@ export function useWithdraw({
           chainId,
           'Balance',
           {
-            tokenAddress,
+            collateralTypeTokenAddress,
             ownerAddress: walletAddress,
           },
         ],

@@ -11,12 +11,12 @@ export function usePositionDebt({
   provider,
   accountId,
   poolId,
-  tokenAddress,
+  collateralTypeTokenAddress,
 }: {
-  provider?: ethers.providers.Web3Provider;
-  accountId?: ethers.BigNumber;
-  poolId?: ethers.BigNumber;
-  tokenAddress?: string;
+  provider?: ethers.providers.BaseProvider;
+  accountId?: ethers.BigNumberish;
+  poolId?: ethers.BigNumberish;
+  collateralTypeTokenAddress?: string;
 }) {
   const { chainId } = useSynthetix();
   const errorParser = useErrorParser();
@@ -34,14 +34,14 @@ export function usePositionDebt({
         MulticallContract?.address &&
         accountId &&
         poolId &&
-        tokenAddress &&
+        collateralTypeTokenAddress &&
         priceUpdateTxn
     ),
     queryKey: [
       chainId,
       'PositionDebt',
       { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
-      { accountId: accountId?.toHexString(), tokenAddress },
+      { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined, collateralTypeTokenAddress },
     ],
     queryFn: async () => {
       if (
@@ -52,7 +52,7 @@ export function usePositionDebt({
           MulticallContract?.address &&
           accountId &&
           poolId &&
-          tokenAddress &&
+          collateralTypeTokenAddress &&
           priceUpdateTxn
         )
       ) {
@@ -64,7 +64,7 @@ export function usePositionDebt({
         MulticallContract,
         accountId,
         poolId,
-        tokenAddress,
+        collateralTypeTokenAddress,
         priceUpdateTxn,
       });
 
@@ -76,7 +76,7 @@ export function usePositionDebt({
           MulticallContract,
           accountId,
           poolId,
-          tokenAddress,
+          collateralTypeTokenAddress,
           priceUpdateTxn,
         });
       }
@@ -86,7 +86,7 @@ export function usePositionDebt({
         CoreProxyContract,
         accountId,
         poolId,
-        tokenAddress,
+        collateralTypeTokenAddress,
       });
     },
     throwOnError: (error) => {

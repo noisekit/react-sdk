@@ -10,7 +10,7 @@ import { useSynthetix } from './useSynthetix';
 export function usePerpsGetMarketSummary({
   provider,
   perpsMarketId,
-}: { provider?: ethers.providers.BaseProvider; perpsMarketId: ethers.BigNumber }) {
+}: { provider?: ethers.providers.BaseProvider; perpsMarketId: ethers.BigNumberish }) {
   const { chainId } = useSynthetix();
   const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider });
 

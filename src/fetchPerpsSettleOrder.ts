@@ -9,7 +9,7 @@ export async function fetchPerpsSettleOrder({
   provider: ethers.providers.Web3Provider;
   walletAddress: string;
   PerpsMarketProxyContract: { address: string; abi: string[] };
-  perpsAccountId: ethers.BigNumber;
+  perpsAccountId: ethers.BigNumberish;
 }) {
   const signer = provider.getSigner(walletAddress);
   const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, signer);

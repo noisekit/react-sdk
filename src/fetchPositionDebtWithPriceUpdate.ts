@@ -6,19 +6,19 @@ export async function fetchPositionDebtWithPriceUpdate({
   MulticallContract,
   accountId,
   poolId,
-  tokenAddress,
+  collateralTypeTokenAddress,
   priceUpdateTxn,
 }: {
-  provider: ethers.providers.Web3Provider;
+  provider: ethers.providers.BaseProvider;
   CoreProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
-  accountId: ethers.BigNumber;
-  poolId: ethers.BigNumber;
-  tokenAddress: string;
+  accountId: ethers.BigNumberish;
+  poolId: ethers.BigNumberish;
+  collateralTypeTokenAddress: string;
   priceUpdateTxn: {
     target: string;
     callData: string;
-    value: number;
+    value: ethers.BigNumberish;
     requireSuccess: boolean;
   };
 }) {
@@ -30,7 +30,7 @@ export async function fetchPositionDebtWithPriceUpdate({
 
   const getPositionDebtTxn = {
     target: CoreProxyContract.address,
-    callData: CoreProxyInterface.encodeFunctionData('getPositionDebt', [accountId, poolId, tokenAddress]),
+    callData: CoreProxyInterface.encodeFunctionData('getPositionDebt', [accountId, poolId, collateralTypeTokenAddress]),
     value: 0,
     requireSuccess: true,
   };

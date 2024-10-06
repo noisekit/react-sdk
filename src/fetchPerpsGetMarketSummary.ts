@@ -6,7 +6,7 @@ export async function fetchPerpsGetMarketSummary({
   PerpsMarketProxyContract,
 }: {
   provider: ethers.providers.BaseProvider;
-  perpsMarketId: ethers.BigNumber;
+  perpsMarketId: ethers.BigNumberish;
   PerpsMarketProxyContract: { address: string; abi: string[] };
 }): Promise<{
   skew: ethers.BigNumber;

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { fetchAccountAvailableCollateral } from './fetchAccountAvailableCollateral';
 import { fetchBurnUsd } from './fetchBurnUsd';
 import { fetchBurnUsdWithPriceUpdate } from './fetchBurnUsdWithPriceUpdate';
@@ -19,9 +19,9 @@ export function useBurnUsd({
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
-  accountId?: ethers.BigNumber;
+  accountId?: ethers.BigNumberish;
   collateralTypeTokenAddress?: string;
-  poolId?: ethers.BigNumber;
+  poolId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
@@ -37,7 +37,7 @@ export function useBurnUsd({
 
   return useMutation({
     retry: false,
-    mutationFn: async (burnUsdAmount: ethers.BigNumber) => {
+    mutationFn: async (burnUsdAmount: ethers.BigNumberish) => {
       if (
         !(
           chainId &&
@@ -56,7 +56,7 @@ export function useBurnUsd({
         throw 'OMFG';
       }
 
-      if (burnUsdAmount.eq(0)) {
+      if (ethers.BigNumber.from(burnUsdAmount).eq(0)) {
         throw new Error('Amount required');
       }
 
@@ -72,7 +72,7 @@ export function useBurnUsd({
         provider,
         CoreProxyContract,
         accountId,
-        tokenAddress: systemToken.address,
+        collateralTypeTokenAddress: systemToken.address,
       });
       console.log({ freshAccountAvailableUsd });
 
@@ -90,7 +90,7 @@ export function useBurnUsd({
           MulticallContract,
           accountId,
           poolId,
-          tokenAddress: collateralTypeTokenAddress,
+          collateralTypeTokenAddress,
           burnUsdAmount,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
@@ -104,7 +104,7 @@ export function useBurnUsd({
         CoreProxyContract,
         accountId,
         poolId,
-        tokenAddress: collateralTypeTokenAddress,
+        collateralTypeTokenAddress,
         burnUsdAmount,
       });
       return { priceUpdated: false };
@@ -130,8 +130,8 @@ export function useBurnUsd({
           'PositionDebt',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress: collateralTypeTokenAddress,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress,
           },
         ],
       });
@@ -141,13 +141,18 @@ export function useBurnUsd({
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
-            accountId: accountId?.toHexString(),
-            tokenAddress: systemToken?.address,
+            accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined,
+            collateralTypeTokenAddress: systemToken?.address,
           },
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'AccountLastInteraction', { CoreProxy: CoreProxyContract?.address }, { accountId: accountId?.toHexString() }],
+        queryKey: [
+          chainId,
+          'AccountLastInteraction',
+          { CoreProxy: CoreProxyContract?.address },
+          { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined },
+        ],
       });
 
       onSuccess();

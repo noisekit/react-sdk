@@ -7,14 +7,14 @@ export async function fetchStrictPriceUpdateTxn({
   PythERC7412WrapperContract,
   feedId,
 }: {
-  commitmentTime: ethers.BigNumber;
-  commitmentPriceDelay: ethers.BigNumber;
+  commitmentTime: ethers.BigNumberish;
+  commitmentPriceDelay: ethers.BigNumberish;
   PythERC7412WrapperContract: { address: string; abi: string[] };
   feedId: string;
 }) {
   console.time('fetchStrictPriceUpdateTxn');
   const PythERC7412WrapperInterface = new ethers.utils.Interface(PythERC7412WrapperContract.abi);
-  const timestamp = commitmentTime.add(commitmentPriceDelay);
+  const timestamp = ethers.BigNumber.from(commitmentTime).add(commitmentPriceDelay);
   const offchainData = await getPythVaa({ pythPriceFeedId: feedId, timestamp: timestamp.toNumber() });
   const updateType = 2;
   const offchainDataEncoded = ethers.utils.defaultAbiCoder.encode(

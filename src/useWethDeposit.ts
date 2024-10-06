@@ -8,13 +8,13 @@ export function useWethDeposit({
   provider,
   walletAddress,
   perpsAccountId,
-  tokenAddress,
+  collateralTypeTokenAddress,
   onSuccess,
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
-  perpsAccountId?: ethers.BigNumber;
-  tokenAddress?: string;
+  perpsAccountId?: ethers.BigNumberish;
+  collateralTypeTokenAddress?: string;
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
@@ -24,7 +24,7 @@ export function useWethDeposit({
   const errorParser = useErrorParser();
 
   return useMutation({
-    mutationFn: async (amount: ethers.BigNumber) => {
+    mutationFn: async (amount: ethers.BigNumberish) => {
       if (!(chainId && provider && walletAddress && perpsAccountId && WethContract)) {
         throw 'OMFG';
       }
@@ -47,7 +47,7 @@ export function useWethDeposit({
       if (!queryClient) return;
 
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { tokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
         queryKey: [chainId, 'EthBalance', { ownerAddress: walletAddress }],

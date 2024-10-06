@@ -8,13 +8,13 @@ export async function fetchPerpsGetMarketSummaryWithPriceUpdate({
   priceUpdateTxn,
 }: {
   provider: ethers.providers.BaseProvider;
-  perpsMarketId: ethers.BigNumber;
+  perpsMarketId: ethers.BigNumberish;
   PerpsMarketProxyContract: { address: string; abi: string[] };
   MulticallContract: { address: string; abi: string[] };
   priceUpdateTxn: {
     target: string;
     callData: string;
-    value: number;
+    value: ethers.BigNumberish;
     requireSuccess: boolean;
   };
 }): Promise<{

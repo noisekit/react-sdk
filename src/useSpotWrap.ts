@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { fetchApproveToken } from './fetchApproveToken';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
 import { fetchSpotWrap } from './fetchSpotWrap';
@@ -15,7 +15,7 @@ import { useSynthetix } from './useSynthetix';
 export function useSpotWrap({
   provider,
   walletAddress,
-  tokenAddress,
+  collateralTypeTokenAddress,
   synthTokenAddress,
   synthMarketId,
   settlementStrategyId,
@@ -23,10 +23,10 @@ export function useSpotWrap({
 }: {
   provider?: ethers.providers.Web3Provider;
   walletAddress?: string;
-  tokenAddress?: string;
+  collateralTypeTokenAddress?: string;
   synthTokenAddress?: string;
-  synthMarketId?: string;
-  settlementStrategyId?: string;
+  synthMarketId?: ethers.BigNumberish;
+  settlementStrategyId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
   const { chainId, queryClient } = useSynthetix();
@@ -44,13 +44,13 @@ export function useSpotWrap({
   });
 
   return useMutation({
-    mutationFn: async (amount: ethers.BigNumber) => {
+    mutationFn: async (amount: ethers.BigNumberish) => {
       if (
         !(
           chainId &&
           provider &&
           walletAddress &&
-          tokenAddress &&
+          collateralTypeTokenAddress &&
           synthTokenAddress &&
           synthMarketId &&
           SpotMarketProxyContract?.address &&
@@ -62,13 +62,13 @@ export function useSpotWrap({
         throw 'OMFG';
       }
 
-      if (amount.lte(0)) {
+      if (ethers.BigNumber.from(amount).lte(0)) {
         throw new Error('Amount required');
       }
 
       const freshBalance = await fetchTokenBalance({
         provider,
-        tokenAddress,
+        collateralTypeTokenAddress,
         ownerAddress: walletAddress,
       });
 
@@ -78,7 +78,7 @@ export function useSpotWrap({
 
       const freshAllowance = await fetchTokenAllowance({
         provider,
-        tokenAddress,
+        collateralTypeTokenAddress,
         ownerAddress: walletAddress,
         spenderAddress: SpotMarketProxyContract.address,
       });
@@ -87,9 +87,9 @@ export function useSpotWrap({
         await fetchApproveToken({
           provider,
           walletAddress,
-          tokenAddress,
+          collateralTypeTokenAddress,
           spenderAddress: SpotMarketProxyContract.address,
-          allowance: amount.sub(freshAllowance),
+          allowance: ethers.BigNumber.from(amount).sub(freshAllowance),
         });
       }
 
@@ -143,14 +143,14 @@ export function useSpotWrap({
         queryKey: [
           chainId,
           'Allowance',
-          { tokenAddress: tokenAddress, ownerAddress: walletAddress, spenderAddress: SpotMarketProxyContract?.address },
+          { collateralTypeTokenAddress, ownerAddress: walletAddress, spenderAddress: SpotMarketProxyContract?.address },
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { tokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { tokenAddress: tokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: collateralTypeTokenAddress, ownerAddress: walletAddress }],
       });
 
       onSuccess();

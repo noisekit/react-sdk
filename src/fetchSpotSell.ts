@@ -10,8 +10,8 @@ export async function fetchSpotSell({
   provider: ethers.providers.Web3Provider;
   walletAddress: string;
   SpotMarketProxyContract: { address: string; abi: string[] };
-  synthMarketId: string;
-  amount: ethers.BigNumber;
+  synthMarketId: ethers.BigNumberish;
+  amount: ethers.BigNumberish;
 }) {
   const signer = provider.getSigner(walletAddress);
   const SpotMarketProxy = new ethers.Contract(SpotMarketProxyContract.address, SpotMarketProxyContract.abi, signer);
