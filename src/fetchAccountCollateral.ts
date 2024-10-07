@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchAccountCollateral');
 
 export async function fetchAccountCollateral({
   provider,
@@ -15,6 +18,7 @@ export async function fetchAccountCollateral({
   console.time('fetchAccountCollateral');
   const accountCollateral = await CoreProxy.getAccountCollateral(accountId, collateralTypeTokenAddress);
   console.timeEnd('fetchAccountCollateral');
+  log({ accountCollateral });
   return {
     totalAssigned: accountCollateral.totalAssigned,
     totalDeposited: accountCollateral.totalDeposited,

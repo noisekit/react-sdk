@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchPerpsCommitOrder } from './fetchPerpsCommitOrder';
 import { fetchPerpsCommitOrderWithPriceUpdate } from './fetchPerpsCommitOrderWithPriceUpdate';
@@ -9,6 +10,8 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('usePerpsCommitOrder');
 
 export function usePerpsCommitOrder({
   perpsAccountId,
@@ -55,6 +58,18 @@ export function usePerpsCommitOrder({
         throw 'OMFG';
       }
 
+      log({
+        chainId,
+        perpsAccountId,
+        settlementStrategyId,
+        PerpsMarketProxyContract,
+        MulticallContract,
+        priceUpdateTxn,
+        walletAddress,
+        feedId,
+        provider,
+      });
+
       if (ethers.BigNumber.from(sizeDelta).lte(0)) {
         throw new Error('Amount required');
       }
@@ -64,6 +79,7 @@ export function usePerpsCommitOrder({
         perpsAccountId,
         PerpsMarketProxyContract,
       });
+      log({ availableMargin });
 
       if (availableMargin.lt(sizeDelta)) {
         throw new Error('Not enough available margin');
@@ -74,12 +90,14 @@ export function usePerpsCommitOrder({
         PerpsMarketProxyContract,
         perpsAccountId,
       });
+      log({ totalCollateralValue });
 
       if (totalCollateralValue.lt(sizeDelta)) {
         throw new Error('Total collateral value is less than the size delta');
       }
 
       const pythPrice = await getPythPrice({ feedId });
+      log({ pythPrice });
 
       const orderCommitmentArgs = {
         perpsMarketId,
@@ -90,14 +108,13 @@ export function usePerpsCommitOrder({
         referrer: ethers.constants.AddressZero,
         trackingCode: ethers.utils.formatBytes32String('VD'),
       };
+      log({ orderCommitmentArgs });
 
-      console.log({ orderCommitmentArgs });
-
-      console.log('priceUpdateTxn', priceUpdateTxn);
+      log({ priceUpdateTxn });
 
       if (priceUpdateTxn.value) {
-        console.log('-> fetchPerpsCommitOrderWithPriceUpdate');
-        await fetchPerpsCommitOrderWithPriceUpdate({
+        log('-> fetchPerpsCommitOrderWithPriceUpdate');
+        const { tx, txResult } = await fetchPerpsCommitOrderWithPriceUpdate({
           walletAddress,
           provider,
           PerpsMarketProxyContract,
@@ -105,17 +122,17 @@ export function usePerpsCommitOrder({
           orderCommitmentArgs,
           priceUpdateTxn,
         });
-        return { priceUpdated: true };
+        return { priceUpdated: true, tx, txResult };
       }
 
-      console.log('-> fetchPerpsCommitOrder');
-      await fetchPerpsCommitOrder({
+      log('-> fetchPerpsCommitOrder');
+      const { tx, txResult } = await fetchPerpsCommitOrder({
         walletAddress,
         provider,
         PerpsMarketProxyContract,
         orderCommitmentArgs,
       });
-      return { priceUpdated: false };
+      return { priceUpdated: false, tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

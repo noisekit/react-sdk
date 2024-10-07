@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchCollateralPrice');
 
 export async function fetchCollateralPrice({
   provider,
@@ -13,5 +16,6 @@ export async function fetchCollateralPrice({
   console.time('fetchCollateralPrice');
   const collateralPrice = await CoreProxy.getCollateralPrice(collateralTypeTokenAddress);
   console.timeEnd('fetchCollateralPrice');
+  log({ collateralPrice });
   return collateralPrice;
 }

@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchPositionCollateral } from './fetchPositionCollateral';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('usePositionCollateral');
 
 export function usePositionCollateral({
   provider,
@@ -37,13 +40,18 @@ export function usePositionCollateral({
       if (!(chainId && CoreProxyContract?.address && provider && accountId && poolId && collateralTypeTokenAddress)) {
         throw 'OMFG';
       }
-      return fetchPositionCollateral({
+
+      log({ chainId, CoreProxyContract, provider, accountId, poolId, collateralTypeTokenAddress });
+
+      const positionCollateral = fetchPositionCollateral({
         provider,
         CoreProxyContract,
         accountId,
         poolId,
         collateralTypeTokenAddress,
       });
+      log({ positionCollateral });
+      return positionCollateral;
     },
     throwOnError: (error) => {
       // TODO: show toast

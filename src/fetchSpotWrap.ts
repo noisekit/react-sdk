@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchSpotWrap');
 
 export async function fetchSpotWrap({
   provider,
@@ -19,7 +22,8 @@ export async function fetchSpotWrap({
   console.time('fetchSpotWrap');
   const tx: ethers.ContractTransaction = await SpotMarketProxy.wrap(synthMarketId, amount, amount);
   console.timeEnd('fetchSpotWrap');
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

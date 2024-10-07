@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchAccountAvailableCollateral } from './fetchAccountAvailableCollateral';
 import { fetchBurnUsd } from './fetchBurnUsd';
@@ -8,6 +9,8 @@ import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract, useImportSystemToken } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useBurnUsd');
 
 export function useBurnUsd({
   provider,
@@ -56,6 +59,20 @@ export function useBurnUsd({
         throw 'OMFG';
       }
 
+      log({
+        chainId,
+        provider,
+        walletAddress,
+        accountId,
+        poolId,
+        collateralTypeTokenAddress,
+        systemToken,
+        CoreProxyContract,
+        MulticallContract,
+        PythERC7412WrapperContract,
+        priceIds,
+      });
+
       if (ethers.BigNumber.from(burnUsdAmount).eq(0)) {
         throw new Error('Amount required');
       }
@@ -66,7 +83,7 @@ export function useBurnUsd({
         PythERC7412WrapperContract,
         priceIds,
       });
-      console.log({ freshPriceUpdateTxn });
+      log({ freshPriceUpdateTxn });
 
       const freshAccountAvailableUsd = await fetchAccountAvailableCollateral({
         provider,
@@ -74,7 +91,7 @@ export function useBurnUsd({
         accountId,
         collateralTypeTokenAddress: systemToken.address,
       });
-      console.log({ freshAccountAvailableUsd });
+      log({ freshAccountAvailableUsd });
 
       const hasEnoughDeposit = freshAccountAvailableUsd.gte(burnUsdAmount);
       if (!hasEnoughDeposit) {
@@ -82,8 +99,8 @@ export function useBurnUsd({
       }
 
       if (freshPriceUpdateTxn.value) {
-        console.log('-> burnUsdWithPriceUpdate');
-        await fetchBurnUsdWithPriceUpdate({
+        log('-> burnUsdWithPriceUpdate');
+        const { tx, txResult } = await fetchBurnUsdWithPriceUpdate({
           provider,
           walletAddress,
           CoreProxyContract,
@@ -94,11 +111,11 @@ export function useBurnUsd({
           burnUsdAmount,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
-        return { priceUpdated: true };
+        return { priceUpdated: true, tx, txResult };
       }
 
-      console.log('-> burnUsd');
-      await fetchBurnUsd({
+      log('-> burnUsd');
+      const { tx, txResult } = await fetchBurnUsd({
         provider,
         walletAddress,
         CoreProxyContract,
@@ -107,7 +124,7 @@ export function useBurnUsd({
         collateralTypeTokenAddress,
         burnUsdAmount,
       });
-      return { priceUpdated: false };
+      return { priceUpdated: false, tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

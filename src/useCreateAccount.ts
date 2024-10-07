@@ -1,7 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useCreateAccount');
 
 export function useCreateAccount({
   provider,
@@ -17,12 +20,14 @@ export function useCreateAccount({
     mutationFn: async () => {
       if (!(chainId && provider && CoreProxyContract && AccountProxyContract && walletAddress && queryClient)) throw 'OMFG';
 
+      log({ chainId, provider, CoreProxyContract, AccountProxyContract, walletAddress, queryClient });
+
       const signer = provider.getSigner(walletAddress);
       const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, signer);
       const tx: ethers.ContractTransaction = await CoreProxy['createAccount()']();
-      console.log({ tx });
+      log({ tx });
       const txResult = await tx.wait();
-      console.log({ txResult });
+      log({ txResult });
 
       const event = txResult.events?.find((e) => e.event === 'AccountCreated');
       if (event) {
@@ -36,7 +41,7 @@ export function useCreateAccount({
         }
       }
 
-      return txResult;
+      return { tx, txResult };
     },
   });
 }

@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchMintUsdWithPriceUpdate');
 
 export async function fetchMintUsdWithPriceUpdate({
   provider,
@@ -36,7 +39,7 @@ export async function fetchMintUsdWithPriceUpdate({
     collateralTypeTokenAddress,
     mintUsdAmount,
   ];
-  console.log({ mintUsdTxnArgs });
+  log({ mintUsdTxnArgs });
 
   const mintUsdTxn = {
     target: CoreProxyContract.address,
@@ -44,7 +47,7 @@ export async function fetchMintUsdWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  console.log({ mintUsdTxn });
+  log({ mintUsdTxn });
 
   const signer = provider.getSigner(walletAddress);
   const multicallTxn = {
@@ -53,12 +56,13 @@ export async function fetchMintUsdWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, mintUsdTxn]]),
     value: priceUpdateTxn.value,
   };
-  console.log({ multicallTxn });
+  log({ multicallTxn });
 
   console.time('mintUsd');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);
   console.timeEnd('mintUsd');
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchMintUsd } from './fetchMintUsd';
 import { fetchMintUsdWithPriceUpdate } from './fetchMintUsdWithPriceUpdate';
@@ -6,6 +7,8 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract, useImportSystemToken } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useMintUsd');
 
 export function useMintUsd({
   provider,
@@ -51,15 +54,27 @@ export function useMintUsd({
         throw 'OMFG';
       }
 
+      log({
+        chainId,
+        provider,
+        walletAddress,
+        CoreProxyContract,
+        MulticallContract,
+        priceUpdateTxn,
+        accountId,
+        poolId,
+        collateralTypeTokenAddress,
+      });
+
       if (ethers.BigNumber.from(mintUsdAmount).eq(0)) {
         throw new Error('Amount required');
       }
 
-      console.log({ priceUpdateTxn });
+      log({ priceUpdateTxn });
 
       if (priceUpdateTxn.value) {
-        console.log('-> fetchMintUsdWithPriceUpdate');
-        await fetchMintUsdWithPriceUpdate({
+        log('-> fetchMintUsdWithPriceUpdate');
+        const { tx, txResult } = await fetchMintUsdWithPriceUpdate({
           provider,
           walletAddress,
           CoreProxyContract,
@@ -70,10 +85,10 @@ export function useMintUsd({
           mintUsdAmount,
           priceUpdateTxn,
         });
-        return { priceUpdated: true };
+        return { priceUpdated: true, tx, txResult };
       }
-      console.log('-> fetchMintUsd');
-      await fetchMintUsd({
+      log('-> fetchMintUsd');
+      const { tx, txResult } = await fetchMintUsd({
         walletAddress,
         provider,
         CoreProxyContract,
@@ -82,7 +97,7 @@ export function useMintUsd({
         collateralTypeTokenAddress,
         mintUsdAmount,
       });
-      return { priceUpdated: false };
+      return { priceUpdated: false, tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

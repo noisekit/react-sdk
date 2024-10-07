@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('usePerpsAccounts');
 
 export function usePerpsAccounts({
   provider,
@@ -20,6 +23,9 @@ export function usePerpsAccounts({
     queryKey: [chainId, 'Perps Accounts', { PerpsAccountProxy: PerpsAccountProxyContract?.address }, { ownerAddress: walletAddress }],
     queryFn: async () => {
       if (!(chainId && provider && walletAddress && PerpsAccountProxyContract?.address)) throw 'OMFG';
+
+      log({ chainId, provider, walletAddress, PerpsAccountProxyContract });
+
       const PerpsAccountProxy = new ethers.Contract(PerpsAccountProxyContract.address, PerpsAccountProxyContract.abi, provider);
       const numberOfAccountTokens = await PerpsAccountProxy.balanceOf(walletAddress);
       if (numberOfAccountTokens.eq(0)) {
@@ -28,6 +34,7 @@ export function usePerpsAccounts({
       }
       const accountIndexes = Array.from(Array(numberOfAccountTokens.toNumber()).keys());
       const accounts = await Promise.all(accountIndexes.map((i) => PerpsAccountProxy.tokenOfOwnerByIndex(walletAddress, i)));
+      log({ accounts });
       return accounts;
     },
     select: (accounts) => accounts.map((accountId) => ethers.BigNumber.from(accountId)),

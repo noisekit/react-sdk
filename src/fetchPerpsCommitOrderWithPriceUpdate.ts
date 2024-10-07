@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchPerpsCommitOrderWithPriceUpdate');
 
 export async function fetchPerpsCommitOrderWithPriceUpdate({
   provider,
@@ -47,7 +50,8 @@ export async function fetchPerpsCommitOrderWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  console.log({ commitOrderTxn });
+  log({ commitOrderTxn });
+
   const signer = provider.getSigner(walletAddress);
 
   const multicallTxn = {
@@ -56,13 +60,13 @@ export async function fetchPerpsCommitOrderWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, commitOrderTxn]]),
     value: priceUpdateTxn.value,
   };
-  console.log({ multicallTxn });
+  log({ multicallTxn });
 
   console.time('fetchPerpsCommitOrderWithPriceUpdate');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);
+  log({ tx });
   console.timeEnd('fetchPerpsCommitOrderWithPriceUpdate');
-
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

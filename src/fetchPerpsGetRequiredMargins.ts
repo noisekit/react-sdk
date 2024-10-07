@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchPerpsGetRequiredMargins');
 
 export async function fetchPerpsGetRequiredMargins({
   provider,
@@ -13,6 +16,6 @@ export async function fetchPerpsGetRequiredMargins({
   console.time('fetchPerpsGetRequiredMargins');
   const requiredMargins = await PerpsMarketProxy.getRequiredMargins(perpsAccountId);
   console.timeEnd('fetchPerpsGetRequiredMargins');
-  console.log({ requiredMargins });
+  log({ requiredMargins });
   return requiredMargins;
 }

@@ -1,8 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportWethContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useWethDeposit');
 
 export function useWethDeposit({
   provider,
@@ -29,14 +32,17 @@ export function useWethDeposit({
         throw 'OMFG';
       }
 
+      log({ chainId, provider, walletAddress, perpsAccountId, WethContract });
+
       const signer = provider.getSigner(walletAddress);
       const Weth = new ethers.Contract(WethContract.address, WethContract.abi, signer);
       const tx = await Weth.deposit({
         value: amount,
       });
+      log({ tx });
       const txResult = await tx.wait();
-      console.log({ txResult });
-      return txResult;
+      log({ txResult });
+      return { tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

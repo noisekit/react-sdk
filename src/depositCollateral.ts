@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('depositCollateral');
 
 export async function depositCollateral({
   provider,
@@ -24,8 +27,8 @@ export async function depositCollateral({
     collateralTypeTokenAddress,
     depositAmount
   );
-  console.log({ tx });
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

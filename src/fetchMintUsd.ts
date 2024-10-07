@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchMintUsd');
 
 export async function fetchMintUsd({
   provider,
@@ -27,13 +30,13 @@ export async function fetchMintUsd({
     collateralTypeTokenAddress,
     mintUsdAmount,
   ];
-  console.log('mintUsdTxnArgs', mintUsdTxnArgs);
+  log({ mintUsdTxnArgs });
 
   console.time('mintUsd');
   const tx: ethers.ContractTransaction = await CoreProxy.mintUsd(...mintUsdTxnArgs);
   console.timeEnd('mintUsd');
-  console.log({ tx });
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchPositionCollateral');
 
 export async function fetchPositionCollateral({
   provider,
@@ -15,6 +18,6 @@ export async function fetchPositionCollateral({
 }) {
   const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
   const positionCollateral = await CoreProxy.getPositionCollateral(accountId, poolId, collateralTypeTokenAddress);
-  console.log({ positionCollateral });
+  log({ positionCollateral });
   return positionCollateral;
 }

@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchTokenAllowance');
 
 export async function fetchTokenAllowance({
   provider,
@@ -16,5 +19,7 @@ export async function fetchTokenAllowance({
     ['function allowance(address owner, address spender) view returns (uint256)'],
     provider
   );
-  return Token.allowance(ownerAddress, spenderAddress);
+  const allowance = Token.allowance(ownerAddress, spenderAddress);
+  log({ allowance });
+  return allowance;
 }

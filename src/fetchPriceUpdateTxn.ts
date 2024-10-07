@@ -1,5 +1,8 @@
 import { EvmPriceServiceConnection } from '@pythnetwork/pyth-evm-js';
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchPriceUpdateTxn');
 
 export async function fetchPriceUpdateTxn({
   provider,
@@ -41,7 +44,7 @@ export async function fetchPriceUpdateTxn({
       requireSuccess: false,
     };
   }
-  console.log({ stalePriceIds });
+  log({ stalePriceIds });
 
   const priceService = new EvmPriceServiceConnection('https://hermes.pyth.network');
   const signedOffchainData = await priceService.getPriceFeedsUpdateData(stalePriceIds);
@@ -57,6 +60,6 @@ export async function fetchPriceUpdateTxn({
     value: stalePriceIds.length,
     requireSuccess: true,
   };
-  console.log({ priceUpdateTxn });
+  log({ priceUpdateTxn });
   return priceUpdateTxn;
 }

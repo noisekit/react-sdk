@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('usePerpsGetCollateralAmount');
 
 const USDx_MARKET_ID = 0;
 
@@ -33,9 +36,11 @@ export function usePerpsGetCollateralAmount({
         throw 'OMFG';
       }
 
+      log({ chainId, PerpsMarketProxyContract, provider, perpsAccountId });
+
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const collateralAmount = await PerpsMarketProxy.getCollateralAmount(perpsAccountId, USDx_MARKET_ID);
-      console.log({ collateralAmount });
+      log({ collateralAmount });
       return collateralAmount;
     },
     throwOnError: (error) => {

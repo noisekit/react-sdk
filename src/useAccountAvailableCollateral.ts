@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchAccountAvailableCollateral } from './fetchAccountAvailableCollateral';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useAccountAvailableCollateral');
 
 export function useAccountAvailableCollateral({
   provider,
@@ -32,12 +35,16 @@ export function useAccountAvailableCollateral({
         throw 'OMFG';
       }
 
-      return fetchAccountAvailableCollateral({
+      log({ chainId, provider, CoreProxyContract, accountId, collateralTypeTokenAddress });
+
+      const accountAvailableCollateral = fetchAccountAvailableCollateral({
         provider,
         CoreProxyContract,
         accountId,
         collateralTypeTokenAddress,
       });
+      log({ accountAvailableCollateral });
+      return accountAvailableCollateral;
     },
     throwOnError: (error) => {
       // TODO: show toast

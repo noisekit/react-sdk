@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchApproveToken } from './fetchApproveToken';
 import { fetchTokenAllowance } from './fetchTokenAllowance';
@@ -6,6 +7,8 @@ import { fetchTokenBalance } from './fetchTokenBalance';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract, useImportSystemToken } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('usePerpsModifyCollateral');
 
 const USDx_MARKET_ID = 0;
 
@@ -25,6 +28,9 @@ export function usePerpsModifyCollateral({
       if (!(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && systemToken)) {
         throw 'OMFG';
       }
+
+      log({ chainId, provider, PerpsMarketProxyContract, walletAddress, perpsAccountId, systemToken });
+
       if (ethers.BigNumber.from(depositAmount).lte(0)) {
         throw new Error('Amount required');
       }
@@ -34,6 +40,7 @@ export function usePerpsModifyCollateral({
         ownerAddress: walletAddress,
         collateralTypeTokenAddress: systemToken?.address,
       });
+      log({ freshBalance });
 
       if (freshBalance.lt(depositAmount)) {
         throw new Error('Not enough balance');
@@ -45,8 +52,7 @@ export function usePerpsModifyCollateral({
         collateralTypeTokenAddress: systemToken.address,
         spenderAddress: PerpsMarketProxyContract.address,
       });
-
-      console.log('freshAllowance', freshAllowance);
+      log({ freshAllowance });
 
       if (freshAllowance.lt(depositAmount)) {
         await fetchApproveToken({
@@ -62,10 +68,12 @@ export function usePerpsModifyCollateral({
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, signer);
 
       const modifyCollateralTxnArgs = [perpsAccountId, USDx_MARKET_ID, depositAmount];
+      log({ modifyCollateralTxnArgs });
       const tx = await PerpsMarketProxy.modifyCollateral(...modifyCollateralTxnArgs);
+      log({ tx });
       const txResult = await tx.wait();
-
-      return txResult;
+      log({ txResult });
+      return { tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

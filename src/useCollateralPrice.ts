@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchCollateralPrice } from './fetchCollateralPrice';
 import { fetchCollateralPriceWithPriceUpdate } from './fetchCollateralPriceWithPriceUpdate';
@@ -6,6 +7,8 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useCollateralPrice');
 
 export function useCollateralPrice({
   provider,
@@ -38,7 +41,9 @@ export function useCollateralPrice({
       ) {
         throw 'OMFG';
       }
-      console.log({
+
+      log({
+        chainId,
         provider,
         CoreProxyContract,
         MulticallContract,
@@ -47,7 +52,7 @@ export function useCollateralPrice({
       });
 
       if (priceUpdateTxn.value) {
-        console.log('-> fetchCollateralPriceWithPriceUpdate');
+        log('-> fetchCollateralPriceWithPriceUpdate');
         return fetchCollateralPriceWithPriceUpdate({
           provider,
           CoreProxyContract,
@@ -56,7 +61,7 @@ export function useCollateralPrice({
           priceUpdateTxn,
         });
       }
-      console.log('-> fetchCollateralPrice');
+      log('-> fetchCollateralPrice');
       return fetchCollateralPrice({
         provider,
         CoreProxyContract,

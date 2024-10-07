@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchAccountCollateralWithPriceUpdate');
 
 export async function fetchAccountCollateralWithPriceUpdate({
   provider,
@@ -39,15 +42,16 @@ export async function fetchAccountCollateralWithPriceUpdate({
     value: priceUpdateTxn.value,
   });
   console.timeEnd('fetchAccountCollateralWithPriceUpdate');
-  console.log({ response });
+  log({ response });
 
   if (response) {
     const decodedMulticall = MulticallInterface.decodeFunctionResult('aggregate3Value', response);
-    console.log({ decodedMulticall });
+    log({ decodedMulticall });
     if (decodedMulticall?.returnData?.[1]?.returnData) {
       const getAccountCollateralTxnData = decodedMulticall.returnData[1].returnData;
-      console.log({ getAccountCollateralTxnData });
+      log({ getAccountCollateralTxnData });
       const accountCollateral = CoreProxyInterface.decodeFunctionResult('getAccountCollateral', getAccountCollateralTxnData);
+      log({ accountCollateral });
       return {
         totalAssigned: accountCollateral.totalAssigned,
         totalDeposited: accountCollateral.totalDeposited,

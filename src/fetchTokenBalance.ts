@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchTokenBalance');
 
 export async function fetchTokenBalance({
   provider,
@@ -10,5 +13,7 @@ export async function fetchTokenBalance({
   ownerAddress: string;
 }) {
   const Token = new ethers.Contract(collateralTypeTokenAddress, ['function balanceOf(address account) view returns (uint256)'], provider);
-  return Token.balanceOf(ownerAddress);
+  const balance = Token.balanceOf(ownerAddress);
+  log({ balance });
+  return balance;
 }

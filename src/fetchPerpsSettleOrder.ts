@@ -1,5 +1,9 @@
 import { ethers } from 'ethers';
 
+import debug from 'debug';
+
+const log = debug('fetchPerpsSettleOrder');
+
 export async function fetchPerpsSettleOrder({
   provider,
   walletAddress,
@@ -17,7 +21,8 @@ export async function fetchPerpsSettleOrder({
   console.time('fetchPerpsSettleOrder');
   const tx: ethers.ContractTransaction = await PerpsMarketProxy.settleOrder(perpsAccountId);
   console.timeEnd('fetchPerpsSettleOrder');
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

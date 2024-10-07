@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('export async function fetchBurnUsd({\n');
 
 export async function fetchBurnUsd({
   provider,
@@ -27,13 +30,13 @@ export async function fetchBurnUsd({
     collateralTypeTokenAddress,
     burnUsdAmount,
   ];
-  console.log({ burnUsdTxnArgs });
+  log({ burnUsdTxnArgs });
 
   console.time('burnUsd');
   const tx: ethers.ContractTransaction = await CoreProxy.burnUsd(...burnUsdTxnArgs);
   console.timeEnd('burnUsd');
-  console.log({ tx });
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

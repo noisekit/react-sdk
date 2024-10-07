@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { depositCollateral } from './depositCollateral';
 import { fetchApproveToken } from './fetchApproveToken';
@@ -7,6 +8,8 @@ import { fetchTokenBalance } from './fetchTokenBalance';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useDeposit');
 
 export function useDeposit({
   provider,
@@ -34,6 +37,8 @@ export function useDeposit({
         throw 'OMFG';
       }
 
+      log({ chainId, provider, CoreProxyContract, walletAddress, accountId, poolId, collateralTypeTokenAddress });
+
       if (ethers.BigNumber.from(depositAmount).lte(0)) {
         throw new Error('Amount required');
       }
@@ -43,7 +48,7 @@ export function useDeposit({
         ownerAddress: walletAddress,
         collateralTypeTokenAddress,
       });
-      console.log('freshBalance', freshBalance);
+      log({ freshBalance });
 
       if (freshBalance.lt(depositAmount)) {
         throw new Error('Not enough balance');
@@ -55,7 +60,7 @@ export function useDeposit({
         collateralTypeTokenAddress,
         spenderAddress: CoreProxyContract?.address,
       });
-      console.log('freshAllowance', freshAllowance);
+      log({ freshAllowance });
 
       if (freshAllowance.lt(depositAmount)) {
         await fetchApproveToken({
@@ -67,8 +72,8 @@ export function useDeposit({
         });
       }
 
-      console.log('-> depositCollateral');
-      await depositCollateral({
+      log('-> depositCollateral');
+      const { tx, txResult } = await depositCollateral({
         provider,
         walletAddress,
         CoreProxyContract,
@@ -76,6 +81,7 @@ export function useDeposit({
         collateralTypeTokenAddress,
         depositAmount,
       });
+      return { tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

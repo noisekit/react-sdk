@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('usePerpsGetOrder');
 
 export function usePerpsGetOrder({
   provider,
@@ -32,9 +35,11 @@ export function usePerpsGetOrder({
         throw 'OMFG';
       }
 
+      log({ chainId, PerpsMarketProxyContract, provider, perpsAccountId });
+
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const order = await PerpsMarketProxy.getOrder(perpsAccountId);
-      console.log({ order });
+      log({ order });
       return order;
     },
     throwOnError: (error) => {

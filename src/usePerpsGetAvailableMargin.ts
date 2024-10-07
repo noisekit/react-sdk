@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import type { ethers } from 'ethers';
 import { fetchPerpsGetAvailableMargin } from './fetchPerpsGetAvailableMargin';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('usePerpsGetAvailableMargin');
 
 export function usePerpsGetAvailableMargin({
   provider,
@@ -22,11 +25,15 @@ export function usePerpsGetAvailableMargin({
         throw 'OMFG';
       }
 
-      return await fetchPerpsGetAvailableMargin({
+      log({ chainId, provider, perpsAccountId, PerpsMarketProxyContract });
+
+      const availableMargin = await fetchPerpsGetAvailableMargin({
         provider,
         perpsAccountId,
         PerpsMarketProxyContract,
       });
+      log({ availableMargin });
+      return availableMargin;
     },
     throwOnError: (error) => {
       // TODO: show toast

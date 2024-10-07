@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchAccountAvailableCollateral } from './fetchAccountAvailableCollateral';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
@@ -8,6 +9,8 @@ import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useWithdraw');
 
 export function useWithdraw({
   provider,
@@ -50,6 +53,18 @@ export function useWithdraw({
         throw 'OMFG';
       }
 
+      log({
+        chainId,
+        provider,
+        walletAddress,
+        accountId,
+        collateralTypeTokenAddress,
+        CoreProxyContract,
+        MulticallContract,
+        PythERC7412WrapperContract,
+        priceIds,
+      });
+
       if (ethers.BigNumber.from(withdrawAmount).eq(0)) {
         throw new Error('Amount required');
       }
@@ -60,7 +75,7 @@ export function useWithdraw({
         PythERC7412WrapperContract,
         priceIds,
       });
-      console.log('freshPriceUpdateTxn', freshPriceUpdateTxn);
+      log({ freshPriceUpdateTxn });
 
       const freshAccountAvailableCollateral = await fetchAccountAvailableCollateral({
         provider,
@@ -68,7 +83,7 @@ export function useWithdraw({
         accountId,
         collateralTypeTokenAddress,
       });
-      console.log('freshAccountAvailableCollateral', freshAccountAvailableCollateral);
+      log({ freshAccountAvailableCollateral });
 
       const hasEnoughDeposit = freshAccountAvailableCollateral.gte(withdrawAmount);
       if (!hasEnoughDeposit) {
@@ -76,8 +91,8 @@ export function useWithdraw({
       }
 
       if (freshPriceUpdateTxn.value) {
-        console.log('-> withdrawCollateralWithPriceUpdate');
-        await fetchWithdrawCollateralWithPriceUpdate({
+        log('-> withdrawCollateralWithPriceUpdate');
+        const { tx, txResult } = await fetchWithdrawCollateralWithPriceUpdate({
           provider,
           walletAddress,
           CoreProxyContract,
@@ -87,18 +102,19 @@ export function useWithdraw({
           withdrawAmount,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
-      } else {
-        console.log('-> withdrawCollateral');
-        await fetchWithdrawCollateral({
-          provider,
-          walletAddress,
-          CoreProxyContract,
-          accountId,
-          collateralTypeTokenAddress,
-          withdrawAmount,
-        });
+        return { priceUpdated: true, tx, txResult };
       }
-      return { priceUpdated: true };
+
+      log('-> withdrawCollateral');
+      const { tx, txResult } = await fetchWithdrawCollateral({
+        provider,
+        walletAddress,
+        CoreProxyContract,
+        accountId,
+        collateralTypeTokenAddress,
+        withdrawAmount,
+      });
+      return { priceUpdated: false, tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

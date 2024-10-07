@@ -1,5 +1,8 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { getPythVaa } from './getPythVaa';
+
+const log = debug('fetchStrictPriceUpdateTxn');
 
 export async function fetchStrictPriceUpdateTxn({
   commitmentTime,
@@ -28,6 +31,6 @@ export async function fetchStrictPriceUpdateTxn({
     value: ethers.BigNumber.from(1),
     requireSuccess: true,
   };
-  console.log({ priceUpdateTxn });
+  log({ priceUpdateTxn });
   return priceUpdateTxn;
 }

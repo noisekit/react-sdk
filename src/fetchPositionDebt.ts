@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchPositionDebt');
 
 export async function fetchPositionDebt({
   provider,
@@ -17,5 +20,6 @@ export async function fetchPositionDebt({
   console.time('fetchPositionDebt');
   const positionDebt = await CoreProxy.callStatic.getPositionDebt(accountId, poolId, collateralTypeTokenAddress);
   console.timeEnd('fetchPositionDebt');
+  log({ positionDebt });
   return positionDebt;
 }

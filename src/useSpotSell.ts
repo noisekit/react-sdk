@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchApproveToken } from './fetchApproveToken';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
@@ -12,6 +13,8 @@ import { useImportContract, useImportSystemToken } from './useImports';
 import { useSpotGetPriceData } from './useSpotGetPriceData';
 import { useSpotGetSettlementStrategy } from './useSpotGetSettlementStrategy';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useSpotSell');
 
 export function useSpotSell({
   provider,
@@ -64,6 +67,21 @@ export function useSpotSell({
         throw 'OMFG';
       }
 
+      log({
+        chainId,
+        SpotMarketProxyContract,
+        MulticallContract,
+        PythERC7412WrapperContract,
+        walletAddress,
+        synthMarketId,
+        synthTokenAddress,
+        systemToken,
+        provider,
+        priceIds,
+        spotSettlementStrategy,
+        priceData,
+      });
+
       if (ethers.BigNumber.from(amount).lte(0)) {
         throw new Error('Amount required');
       }
@@ -73,6 +91,7 @@ export function useSpotSell({
         ownerAddress: walletAddress,
         collateralTypeTokenAddress: synthTokenAddress,
       });
+      log({ freshBalance });
 
       if (freshBalance.lt(amount)) {
         throw new Error('Not enough balance');
@@ -84,6 +103,7 @@ export function useSpotSell({
         collateralTypeTokenAddress: synthTokenAddress,
         spenderAddress: SpotMarketProxyContract.address,
       });
+      log({ freshAllowance });
 
       if (freshAllowance.lt(amount)) {
         await fetchApproveToken({
@@ -102,11 +122,11 @@ export function useSpotSell({
         priceIds: [spotSettlementStrategy.feedId],
         stalenessTolerance: priceData.strictPriceStalenessTolerance,
       });
-      console.log('freshPriceUpdateTxn', freshPriceUpdateTxn);
+      log({ freshPriceUpdateTxn });
 
       if (freshPriceUpdateTxn.value) {
-        console.log('-> fetchSpotSellWithPriceUpdate');
-        await fetchSpotSellWithPriceUpdate({
+        log('-> fetchSpotSellWithPriceUpdate');
+        const { tx, txResult } = await fetchSpotSellWithPriceUpdate({
           provider,
           walletAddress,
           SpotMarketProxyContract,
@@ -115,18 +135,18 @@ export function useSpotSell({
           amount,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
-        return { priceUpdated: true };
+        return { priceUpdated: true, tx, txResult };
       }
 
-      console.log('-> fetchSpotSell');
-      await fetchSpotSell({
+      log('-> fetchSpotSell');
+      const { tx, txResult } = await fetchSpotSell({
         provider,
         walletAddress,
         SpotMarketProxyContract,
         synthMarketId,
         amount,
       });
-      return { priceUpdated: false };
+      return { priceUpdated: false, tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

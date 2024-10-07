@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useSpotGetSettlementStrategy');
 
 export function useSpotGetSettlementStrategy({
   provider,
@@ -28,9 +31,11 @@ export function useSpotGetSettlementStrategy({
         throw 'OMFG';
       }
 
+      log({ chainId, SpotMarketProxyContract, provider, synthMarketId, settlementStrategyId });
+
       const SpotMarketProxy = new ethers.Contract(SpotMarketProxyContract.address, SpotMarketProxyContract.abi, provider);
       const settlementStrategy = await SpotMarketProxy.getSettlementStrategy(synthMarketId, settlementStrategyId);
-      console.log({ settlementStrategy });
+      log({ settlementStrategy });
       return settlementStrategy;
     },
     throwOnError: (error) => {

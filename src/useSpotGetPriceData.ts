@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useSpotGetPriceData');
 
 export function useSpotGetPriceData({
   provider,
@@ -24,9 +27,11 @@ export function useSpotGetPriceData({
         throw new Error('OMFG');
       }
 
+      log({ chainId, SpotMarketProxyContract, provider, synthMarketId });
+
       const SpotMarketProxy = new ethers.Contract(SpotMarketProxyContract.address, SpotMarketProxyContract.abi, provider);
       const priceData = await SpotMarketProxy.getPriceData(synthMarketId);
-      console.log({ priceData });
+      log({ priceData });
       return priceData;
     },
     throwOnError: (error) => {

@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchPerpsGetMarketSummary');
 
 export async function fetchPerpsGetMarketSummary({
   provider,
@@ -17,7 +20,7 @@ export async function fetchPerpsGetMarketSummary({
   indexPrice: ethers.BigNumber;
 }> {
   const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
-  const marketSummary = await PerpsMarketProxy.getMarketSummary(perpsMarketId);
-  console.log({ marketSummary });
-  return marketSummary;
+  const perpsMarketSummary = await PerpsMarketProxy.getMarketSummary(perpsMarketId);
+  log({ perpsMarketSummary });
+  return perpsMarketSummary;
 }

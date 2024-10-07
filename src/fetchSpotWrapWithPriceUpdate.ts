@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('fetchSpotWrapWithPriceUpdate');
 
 export async function fetchSpotWrapWithPriceUpdate({
   provider,
@@ -26,8 +29,7 @@ export async function fetchSpotWrapWithPriceUpdate({
   const MulticallInterface = new ethers.utils.Interface(MulticallContract.abi);
 
   const wrapArgs = [synthMarketId, amount, amount];
-
-  console.log({ wrapArgs });
+  log({ wrapArgs });
 
   const wrapTxn = {
     target: SpotMarketProxyContract.address,
@@ -35,7 +37,7 @@ export async function fetchSpotWrapWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  console.log({ wrapTxn });
+  log({ wrapTxn });
 
   const signer = provider.getSigner(walletAddress);
 
@@ -45,13 +47,13 @@ export async function fetchSpotWrapWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, wrapTxn]]),
     value: priceUpdateTxn.value,
   };
-  console.log({ multicallTxn });
+  log({ multicallTxn });
 
   console.time('fetchSpotWrapWithPriceUpdate');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);
   console.timeEnd('fetchSpotWrapWithPriceUpdate');
-
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

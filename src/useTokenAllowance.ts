@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchTokenAllowance } from './fetchTokenAllowance';
 import { useErrorParser } from './useErrorParser';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('useTokenAllowance');
 
 export function useTokenAllowance({
   provider,
@@ -25,12 +28,17 @@ export function useTokenAllowance({
       if (!(chainId && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress)) {
         throw 'OMFG';
       }
-      return fetchTokenAllowance({
+
+      log({ chainId, provider, collateralTypeTokenAddress, ownerAddress, spenderAddress });
+
+      const allowance = fetchTokenAllowance({
         provider,
         collateralTypeTokenAddress,
         ownerAddress,
         spenderAddress,
       });
+      log({ allowance });
+      return allowance;
     },
     throwOnError: (error) => {
       // TODO: show toast

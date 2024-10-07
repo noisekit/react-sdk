@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import type { ethers } from 'ethers';
 import { fetchPerpsGetMarketSummary } from './fetchPerpsGetMarketSummary';
 import { fetchPerpsGetMarketSummaryWithPriceUpdate } from './fetchPerpsGetMarketSummaryWithPriceUpdate';
@@ -6,6 +7,8 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('usePerpsGetMarketSummary');
 
 export function usePerpsGetMarketSummary({
   provider,
@@ -34,7 +37,8 @@ export function usePerpsGetMarketSummary({
         throw 'OMFG';
       }
 
-      console.log({
+      log({
+        chainId,
         provider,
         perpsMarketId,
         PerpsMarketProxyContract,
@@ -43,7 +47,7 @@ export function usePerpsGetMarketSummary({
       });
 
       if (priceUpdateTxn.value) {
-        console.log('-> fetchPerpsGetMarketSummaryWithPriceUpdate');
+        log('-> fetchPerpsGetMarketSummaryWithPriceUpdate');
         return await fetchPerpsGetMarketSummaryWithPriceUpdate({
           provider,
           perpsMarketId,
@@ -53,7 +57,7 @@ export function usePerpsGetMarketSummary({
         });
       }
 
-      console.log('-> fetchPerpsGetMarketSummary');
+      log('-> fetchPerpsGetMarketSummary');
       return await fetchPerpsGetMarketSummary({ provider, perpsMarketId, PerpsMarketProxyContract });
     },
     throwOnError: (error) => {
