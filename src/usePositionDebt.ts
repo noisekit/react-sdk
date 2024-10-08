@@ -32,6 +32,7 @@ export function usePositionDebt({
   return useQuery<ethers.BigNumber>({
     enabled: Boolean(
       chainId &&
+        preset &&
         provider &&
         CoreProxyContract?.address &&
         MulticallContract?.address &&
@@ -51,6 +52,7 @@ export function usePositionDebt({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           CoreProxyContract?.address &&
           MulticallContract?.address &&

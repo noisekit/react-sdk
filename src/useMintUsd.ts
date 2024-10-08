@@ -41,6 +41,7 @@ export function useMintUsd({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           walletAddress &&
           CoreProxyContract &&

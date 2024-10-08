@@ -40,6 +40,7 @@ export function useWithdraw({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           walletAddress &&
           accountId &&

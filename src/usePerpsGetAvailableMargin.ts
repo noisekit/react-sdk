@@ -18,10 +18,10 @@ export function usePerpsGetAvailableMargin({
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && perpsAccountId && PerpsMarketProxyContract?.address),
+    enabled: Boolean(chainId && preset && provider && perpsAccountId && PerpsMarketProxyContract?.address),
     queryKey: [chainId, preset, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
     queryFn: async () => {
-      if (!(chainId && provider && perpsAccountId && PerpsMarketProxyContract?.address)) {
+      if (!(chainId && preset && provider && perpsAccountId && PerpsMarketProxyContract?.address)) {
         throw 'OMFG';
       }
 

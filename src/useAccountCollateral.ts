@@ -30,6 +30,7 @@ export function useAccountCollateral({
   return useQuery({
     enabled: Boolean(
       chainId &&
+        preset &&
         provider &&
         CoreProxyContract?.address &&
         MulticallContract?.address &&
@@ -48,6 +49,7 @@ export function useAccountCollateral({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           CoreProxyContract?.address &&
           MulticallContract?.address &&

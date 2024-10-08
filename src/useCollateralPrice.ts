@@ -27,7 +27,13 @@ export function useCollateralPrice({
 
   return useQuery<ethers.BigNumber>({
     enabled: Boolean(
-      chainId && provider && CoreProxyContract?.address && MulticallContract?.address && collateralTypeTokenAddress && priceUpdateTxn
+      chainId &&
+        preset &&
+        provider &&
+        CoreProxyContract?.address &&
+        MulticallContract?.address &&
+        collateralTypeTokenAddress &&
+        priceUpdateTxn
     ),
     queryKey: [
       chainId,
@@ -38,7 +44,15 @@ export function useCollateralPrice({
     ],
     queryFn: async () => {
       if (
-        !(chainId && provider && CoreProxyContract?.address && MulticallContract?.address && collateralTypeTokenAddress && priceUpdateTxn)
+        !(
+          chainId &&
+          preset &&
+          provider &&
+          CoreProxyContract?.address &&
+          MulticallContract?.address &&
+          collateralTypeTokenAddress &&
+          priceUpdateTxn
+        )
       ) {
         throw 'OMFG';
       }

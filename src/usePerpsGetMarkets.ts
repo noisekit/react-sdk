@@ -13,10 +13,10 @@ export function usePerpsGetMarkets({ provider }: { provider?: ethers.providers.B
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
 
   return useQuery<ethers.BigNumber[]>({
-    enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address),
+    enabled: Boolean(chainId && preset && provider && PerpsMarketProxyContract?.address),
     queryKey: [chainId, preset, 'Perps GetMarkets', { PerpsMarketProxy: PerpsMarketProxyContract?.address }],
     queryFn: async () => {
-      if (!(chainId && provider && PerpsMarketProxyContract?.address)) {
+      if (!(chainId && preset && provider && PerpsMarketProxyContract?.address)) {
         throw new Error('OMFG');
       }
 

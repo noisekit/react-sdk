@@ -27,7 +27,7 @@ export function usePerpsGetSettlementStrategy({
     settlementWindowDuration: ethers.BigNumber;
     strategyType: number;
   }>({
-    enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address && settlementStrategyId && perpsMarketId),
+    enabled: Boolean(chainId && preset && provider && PerpsMarketProxyContract?.address && settlementStrategyId && perpsMarketId),
     queryKey: [
       chainId,
       preset,
@@ -36,7 +36,7 @@ export function usePerpsGetSettlementStrategy({
       { perpsMarketId, settlementStrategyId },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && PerpsMarketProxyContract?.address && settlementStrategyId && perpsMarketId)) {
+      if (!(chainId && preset && provider && PerpsMarketProxyContract?.address && settlementStrategyId && perpsMarketId)) {
         throw 'OMFG';
       }
 

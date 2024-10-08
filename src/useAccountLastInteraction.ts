@@ -20,7 +20,7 @@ export function useAccountLastInteraction({
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
 
   return useQuery({
-    enabled: Boolean(chainId && provider && CoreProxyContract?.address && accountId),
+    enabled: Boolean(chainId && preset && provider && CoreProxyContract?.address && accountId),
     queryKey: [
       chainId,
       preset,
@@ -29,7 +29,7 @@ export function useAccountLastInteraction({
       { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && CoreProxyContract?.address && accountId)) {
+      if (!(chainId && preset && provider && CoreProxyContract?.address && accountId)) {
         throw 'OMFG';
       }
 

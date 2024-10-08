@@ -23,7 +23,7 @@ export function usePriceUpdateTxn({
 
   return useQuery(
     {
-      enabled: Boolean(chainId && provider && priceIds && MulticallContract && PythERC7412WrapperContract),
+      enabled: Boolean(chainId && preset && provider && priceIds && MulticallContract && PythERC7412WrapperContract),
       queryKey: [chainId, preset, 'PriceUpdateTxn', { priceIds: priceIds?.map((p) => p.slice(2, 8)).sort() }],
       queryFn: async (): Promise<{
         target: string;
@@ -31,7 +31,7 @@ export function usePriceUpdateTxn({
         value: number;
         requireSuccess: boolean;
       }> => {
-        if (!(chainId && provider && priceIds && MulticallContract && PythERC7412WrapperContract)) {
+        if (!(chainId && preset && provider && priceIds && MulticallContract && PythERC7412WrapperContract)) {
           throw 'OMFG';
         }
 

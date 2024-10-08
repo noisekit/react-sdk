@@ -24,7 +24,7 @@ export function usePerpsGetMarketSummary({
 
   return useQuery({
     enabled: Boolean(
-      chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address && MulticallContract?.address && priceUpdateTxn
+      chainId && preset && provider && perpsMarketId && PerpsMarketProxyContract?.address && MulticallContract?.address && priceUpdateTxn
     ),
     queryKey: [
       chainId,
@@ -34,7 +34,17 @@ export function usePerpsGetMarketSummary({
       { perpsMarketId: perpsMarketId.toString() },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address && MulticallContract?.address && priceUpdateTxn)) {
+      if (
+        !(
+          chainId &&
+          preset &&
+          provider &&
+          perpsMarketId &&
+          PerpsMarketProxyContract?.address &&
+          MulticallContract?.address &&
+          priceUpdateTxn
+        )
+      ) {
         throw 'OMFG';
       }
 

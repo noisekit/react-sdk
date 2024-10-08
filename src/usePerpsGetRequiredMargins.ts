@@ -22,10 +22,10 @@ export function usePerpsGetRequiredMargins({
     requiredInitialMargin: ethers.BigNumber;
     requiredMaintenanceMargin: ethers.BigNumber;
   }>({
-    enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address && perpsAccountId),
+    enabled: Boolean(chainId && preset && provider && PerpsMarketProxyContract?.address && perpsAccountId),
     queryKey: [chainId, preset, 'PerpsGetRequiredMargins', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
     queryFn: async () => {
-      if (!(chainId && provider && PerpsMarketProxyContract?.address && perpsAccountId)) {
+      if (!(chainId && preset && provider && PerpsMarketProxyContract?.address && perpsAccountId)) {
         throw 'OMFG';
       }
 

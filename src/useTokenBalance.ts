@@ -20,10 +20,10 @@ export function useTokenBalance({
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && collateralTypeTokenAddress && ownerAddress),
+    enabled: Boolean(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress),
     queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress, ownerAddress }],
     queryFn: async () => {
-      if (!(chainId && provider && collateralTypeTokenAddress && ownerAddress)) {
+      if (!(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress)) {
         throw 'OMFG';
       }
 

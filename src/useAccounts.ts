@@ -13,10 +13,10 @@ export function useAccounts({ provider, walletAddress }: { walletAddress?: strin
   const { data: AccountProxyContract } = useImportContract('AccountProxy');
 
   return useQuery<ethers.BigNumber[]>({
-    enabled: Boolean(chainId && AccountProxyContract?.address && walletAddress && provider),
+    enabled: Boolean(chainId && preset && provider && AccountProxyContract?.address && walletAddress),
     queryKey: [chainId, preset, 'Accounts', { AccountProxy: AccountProxyContract?.address }, { ownerAddress: walletAddress }],
     queryFn: async () => {
-      if (!(chainId && AccountProxyContract?.address && walletAddress && provider)) throw 'OMFG';
+      if (!(chainId && preset && provider && AccountProxyContract?.address && walletAddress)) throw 'OMFG';
 
       log({ chainId, preset, AccountProxyContract, walletAddress });
 

@@ -51,6 +51,8 @@ export function useSpotSell({
       if (
         !(
           chainId &&
+          preset &&
+          provider &&
           SpotMarketProxyContract?.address &&
           MulticallContract?.address &&
           PythERC7412WrapperContract?.address &&
@@ -58,7 +60,6 @@ export function useSpotSell({
           synthMarketId &&
           synthTokenAddress &&
           systemToken &&
-          provider &&
           priceIds &&
           spotSettlementStrategy &&
           priceData

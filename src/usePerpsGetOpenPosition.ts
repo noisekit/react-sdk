@@ -29,7 +29,9 @@ export function usePerpsGetOpenPosition({
     positionSize: ethers.BigNumber;
     totalPnl: ethers.BigNumber;
   }>({
-    enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId),
+    enabled: Boolean(
+      chainId && preset && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId
+    ),
     queryKey: [
       chainId,
       preset,
@@ -38,7 +40,7 @@ export function usePerpsGetOpenPosition({
       { walletAddress, perpsAccountId, perpsMarketId },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId)) {
+      if (!(chainId && preset && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId)) {
         throw 'OMFG';
       }
 

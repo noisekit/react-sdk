@@ -19,7 +19,7 @@ export function usePerpsAccounts({
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber[]>({
-    enabled: Boolean(chainId && provider && walletAddress && PerpsAccountProxyContract?.address),
+    enabled: Boolean(chainId && preset && provider && walletAddress && PerpsAccountProxyContract?.address),
     queryKey: [
       chainId,
       preset,
@@ -28,7 +28,7 @@ export function usePerpsAccounts({
       { ownerAddress: walletAddress },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && walletAddress && PerpsAccountProxyContract?.address)) throw 'OMFG';
+      if (!(chainId && preset && provider && walletAddress && PerpsAccountProxyContract?.address)) throw 'OMFG';
 
       log({ chainId, preset, walletAddress, PerpsAccountProxyContract });
 

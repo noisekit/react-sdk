@@ -28,7 +28,7 @@ export function useWethDeposit({
 
   return useMutation({
     mutationFn: async (amount: ethers.BigNumberish) => {
-      if (!(chainId && provider && walletAddress && perpsAccountId && WethContract)) {
+      if (!(chainId && preset && provider && walletAddress && perpsAccountId && WethContract)) {
         throw 'OMFG';
       }
 

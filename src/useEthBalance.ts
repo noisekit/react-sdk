@@ -11,10 +11,10 @@ export function useEthBalance({ provider, walletAddress }: { provider?: ethers.p
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && walletAddress),
+    enabled: Boolean(chainId && preset && provider && walletAddress),
     queryKey: [chainId, preset, 'EthBalance', { ownerAddress: walletAddress }],
     queryFn: async () => {
-      if (!(chainId && provider && walletAddress)) {
+      if (!(chainId && preset && provider && walletAddress)) {
         throw 'OMFG';
       }
 

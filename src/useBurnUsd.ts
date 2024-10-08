@@ -44,6 +44,7 @@ export function useBurnUsd({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           walletAddress &&
           accountId &&

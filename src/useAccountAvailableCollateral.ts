@@ -23,7 +23,7 @@ export function useAccountAvailableCollateral({
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && CoreProxyContract?.address && accountId && collateralTypeTokenAddress),
+    enabled: Boolean(chainId && preset && provider && CoreProxyContract?.address && accountId && collateralTypeTokenAddress),
     queryKey: [
       chainId,
       preset,
@@ -32,7 +32,7 @@ export function useAccountAvailableCollateral({
       { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined, collateralTypeTokenAddress },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && CoreProxyContract?.address && accountId && collateralTypeTokenAddress)) {
+      if (!(chainId && preset && provider && CoreProxyContract?.address && accountId && collateralTypeTokenAddress)) {
         throw 'OMFG';
       }
 

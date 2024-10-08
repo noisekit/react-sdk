@@ -25,7 +25,7 @@ export function usePerpsModifyCollateral({
 
   return useMutation({
     mutationFn: async (depositAmount: ethers.BigNumberish) => {
-      if (!(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && systemToken)) {
+      if (!(chainId && preset && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && systemToken)) {
         throw 'OMFG';
       }
 

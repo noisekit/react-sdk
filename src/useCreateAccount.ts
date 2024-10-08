@@ -18,7 +18,7 @@ export function useCreateAccount({
 
   return useMutation({
     mutationFn: async () => {
-      if (!(chainId && provider && CoreProxyContract && AccountProxyContract && walletAddress && queryClient)) throw 'OMFG';
+      if (!(chainId && preset && provider && CoreProxyContract && AccountProxyContract && walletAddress && queryClient)) throw 'OMFG';
 
       log({ chainId, preset, CoreProxyContract, AccountProxyContract, walletAddress, queryClient });
 

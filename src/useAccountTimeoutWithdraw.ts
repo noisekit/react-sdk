@@ -14,10 +14,10 @@ export function useAccountTimeoutWithdraw({ provider }: { provider?: ethers.prov
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && CoreProxyContract?.address),
+    enabled: Boolean(chainId && preset && provider && CoreProxyContract?.address),
     queryKey: [chainId, preset, 'ConfigUint accountTimeoutWithdraw', { CoreProxy: CoreProxyContract?.address }],
     queryFn: async () => {
-      if (!(chainId && provider && CoreProxyContract?.address)) {
+      if (!(chainId && preset && provider && CoreProxyContract?.address)) {
         throw 'OMFG';
       }
 

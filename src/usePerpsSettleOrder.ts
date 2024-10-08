@@ -39,6 +39,7 @@ export function usePerpsSettleOrder({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           walletAddress &&
           PerpsMarketProxyContract?.address &&

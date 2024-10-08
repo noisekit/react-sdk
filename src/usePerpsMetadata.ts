@@ -19,7 +19,7 @@ export function usePerpsMetadata({
     name: string;
     symbol: string;
   }>({
-    enabled: Boolean(chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address),
+    enabled: Boolean(chainId && preset && provider && perpsMarketId && PerpsMarketProxyContract?.address),
     queryKey: [
       chainId,
       preset,
@@ -28,7 +28,7 @@ export function usePerpsMetadata({
       { perpsMarketId: perpsMarketId?.toString() },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address)) {
+      if (!(chainId && preset && provider && perpsMarketId && PerpsMarketProxyContract?.address)) {
         throw 'OMFG';
       }
 

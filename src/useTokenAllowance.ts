@@ -22,10 +22,10 @@ export function useTokenAllowance({
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress),
+    enabled: Boolean(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress),
     queryKey: [chainId, preset, 'Allowance', { collateralTypeTokenAddress, ownerAddress, spenderAddress }],
     queryFn: async () => {
-      if (!(chainId && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress)) {
+      if (!(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress)) {
         throw 'OMFG';
       }
 

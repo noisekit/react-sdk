@@ -33,7 +33,7 @@ export function useDeposit({
 
   return useMutation({
     mutationFn: async (depositAmount: ethers.BigNumberish) => {
-      if (!(chainId && provider && CoreProxyContract && walletAddress && accountId && poolId && collateralTypeTokenAddress)) {
+      if (!(chainId && preset && provider && CoreProxyContract && walletAddress && accountId && poolId && collateralTypeTokenAddress)) {
         throw 'OMFG';
       }
 

@@ -51,6 +51,7 @@ export function useSpotWrap({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           walletAddress &&
           collateralTypeTokenAddress &&
