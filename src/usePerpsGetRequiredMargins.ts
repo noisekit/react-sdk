@@ -12,7 +12,7 @@ export function usePerpsGetRequiredMargins({
   provider,
   perpsAccountId,
 }: { provider?: ethers.providers.BaseProvider; perpsAccountId?: ethers.BigNumberish }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
@@ -22,14 +22,14 @@ export function usePerpsGetRequiredMargins({
     requiredInitialMargin: ethers.BigNumber;
     requiredMaintenanceMargin: ethers.BigNumber;
   }>({
-    enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address && perpsAccountId),
-    queryKey: [chainId, 'PerpsGetRequiredMargins', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+    enabled: Boolean(chainId && preset && provider && PerpsMarketProxyContract?.address && perpsAccountId),
+    queryKey: [chainId, preset, 'PerpsGetRequiredMargins', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
     queryFn: async () => {
-      if (!(chainId && provider && PerpsMarketProxyContract?.address && perpsAccountId)) {
+      if (!(chainId && preset && provider && PerpsMarketProxyContract?.address && perpsAccountId)) {
         throw 'OMFG';
       }
 
-      log({ chainId, provider, PerpsMarketProxyContract, perpsAccountId });
+      log({ chainId, preset, PerpsMarketProxyContract, perpsAccountId });
 
       const requiredMargins = await fetchPerpsGetRequiredMargins({
         provider,

@@ -8,20 +8,20 @@ import { useSynthetix } from './useSynthetix';
 const log = debug('snx:useAccountTimeoutWithdraw');
 
 export function useAccountTimeoutWithdraw({ provider }: { provider?: ethers.providers.BaseProvider }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && CoreProxyContract?.address),
-    queryKey: [chainId, 'ConfigUint accountTimeoutWithdraw', { CoreProxy: CoreProxyContract?.address }],
+    enabled: Boolean(chainId && preset && provider && CoreProxyContract?.address),
+    queryKey: [chainId, preset, 'ConfigUint accountTimeoutWithdraw', { CoreProxy: CoreProxyContract?.address }],
     queryFn: async () => {
-      if (!(chainId && provider && CoreProxyContract?.address)) {
+      if (!(chainId && preset && provider && CoreProxyContract?.address)) {
         throw 'OMFG';
       }
 
-      log({ chainId, provider, CoreProxyContract });
+      log({ chainId, preset, CoreProxyContract });
 
       const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
 

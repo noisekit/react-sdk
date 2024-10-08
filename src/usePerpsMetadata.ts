@@ -11,7 +11,7 @@ export function usePerpsMetadata({
   provider,
   perpsMarketId,
 }: { provider?: ethers.providers.BaseProvider; perpsMarketId?: ethers.BigNumberish }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
   const errorParser = useErrorParser();
 
@@ -19,19 +19,20 @@ export function usePerpsMetadata({
     name: string;
     symbol: string;
   }>({
-    enabled: Boolean(chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address),
+    enabled: Boolean(chainId && preset && provider && perpsMarketId && PerpsMarketProxyContract?.address),
     queryKey: [
       chainId,
+      preset,
       'Perps Metadata',
       { PerpsMarketProxy: PerpsMarketProxyContract?.address },
       { perpsMarketId: perpsMarketId?.toString() },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address)) {
+      if (!(chainId && preset && provider && perpsMarketId && PerpsMarketProxyContract?.address)) {
         throw 'OMFG';
       }
 
-      log({ chainId, provider, perpsMarketId, PerpsMarketProxyContract });
+      log({ chainId, preset, perpsMarketId, PerpsMarketProxyContract });
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const { symbol, name } = await PerpsMarketProxy.metadata(perpsMarketId);

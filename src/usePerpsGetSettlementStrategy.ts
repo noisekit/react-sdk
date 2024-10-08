@@ -12,7 +12,7 @@ export function usePerpsGetSettlementStrategy({
   settlementStrategyId,
   perpsMarketId,
 }: { settlementStrategyId?: ethers.BigNumberish; provider?: ethers.providers.BaseProvider; perpsMarketId?: ethers.BigNumberish }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
@@ -27,19 +27,20 @@ export function usePerpsGetSettlementStrategy({
     settlementWindowDuration: ethers.BigNumber;
     strategyType: number;
   }>({
-    enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address && settlementStrategyId && perpsMarketId),
+    enabled: Boolean(chainId && preset && provider && PerpsMarketProxyContract?.address && settlementStrategyId && perpsMarketId),
     queryKey: [
       chainId,
+      preset,
       'PerpsGetSettlementStrategy',
       { PerpsMarketProxy: PerpsMarketProxyContract?.address },
       { perpsMarketId, settlementStrategyId },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && PerpsMarketProxyContract?.address && settlementStrategyId && perpsMarketId)) {
+      if (!(chainId && preset && provider && PerpsMarketProxyContract?.address && settlementStrategyId && perpsMarketId)) {
         throw 'OMFG';
       }
 
-      log({ chainId, provider, PerpsMarketProxyContract, settlementStrategyId, perpsMarketId });
+      log({ chainId, preset, PerpsMarketProxyContract, settlementStrategyId, perpsMarketId });
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const settlementStrategy = await PerpsMarketProxy.getSettlementStrategy(perpsMarketId, settlementStrategyId);

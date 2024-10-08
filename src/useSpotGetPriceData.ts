@@ -11,7 +11,7 @@ export function useSpotGetPriceData({
   provider,
   synthMarketId,
 }: { provider?: ethers.providers.BaseProvider; synthMarketId?: ethers.BigNumberish }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const { data: SpotMarketProxyContract } = useImportContract('SpotMarketProxy');
   const errorParser = useErrorParser();
 
@@ -21,13 +21,13 @@ export function useSpotGetPriceData({
     strictPriceStalenessTolerance: ethers.BigNumber;
   }>({
     enabled: Boolean(chainId && SpotMarketProxyContract?.address && provider && synthMarketId),
-    queryKey: [chainId, 'GetPriceData', { SpotMarketProxy: SpotMarketProxyContract?.address }, synthMarketId],
+    queryKey: [chainId, preset, 'GetPriceData', { SpotMarketProxy: SpotMarketProxyContract?.address }, synthMarketId],
     queryFn: async () => {
       if (!(chainId && SpotMarketProxyContract?.address && provider && synthMarketId)) {
         throw new Error('OMFG');
       }
 
-      log({ chainId, SpotMarketProxyContract, provider, synthMarketId });
+      log({ chainId, preset, SpotMarketProxyContract, synthMarketId });
 
       const SpotMarketProxy = new ethers.Contract(SpotMarketProxyContract.address, SpotMarketProxyContract.abi, provider);
       const priceData = await SpotMarketProxy.getPriceData(synthMarketId);

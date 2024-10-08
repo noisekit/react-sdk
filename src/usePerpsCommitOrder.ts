@@ -30,7 +30,7 @@ export function usePerpsCommitOrder({
   settlementStrategyId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
   const { data: MulticallContract } = useImportContract('Multicall');
@@ -60,6 +60,7 @@ export function usePerpsCommitOrder({
 
       log({
         chainId,
+        preset,
         perpsAccountId,
         settlementStrategyId,
         PerpsMarketProxyContract,
@@ -67,7 +68,6 @@ export function usePerpsCommitOrder({
         priceUpdateTxn,
         walletAddress,
         feedId,
-        provider,
       });
 
       if (ethers.BigNumber.from(sizeDelta).lte(0)) {
@@ -144,14 +144,14 @@ export function usePerpsCommitOrder({
 
       if (priceUpdated) {
         queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn'],
+          queryKey: [chainId, preset, 'PriceUpdateTxn'],
         });
       }
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'PerpsGetOrder', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+        queryKey: [chainId, preset, 'PerpsGetOrder', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+        queryKey: [chainId, preset, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
       });
       onSuccess();
     },

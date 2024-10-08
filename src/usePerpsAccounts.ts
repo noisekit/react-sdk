@@ -14,17 +14,23 @@ export function usePerpsAccounts({
   provider?: ethers.providers.BaseProvider;
   walletAddress?: string;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const { data: PerpsAccountProxyContract } = useImportContract('PerpsAccountProxy');
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber[]>({
-    enabled: Boolean(chainId && provider && walletAddress && PerpsAccountProxyContract?.address),
-    queryKey: [chainId, 'Perps Accounts', { PerpsAccountProxy: PerpsAccountProxyContract?.address }, { ownerAddress: walletAddress }],
+    enabled: Boolean(chainId && preset && provider && walletAddress && PerpsAccountProxyContract?.address),
+    queryKey: [
+      chainId,
+      preset,
+      'Perps Accounts',
+      { PerpsAccountProxy: PerpsAccountProxyContract?.address },
+      { ownerAddress: walletAddress },
+    ],
     queryFn: async () => {
-      if (!(chainId && provider && walletAddress && PerpsAccountProxyContract?.address)) throw 'OMFG';
+      if (!(chainId && preset && provider && walletAddress && PerpsAccountProxyContract?.address)) throw 'OMFG';
 
-      log({ chainId, provider, walletAddress, PerpsAccountProxyContract });
+      log({ chainId, preset, walletAddress, PerpsAccountProxyContract });
 
       const PerpsAccountProxy = new ethers.Contract(PerpsAccountProxyContract.address, PerpsAccountProxyContract.abi, provider);
       const numberOfAccountTokens = await PerpsAccountProxy.balanceOf(walletAddress);

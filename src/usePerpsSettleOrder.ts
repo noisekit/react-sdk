@@ -25,7 +25,7 @@ export function usePerpsSettleOrder({
   perpsAccountId?: ethers.BigNumberish;
   settlementStrategyId?: ethers.BigNumberish;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
   const { data: MulticallContract } = useImportContract('Multicall');
@@ -39,6 +39,7 @@ export function usePerpsSettleOrder({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           walletAddress &&
           PerpsMarketProxyContract?.address &&
@@ -55,7 +56,7 @@ export function usePerpsSettleOrder({
 
       log({
         chainId,
-        provider,
+        preset,
         walletAddress,
         PerpsMarketProxyContract,
         MulticallContract,
@@ -106,23 +107,24 @@ export function usePerpsSettleOrder({
 
       if (priceUpdated) {
         queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn'],
+          queryKey: [chainId, preset, 'PriceUpdateTxn'],
         });
       }
 
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'PerpsGetOpenPosition',
           { PerpsMarketProxy: PerpsMarketProxyContract?.address },
           { walletAddress, perpsAccountId, perpsMarketId },
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'PerpsGetOrder', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+        queryKey: [chainId, preset, 'PerpsGetOrder', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+        queryKey: [chainId, preset, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
       });
     },
   });

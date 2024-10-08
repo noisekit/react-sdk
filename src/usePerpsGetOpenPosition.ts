@@ -18,7 +18,7 @@ export function usePerpsGetOpenPosition({
   perpsAccountId?: ethers.BigNumberish;
   perpsMarketId?: ethers.BigNumberish;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
@@ -29,19 +29,22 @@ export function usePerpsGetOpenPosition({
     positionSize: ethers.BigNumber;
     totalPnl: ethers.BigNumber;
   }>({
-    enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId),
+    enabled: Boolean(
+      chainId && preset && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId
+    ),
     queryKey: [
       chainId,
+      preset,
       'PerpsGetOpenPosition',
       { PerpsMarketProxy: PerpsMarketProxyContract?.address },
       { walletAddress, perpsAccountId, perpsMarketId },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId)) {
+      if (!(chainId && preset && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId)) {
         throw 'OMFG';
       }
 
-      log({ chainId, provider, PerpsMarketProxyContract, walletAddress, perpsAccountId, perpsMarketId });
+      log({ chainId, preset, PerpsMarketProxyContract, walletAddress, perpsAccountId, perpsMarketId });
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const openPosition = await PerpsMarketProxy.getOpenPosition(perpsAccountId, perpsMarketId);

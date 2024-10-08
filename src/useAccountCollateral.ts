@@ -19,7 +19,7 @@ export function useAccountCollateral({
   accountId?: ethers.BigNumberish;
   collateralTypeTokenAddress?: string;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
@@ -30,6 +30,7 @@ export function useAccountCollateral({
   return useQuery({
     enabled: Boolean(
       chainId &&
+        preset &&
         provider &&
         CoreProxyContract?.address &&
         MulticallContract?.address &&
@@ -39,6 +40,7 @@ export function useAccountCollateral({
     ),
     queryKey: [
       chainId,
+      preset,
       'AccountCollateral',
       { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
       { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined, collateralTypeTokenAddress },
@@ -47,6 +49,7 @@ export function useAccountCollateral({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           CoreProxyContract?.address &&
           MulticallContract?.address &&
@@ -60,7 +63,7 @@ export function useAccountCollateral({
 
       log({
         chainId,
-        provider,
+        preset,
         CoreProxyContract,
         MulticallContract,
         accountId,

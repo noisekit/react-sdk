@@ -31,7 +31,7 @@ export function useImportContract(
 
   return useQuery(
     {
-      queryKey: [`Import${name}`, chainId, preset],
+      queryKey: [chainId, preset, `Import${name}`],
       enabled: Boolean(name && chainId && preset),
       queryFn: () => {
         if (!(name && chainId && preset)) {
@@ -69,7 +69,7 @@ export function useImportExtras() {
   const { chainId, preset, queryClient } = useSynthetix();
   return useQuery(
     {
-      queryKey: ['ImportExtras', chainId, preset],
+      queryKey: [chainId, preset, 'ImportExtras'],
       enabled: Boolean(chainId && preset),
       queryFn: () => {
         if (!(chainId && preset)) {
@@ -88,7 +88,26 @@ export function useImportSystemToken() {
   const { chainId, preset, queryClient } = useSynthetix();
   return useQuery(
     {
-      queryKey: ['ImportSystemToken', chainId, preset],
+      queryKey: [chainId, preset, 'ImportSystemToken'],
+      enabled: Boolean(chainId && preset),
+      queryFn: () => {
+        if (!(chainId && preset)) {
+          throw 'OMFG';
+        }
+        return importSystemToken(chainId, preset);
+      },
+      staleTime: 60 * 60 * 1000,
+      refetchInterval: false,
+    },
+    queryClient
+  );
+}
+
+export function useImportPythFeeds() {
+  const { chainId, preset, queryClient } = useSynthetix();
+  return useQuery(
+    {
+      queryKey: [chainId, preset, 'ImportPythFeeds'],
       enabled: Boolean(chainId && preset),
       queryFn: () => {
         if (!(chainId && preset)) {
@@ -107,7 +126,7 @@ export function useImportSynthTokens() {
   const { chainId, preset, queryClient } = useSynthetix();
   return useQuery(
     {
-      queryKey: ['ImportSynthTokens', chainId, preset],
+      queryKey: [chainId, preset, 'ImportSynthTokens'],
       enabled: Boolean(chainId && preset),
       queryFn: () => {
         if (!(chainId && preset)) {
@@ -126,7 +145,7 @@ export function useImportMintableTokens() {
   const { chainId, preset, queryClient } = useSynthetix();
   return useQuery(
     {
-      queryKey: ['ImportMintableTokens', chainId, preset],
+      queryKey: [chainId, preset, 'ImportMintableTokens'],
       enabled: Boolean(chainId && preset),
       queryFn: () => {
         if (!(chainId && preset)) {
@@ -146,7 +165,7 @@ export function useImportRewardsDistributors() {
 
   return useQuery(
     {
-      queryKey: ['ImportRewardsDistributors', chainId, preset],
+      queryKey: [chainId, preset, 'ImportRewardsDistributors'],
       enabled: Boolean(chainId && preset),
       queryFn: () => {
         if (!(chainId && preset)) {
@@ -166,7 +185,7 @@ export function useImportCollateralTokens() {
 
   return useQuery(
     {
-      queryKey: ['ImportCollateralTokens', chainId, preset],
+      queryKey: [chainId, preset, 'ImportCollateralTokens'],
       enabled: Boolean(chainId && preset),
       queryFn: () => {
         if (!(chainId && preset)) {
@@ -186,7 +205,7 @@ export function useImportWethContract() {
 
   return useQuery(
     {
-      queryKey: ['ImportWethContract', chainId, preset],
+      queryKey: [chainId, preset, 'ImportWethContract'],
       enabled: Boolean(chainId && preset),
       queryFn: () => {
         if (!(chainId && preset)) {

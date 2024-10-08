@@ -8,17 +8,17 @@ import { useSynthetix } from './useSynthetix';
 const log = debug('snx:useAccounts');
 
 export function useAccounts({ provider, walletAddress }: { walletAddress?: string; provider?: ethers.providers.BaseProvider }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
   const { data: AccountProxyContract } = useImportContract('AccountProxy');
 
   return useQuery<ethers.BigNumber[]>({
-    enabled: Boolean(chainId && AccountProxyContract?.address && walletAddress && provider),
-    queryKey: [chainId, 'Accounts', { AccountProxy: AccountProxyContract?.address }, { ownerAddress: walletAddress }],
+    enabled: Boolean(chainId && preset && provider && AccountProxyContract?.address && walletAddress),
+    queryKey: [chainId, preset, 'Accounts', { AccountProxy: AccountProxyContract?.address }, { ownerAddress: walletAddress }],
     queryFn: async () => {
-      if (!(chainId && AccountProxyContract?.address && walletAddress && provider)) throw 'OMFG';
+      if (!(chainId && preset && provider && AccountProxyContract?.address && walletAddress)) throw 'OMFG';
 
-      log({ chainId, AccountProxyContract, walletAddress, provider });
+      log({ chainId, preset, AccountProxyContract, walletAddress });
 
       const AccountProxy = new ethers.Contract(AccountProxyContract.address, AccountProxyContract.abi, provider);
       const numberOfAccountTokens = await AccountProxy.balanceOf(walletAddress);

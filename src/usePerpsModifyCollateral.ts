@@ -17,7 +17,7 @@ export function usePerpsModifyCollateral({
   walletAddress,
   perpsAccountId,
 }: { provider?: ethers.providers.Web3Provider; walletAddress?: string; perpsAccountId?: ethers.BigNumberish }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
   const { data: systemToken } = useImportSystemToken();
 
@@ -25,11 +25,11 @@ export function usePerpsModifyCollateral({
 
   return useMutation({
     mutationFn: async (depositAmount: ethers.BigNumberish) => {
-      if (!(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && systemToken)) {
+      if (!(chainId && preset && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && systemToken)) {
         throw 'OMFG';
       }
 
-      log({ chainId, provider, PerpsMarketProxyContract, walletAddress, perpsAccountId, systemToken });
+      log({ chainId, preset, PerpsMarketProxyContract, walletAddress, perpsAccountId, systemToken });
 
       if (ethers.BigNumber.from(depositAmount).lte(0)) {
         throw new Error('Amount required');
@@ -86,6 +86,7 @@ export function usePerpsModifyCollateral({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'PerpsGetCollateralAmount',
           { PerpsMarketProxy: PerpsMarketProxyContract?.address },
           { collateral: USDx_MARKET_ID },
@@ -94,10 +95,10 @@ export function usePerpsModifyCollateral({
       });
 
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: systemToken?.address, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: systemToken?.address, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+        queryKey: [chainId, preset, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
       });
     },
   });

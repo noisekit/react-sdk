@@ -28,7 +28,7 @@ export function useDelegateCollateral({
   accountId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
@@ -59,11 +59,11 @@ export function useDelegateCollateral({
 
       log({
         chainId,
+        preset,
         CoreProxyContract,
         MulticallContract,
         PythERC7412WrapperContract,
         priceIds,
-        provider,
         walletAddress,
         accountId,
         poolId,
@@ -145,7 +145,7 @@ export function useDelegateCollateral({
 
       if (priceUpdated) {
         queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn'],
+          queryKey: [chainId, preset, 'PriceUpdateTxn'],
         });
       }
 
@@ -153,6 +153,7 @@ export function useDelegateCollateral({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'AccountCollateral',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
@@ -164,6 +165,7 @@ export function useDelegateCollateral({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
@@ -175,6 +177,7 @@ export function useDelegateCollateral({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'PositionCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
@@ -187,6 +190,7 @@ export function useDelegateCollateral({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'PositionDebt',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {

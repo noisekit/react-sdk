@@ -25,7 +25,7 @@ export function useWithdraw({
   collateralTypeTokenAddress?: string;
   onSuccess: () => void;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: priceIds } = useAllPriceFeeds();
@@ -40,6 +40,7 @@ export function useWithdraw({
       if (
         !(
           chainId &&
+          preset &&
           provider &&
           walletAddress &&
           accountId &&
@@ -55,7 +56,7 @@ export function useWithdraw({
 
       log({
         chainId,
-        provider,
+        preset,
         walletAddress,
         accountId,
         collateralTypeTokenAddress,
@@ -126,7 +127,7 @@ export function useWithdraw({
 
       if (priceUpdated) {
         queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn'],
+          queryKey: [chainId, preset, 'PriceUpdateTxn'],
         });
       }
 
@@ -134,6 +135,7 @@ export function useWithdraw({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'AccountCollateral',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
@@ -145,6 +147,7 @@ export function useWithdraw({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
@@ -156,6 +159,7 @@ export function useWithdraw({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'Balance',
           {
             collateralTypeTokenAddress,

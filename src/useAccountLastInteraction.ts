@@ -14,25 +14,26 @@ export function useAccountLastInteraction({
   provider?: ethers.providers.BaseProvider;
   accountId?: ethers.BigNumberish;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
 
   return useQuery({
-    enabled: Boolean(chainId && provider && CoreProxyContract?.address && accountId),
+    enabled: Boolean(chainId && preset && provider && CoreProxyContract?.address && accountId),
     queryKey: [
       chainId,
+      preset,
       'AccountLastInteraction',
       { CoreProxy: CoreProxyContract?.address },
       { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && CoreProxyContract?.address && accountId)) {
+      if (!(chainId && preset && provider && CoreProxyContract?.address && accountId)) {
         throw 'OMFG';
       }
 
-      log({ chainId, provider, CoreProxyContract, accountId });
+      log({ chainId, preset, CoreProxyContract, accountId });
 
       const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
 

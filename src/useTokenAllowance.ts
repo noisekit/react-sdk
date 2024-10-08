@@ -18,18 +18,18 @@ export function useTokenAllowance({
   ownerAddress?: string;
   spenderAddress?: string;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress),
-    queryKey: [chainId, 'Allowance', { collateralTypeTokenAddress, ownerAddress, spenderAddress }],
+    enabled: Boolean(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress),
+    queryKey: [chainId, preset, 'Allowance', { collateralTypeTokenAddress, ownerAddress, spenderAddress }],
     queryFn: async () => {
-      if (!(chainId && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress)) {
+      if (!(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress)) {
         throw 'OMFG';
       }
 
-      log({ chainId, provider, collateralTypeTokenAddress, ownerAddress, spenderAddress });
+      log({ chainId, preset, collateralTypeTokenAddress, ownerAddress, spenderAddress });
 
       const allowance = await fetchTokenAllowance({
         provider,

@@ -19,7 +19,7 @@ export function usePositionCollateral({
   collateralTypeTokenAddress?: string;
   provider?: ethers.providers.BaseProvider;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
@@ -28,6 +28,7 @@ export function usePositionCollateral({
     enabled: Boolean(chainId && CoreProxyContract?.address && provider && accountId && poolId && collateralTypeTokenAddress),
     queryKey: [
       chainId,
+      preset,
       'PositionCollateral',
       { CoreProxy: CoreProxyContract?.address },
       {
@@ -41,7 +42,7 @@ export function usePositionCollateral({
         throw 'OMFG';
       }
 
-      log({ chainId, CoreProxyContract, provider, accountId, poolId, collateralTypeTokenAddress });
+      log({ chainId, preset, CoreProxyContract, accountId, poolId, collateralTypeTokenAddress });
 
       const positionCollateral = fetchPositionCollateral({
         provider,

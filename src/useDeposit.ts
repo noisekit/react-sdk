@@ -26,18 +26,18 @@ export function useDeposit({
   collateralTypeTokenAddress?: string;
   onSuccess: () => void;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
 
   return useMutation({
     mutationFn: async (depositAmount: ethers.BigNumberish) => {
-      if (!(chainId && provider && CoreProxyContract && walletAddress && accountId && poolId && collateralTypeTokenAddress)) {
+      if (!(chainId && preset && provider && CoreProxyContract && walletAddress && accountId && poolId && collateralTypeTokenAddress)) {
         throw 'OMFG';
       }
 
-      log({ chainId, provider, CoreProxyContract, walletAddress, accountId, poolId, collateralTypeTokenAddress });
+      log({ chainId, preset, CoreProxyContract, walletAddress, accountId, poolId, collateralTypeTokenAddress });
 
       if (ethers.BigNumber.from(depositAmount).lte(0)) {
         throw new Error('Amount required');
@@ -95,6 +95,7 @@ export function useDeposit({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
@@ -106,6 +107,7 @@ export function useDeposit({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'PositionCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
@@ -116,7 +118,7 @@ export function useDeposit({
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress, ownerAddress: walletAddress }],
       });
 
       onSuccess();

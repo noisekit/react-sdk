@@ -14,7 +14,7 @@ export function usePerpsGetMarketSummary({
   provider,
   perpsMarketId,
 }: { provider?: ethers.providers.BaseProvider; perpsMarketId: ethers.BigNumberish }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider });
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
@@ -24,22 +24,33 @@ export function usePerpsGetMarketSummary({
 
   return useQuery({
     enabled: Boolean(
-      chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address && MulticallContract?.address && priceUpdateTxn
+      chainId && preset && provider && perpsMarketId && PerpsMarketProxyContract?.address && MulticallContract?.address && priceUpdateTxn
     ),
     queryKey: [
       chainId,
+      preset,
       'Perps GetMarketSummary',
       { PerpsMarketProxy: PerpsMarketProxyContract?.address, Multicall: MulticallContract?.address },
       { perpsMarketId: perpsMarketId.toString() },
     ],
     queryFn: async () => {
-      if (!(chainId && provider && perpsMarketId && PerpsMarketProxyContract?.address && MulticallContract?.address && priceUpdateTxn)) {
+      if (
+        !(
+          chainId &&
+          preset &&
+          provider &&
+          perpsMarketId &&
+          PerpsMarketProxyContract?.address &&
+          MulticallContract?.address &&
+          priceUpdateTxn
+        )
+      ) {
         throw 'OMFG';
       }
 
       log({
         chainId,
-        provider,
+        preset,
         perpsMarketId,
         PerpsMarketProxyContract,
         MulticallContract,
