@@ -1,7 +1,4 @@
-import debug from 'debug';
 import { ethers } from 'ethers';
-
-const log = debug('snx:fetchTokenAllowance');
 
 export async function fetchTokenAllowance({
   provider,
@@ -20,6 +17,5 @@ export async function fetchTokenAllowance({
     provider
   );
   const allowance = Token.allowance(ownerAddress, spenderAddress);
-  log({ allowance });
   return allowance;
 }

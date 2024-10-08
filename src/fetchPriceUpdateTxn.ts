@@ -60,6 +60,5 @@ export async function fetchPriceUpdateTxn({
     value: stalePriceIds.length,
     requireSuccess: true,
   };
-  log({ priceUpdateTxn });
   return priceUpdateTxn;
 }

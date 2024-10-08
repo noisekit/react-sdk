@@ -1,7 +1,4 @@
-import debug from 'debug';
 import { ethers } from 'ethers';
-
-const log = debug('snx:fetchPerpsGetAvailableMargin');
 
 export async function fetchPerpsGetAvailableMargin({
   provider,
@@ -16,6 +13,5 @@ export async function fetchPerpsGetAvailableMargin({
   console.time('fetchPerpsGetAvailableMargin');
   const availableMargin = await PerpsMarketProxy.getAvailableMargin(perpsAccountId);
   console.timeEnd('fetchPerpsGetAvailableMargin');
-  log({ availableMargin });
   return availableMargin;
 }

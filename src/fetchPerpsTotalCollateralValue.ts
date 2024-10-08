@@ -1,7 +1,4 @@
-import debug from 'debug';
 import { ethers } from 'ethers';
-
-const log = debug('snx:fetchPerpsTotalCollateralValue');
 
 export async function fetchPerpsTotalCollateralValue({
   provider,
@@ -16,6 +13,5 @@ export async function fetchPerpsTotalCollateralValue({
   console.time('fetchPerpsTotalCollateralValue');
   const totalCollateralValue = await PerpsMarketProxy.totalCollateralValue(perpsAccountId);
   console.timeEnd('fetchPerpsTotalCollateralValue');
-  log({ totalCollateralValue });
   return totalCollateralValue;
 }

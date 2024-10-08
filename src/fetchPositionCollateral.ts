@@ -1,7 +1,4 @@
-import debug from 'debug';
 import { ethers } from 'ethers';
-
-const log = debug('snx:fetchPositionCollateral');
 
 export async function fetchPositionCollateral({
   provider,
@@ -18,6 +15,5 @@ export async function fetchPositionCollateral({
 }) {
   const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
   const positionCollateral = await CoreProxy.getPositionCollateral(accountId, poolId, collateralTypeTokenAddress);
-  log({ positionCollateral });
   return positionCollateral;
 }
