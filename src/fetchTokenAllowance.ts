@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('fetchTokenAllowance');
+const log = debug('snx:fetchTokenAllowance');
 
 export async function fetchTokenAllowance({
   provider,

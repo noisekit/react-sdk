@@ -5,7 +5,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useAccountTimeoutWithdraw');
+const log = debug('snx:useAccountTimeoutWithdraw');
 
 export function useAccountTimeoutWithdraw({ provider }: { provider?: ethers.providers.BaseProvider }) {
   const { chainId } = useSynthetix();

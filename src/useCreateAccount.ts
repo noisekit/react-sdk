@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useCreateAccount');
+const log = debug('snx:useCreateAccount');
 
 export function useCreateAccount({
   provider,

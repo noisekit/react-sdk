@@ -8,7 +8,7 @@ import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePerpsGetMarketSummary');
+const log = debug('snx:usePerpsGetMarketSummary');
 
 export function usePerpsGetMarketSummary({
   provider,

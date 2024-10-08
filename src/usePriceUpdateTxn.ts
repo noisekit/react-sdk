@@ -7,7 +7,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePriceUpdateTxn');
+const log = debug('snx:usePriceUpdateTxn');
 
 export function usePriceUpdateTxn({
   provider,

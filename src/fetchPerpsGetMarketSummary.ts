@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('fetchPerpsGetMarketSummary');
+const log = debug('snx:fetchPerpsGetMarketSummary');
 
 export async function fetchPerpsGetMarketSummary({
   provider,

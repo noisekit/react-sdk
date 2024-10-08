@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('fetchSpotSellWithPriceUpdate');
+const log = debug('snx:fetchSpotSellWithPriceUpdate');
 
 export async function fetchSpotSellWithPriceUpdate({
   provider,

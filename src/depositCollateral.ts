@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('depositCollateral');
+const log = debug('snx:depositCollateral');
 
 export async function depositCollateral({
   provider,

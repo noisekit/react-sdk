@@ -5,7 +5,7 @@ import { fetchTokenBalance } from './fetchTokenBalance';
 import { useErrorParser } from './useErrorParser';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useTokenBalance');
+const log = debug('snx:useTokenBalance');
 
 export function useTokenBalance({
   provider,

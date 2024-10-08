@@ -5,7 +5,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePerpsGetMarkets');
+const log = debug('snx:usePerpsGetMarkets');
 
 export function usePerpsGetMarkets({ provider }: { provider?: ethers.providers.BaseProvider }) {
   const { chainId } = useSynthetix();

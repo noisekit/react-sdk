@@ -5,7 +5,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useAccountLastInteraction');
+const log = debug('snx:useAccountLastInteraction');
 
 export function useAccountLastInteraction({
   provider,

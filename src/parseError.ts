@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { decodeBuiltinErrors } from './decodeBuiltinErrors';
 import { decodePythErrors } from './decodePythErrors';
 
-const log = debug('parseError');
+const log = debug('snx:parseError');
 
 export async function parseError({
   error,

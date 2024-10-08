@@ -6,7 +6,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useAccountAvailableCollateral');
+const log = debug('snx:useAccountAvailableCollateral');
 
 export function useAccountAvailableCollateral({
   provider,

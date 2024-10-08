@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('delegateCollateral');
+const log = debug('snx:delegateCollateral');
 
 export async function delegateCollateral({
   provider,

@@ -10,7 +10,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useWithdraw');
+const log = debug('snx:useWithdraw');
 
 export function useWithdraw({
   provider,

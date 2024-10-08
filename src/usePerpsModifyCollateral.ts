@@ -8,7 +8,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract, useImportSystemToken } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePerpsModifyCollateral');
+const log = debug('snx:usePerpsModifyCollateral');
 
 const USDx_MARKET_ID = 0;
 

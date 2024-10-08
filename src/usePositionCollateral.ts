@@ -6,7 +6,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePositionCollateral');
+const log = debug('snx:usePositionCollateral');
 
 export function usePositionCollateral({
   provider,

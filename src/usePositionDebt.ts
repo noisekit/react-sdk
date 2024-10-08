@@ -8,7 +8,7 @@ import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePositionDebt');
+const log = debug('snx:usePositionDebt');
 
 export function usePositionDebt({
   provider,

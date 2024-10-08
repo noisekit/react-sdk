@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('fetchBurnUsdWithPriceUpdate');
+const log = debug('snx:fetchBurnUsdWithPriceUpdate');
 
 export async function fetchBurnUsdWithPriceUpdate({
   provider,

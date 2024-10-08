@@ -8,7 +8,7 @@ import { useImportContract, useImportSystemToken } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useMintUsd');
+const log = debug('snx:useMintUsd');
 
 export function useMintUsd({
   provider,

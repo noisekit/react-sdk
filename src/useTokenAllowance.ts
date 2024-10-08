@@ -5,7 +5,7 @@ import { fetchTokenAllowance } from './fetchTokenAllowance';
 import { useErrorParser } from './useErrorParser';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useTokenAllowance');
+const log = debug('snx:useTokenAllowance');
 
 export function useTokenAllowance({
   provider,

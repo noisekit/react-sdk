@@ -11,7 +11,7 @@ import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePerpsCommitOrder');
+const log = debug('snx:usePerpsCommitOrder');
 
 export function usePerpsCommitOrder({
   perpsAccountId,

@@ -10,7 +10,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useClaimReward');
+const log = debug('snx:useClaimReward');
 
 export function useClaimReward({
   provider,

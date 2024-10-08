@@ -5,7 +5,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePerpsGetCollateralAmount');
+const log = debug('snx:usePerpsGetCollateralAmount');
 
 const USDx_MARKET_ID = 0;
 

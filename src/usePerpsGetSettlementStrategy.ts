@@ -5,7 +5,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePerpsGetSettlementStrategy');
+const log = debug('snx:usePerpsGetSettlementStrategy');
 
 export function usePerpsGetSettlementStrategy({
   provider,

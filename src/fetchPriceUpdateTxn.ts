@@ -2,7 +2,7 @@ import { EvmPriceServiceConnection } from '@pythnetwork/pyth-evm-js';
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('fetchPriceUpdateTxn');
+const log = debug('snx:fetchPriceUpdateTxn');
 
 export async function fetchPriceUpdateTxn({
   provider,

@@ -8,7 +8,7 @@ import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useCollateralPrice');
+const log = debug('snx:useCollateralPrice');
 
 export function useCollateralPrice({
   provider,

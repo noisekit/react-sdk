@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('fetchPositionCollateral');
+const log = debug('snx:fetchPositionCollateral');
 
 export async function fetchPositionCollateral({
   provider,

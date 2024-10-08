@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('fetchPerpsTotalCollateralValue');
+const log = debug('snx:fetchPerpsTotalCollateralValue');
 
 export async function fetchPerpsTotalCollateralValue({
   provider,

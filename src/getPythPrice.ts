@@ -1,7 +1,7 @@
 import { EvmPriceServiceConnection } from '@pythnetwork/pyth-evm-js';
 import debug from 'debug';
 
-const log = debug('getPythPrice');
+const log = debug('snx:getPythPrice');
 
 const PYTH_MAINNET_ENDPOINT = process.env.PYTH_MAINNET_ENDPOINT || 'https://hermes.pyth.network';
 

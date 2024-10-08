@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('fetchPerpsGetRequiredMargins');
+const log = debug('snx:fetchPerpsGetRequiredMargins');
 
 export async function fetchPerpsGetRequiredMargins({
   provider,

@@ -14,7 +14,7 @@ import { useSpotGetPriceData } from './useSpotGetPriceData';
 import { useSpotGetSettlementStrategy } from './useSpotGetSettlementStrategy';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useSpotSell');
+const log = debug('snx:useSpotSell');
 
 export function useSpotSell({
   provider,

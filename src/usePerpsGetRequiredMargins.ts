@@ -6,7 +6,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePerpsGetRequiredMargins');
+const log = debug('snx:usePerpsGetRequiredMargins');
 
 export function usePerpsGetRequiredMargins({
   provider,

@@ -10,7 +10,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract, useImportSystemToken } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useBurnUsd');
+const log = debug('snx:useBurnUsd');
 
 export function useBurnUsd({
   provider,

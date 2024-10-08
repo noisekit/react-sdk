@@ -5,7 +5,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportWethContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useWethDeposit');
+const log = debug('snx:useWethDeposit');
 
 export function useWethDeposit({
   provider,

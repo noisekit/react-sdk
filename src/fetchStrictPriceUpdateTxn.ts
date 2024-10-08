@@ -2,7 +2,7 @@ import debug from 'debug';
 import { ethers } from 'ethers';
 import { getPythVaa } from './getPythVaa';
 
-const log = debug('fetchStrictPriceUpdateTxn');
+const log = debug('snx:fetchStrictPriceUpdateTxn');
 
 export async function fetchStrictPriceUpdateTxn({
   commitmentTime,

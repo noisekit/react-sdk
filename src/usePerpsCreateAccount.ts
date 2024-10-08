@@ -5,7 +5,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePerpsCreateAccount');
+const log = debug('snx:usePerpsCreateAccount');
 
 export function usePerpsCreateAccount({
   provider,

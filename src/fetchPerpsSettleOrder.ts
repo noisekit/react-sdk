@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 
 import debug from 'debug';
 
-const log = debug('fetchPerpsSettleOrder');
+const log = debug('snx:fetchPerpsSettleOrder');
 
 export async function fetchPerpsSettleOrder({
   provider,

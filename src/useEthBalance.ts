@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useEthBalance');
+const log = debug('snx:useEthBalance');
 
 export function useEthBalance({ provider, walletAddress }: { provider?: ethers.providers.Web3Provider; walletAddress?: string }) {
   const { chainId } = useSynthetix();

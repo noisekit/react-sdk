@@ -13,7 +13,7 @@ import { useSpotGetPriceData } from './useSpotGetPriceData';
 import { useSpotGetSettlementStrategy } from './useSpotGetSettlementStrategy';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useSpotWrap');
+const log = debug('snx:useSpotWrap');
 
 export function useSpotWrap({
   provider,

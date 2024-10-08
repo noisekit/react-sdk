@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import React from 'react';
 import { useImportCollateralTokens } from './useImports';
 
-const log = debug('useCollateralTokens');
+const log = debug('snx:useCollateralTokens');
 
 export function useCollateralTokens(): Array<{
   address: string;

@@ -4,7 +4,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportExtras } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useAllPriceFeeds');
+const log = debug('snx:useAllPriceFeeds');
 
 export function useAllPriceFeeds() {
   const { chainId } = useSynthetix();

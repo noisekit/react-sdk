@@ -10,7 +10,7 @@ import { usePerpsGetOrder } from './usePerpsGetOrder';
 import { usePerpsGetSettlementStrategy } from './usePerpsGetSettlementStrategy';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('usePerpsSettleOrder');
+const log = debug('snx:usePerpsSettleOrder');
 
 export function usePerpsSettleOrder({
   provider,

@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { ethers } from 'ethers';
 
-const log = debug('fetchAccountCollateral');
+const log = debug('snx:fetchAccountCollateral');
 
 export async function fetchAccountCollateral({
   provider,

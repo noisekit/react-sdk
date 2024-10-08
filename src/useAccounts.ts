@@ -5,7 +5,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useAccounts');
+const log = debug('snx:useAccounts');
 
 export function useAccounts({ provider, walletAddress }: { walletAddress?: string; provider?: ethers.providers.BaseProvider }) {
   const { chainId } = useSynthetix();

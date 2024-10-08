@@ -11,7 +11,7 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
 
-const log = debug('useDelegateCollateral');
+const log = debug('snx:useDelegateCollateral');
 
 export function useDelegateCollateral({
   provider,
