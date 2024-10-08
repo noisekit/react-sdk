@@ -31,7 +31,7 @@ export function useCollateralTokens(): Array<{
           minDelegationD18: ethers.BigNumber.from(minDelegationD18),
         }));
 
-      log({ transformedTokens });
+      log('transformedTokens: %O', transformedTokens);
       return transformedTokens;
     }
     return [];

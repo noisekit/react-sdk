@@ -70,7 +70,7 @@ export function useMintUsd({
         throw new Error('Amount required');
       }
 
-      log({ priceUpdateTxn });
+      log('priceUpdateTxn: %O', priceUpdateTxn);
 
       if (priceUpdateTxn.value) {
         log('-> fetchMintUsdWithPriceUpdate');

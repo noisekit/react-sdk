@@ -35,7 +35,7 @@ export function useSpotGetSettlementStrategy({
 
       const SpotMarketProxy = new ethers.Contract(SpotMarketProxyContract.address, SpotMarketProxyContract.abi, provider);
       const settlementStrategy = await SpotMarketProxy.getSettlementStrategy(synthMarketId, settlementStrategyId);
-      log({ settlementStrategy });
+      log('settlementStrategy: %O', settlementStrategy);
       return settlementStrategy;
     },
     throwOnError: (error) => {

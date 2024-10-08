@@ -39,7 +39,7 @@ export function usePerpsGetOrder({
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const order = await PerpsMarketProxy.getOrder(perpsAccountId);
-      log({ order });
+      log('order: %O', order);
       return order;
     },
     throwOnError: (error) => {

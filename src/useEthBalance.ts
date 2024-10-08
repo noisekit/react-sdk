@@ -23,7 +23,7 @@ export function useEthBalance({ provider, walletAddress }: { provider?: ethers.p
       const signer = provider.getSigner();
       const address = await signer.getAddress();
       const balance = await provider.getBalance(address);
-      log({ balance });
+      log('balance: %O', balance);
       return balance;
     },
     throwOnError: (error) => {

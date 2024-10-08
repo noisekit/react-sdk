@@ -31,7 +31,7 @@ export function useSpotGetPriceData({
 
       const SpotMarketProxy = new ethers.Contract(SpotMarketProxyContract.address, SpotMarketProxyContract.abi, provider);
       const priceData = await SpotMarketProxy.getPriceData(synthMarketId);
-      log({ priceData });
+      log('priceData: %O', priceData);
       return priceData;
     },
     throwOnError: (error) => {

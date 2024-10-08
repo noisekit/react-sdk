@@ -32,7 +32,7 @@ export function usePerpsGetAvailableMargin({
         perpsAccountId,
         PerpsMarketProxyContract,
       });
-      log({ availableMargin });
+      log('availableMargin: %O', availableMargin);
       return availableMargin;
     },
     throwOnError: (error) => {

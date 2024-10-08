@@ -32,7 +32,7 @@ export async function fetchPerpsSettleOrderWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  log({ settleOrderTxn });
+  log('settleOrderTxn: %O', settleOrderTxn);
 
   const signer = provider.getSigner(walletAddress);
 
@@ -42,7 +42,7 @@ export async function fetchPerpsSettleOrderWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, settleOrderTxn]]),
     value: priceUpdateTxn.value,
   };
-  log({ multicallTxn });
+  log('multicallTxn: %O', multicallTxn);
 
   console.time('fetchPerpsSettleOrderWithPriceUpdate');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);

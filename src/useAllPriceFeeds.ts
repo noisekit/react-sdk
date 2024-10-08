@@ -28,7 +28,7 @@ export function useAllPriceFeeds() {
         )
         .map(([, value]) => value as string);
 
-      log({ result });
+      log('result: %O', result);
       return result;
     },
     staleTime: 60 * 60 * 1000,

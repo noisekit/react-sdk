@@ -26,7 +26,7 @@ export function usePerpsGetMarkets({ provider }: { provider?: ethers.providers.B
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       console.timeEnd('usePerpsGetMarkets');
       const markets = await PerpsMarketProxy.getMarkets();
-      log({ markets });
+      log('markets: %O', markets);
       return markets;
     },
     throwOnError: (error) => {

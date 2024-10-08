@@ -30,7 +30,7 @@ export async function fetchBurnUsd({
     collateralTypeTokenAddress,
     burnUsdAmount,
   ];
-  log({ burnUsdTxnArgs });
+  log('burnUsdTxnArgs: %O', burnUsdTxnArgs);
 
   console.time('burnUsd');
   const tx: ethers.ContractTransaction = await CoreProxy.burnUsd(...burnUsdTxnArgs);

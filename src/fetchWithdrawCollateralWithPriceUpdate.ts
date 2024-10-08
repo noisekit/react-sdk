@@ -36,7 +36,7 @@ export async function fetchWithdrawCollateralWithPriceUpdate({
     collateralTypeTokenAddress,
     withdrawAmount,
   ];
-  log({ withdrawCollateralTxnArgs });
+  log('withdrawCollateralTxnArgs: %O', withdrawCollateralTxnArgs);
 
   const withdrawCollateralTxn = {
     target: CoreProxyContract.address,
@@ -47,7 +47,7 @@ export async function fetchWithdrawCollateralWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  log({ withdrawCollateralTxn });
+  log('withdrawCollateralTxn: %O', withdrawCollateralTxn);
 
   const signer = provider.getSigner(walletAddress);
 
@@ -57,7 +57,7 @@ export async function fetchWithdrawCollateralWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, withdrawCollateralTxn]]),
     value: priceUpdateTxn.value,
   };
-  log({ multicallTxn });
+  log('multicallTxn: %O', multicallTxn);
 
   console.time('withdrawCollateral');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);

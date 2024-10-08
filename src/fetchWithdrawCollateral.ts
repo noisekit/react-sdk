@@ -27,7 +27,7 @@ export async function fetchWithdrawCollateral({
     collateralTypeTokenAddress,
     withdrawAmount,
   ];
-  log({ withdrawCollateralTxnArgs });
+  log('withdrawCollateralTxnArgs: %O', withdrawCollateralTxnArgs);
 
   console.time('withdrawCollateral');
   const tx: ethers.ContractTransaction = await CoreProxy.withdraw(...withdrawCollateralTxnArgs);

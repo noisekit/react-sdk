@@ -50,7 +50,7 @@ export async function fetchPerpsCommitOrderWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  log({ commitOrderTxn });
+  log('commitOrderTxn: %O', commitOrderTxn);
 
   const signer = provider.getSigner(walletAddress);
 
@@ -60,7 +60,7 @@ export async function fetchPerpsCommitOrderWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, commitOrderTxn]]),
     value: priceUpdateTxn.value,
   };
-  log({ multicallTxn });
+  log('multicallTxn: %O', multicallTxn);
 
   console.time('fetchPerpsCommitOrderWithPriceUpdate');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);

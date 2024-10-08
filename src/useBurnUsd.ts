@@ -83,7 +83,7 @@ export function useBurnUsd({
         PythERC7412WrapperContract,
         priceIds,
       });
-      log({ freshPriceUpdateTxn });
+      log('freshPriceUpdateTxn: %O', freshPriceUpdateTxn);
 
       const freshAccountAvailableUsd = await fetchAccountAvailableCollateral({
         provider,
@@ -91,7 +91,7 @@ export function useBurnUsd({
         accountId,
         collateralTypeTokenAddress: systemToken.address,
       });
-      log({ freshAccountAvailableUsd });
+      log('freshAccountAvailableUsd: %O', freshAccountAvailableUsd);
 
       const hasEnoughDeposit = freshAccountAvailableUsd.gte(burnUsdAmount);
       if (!hasEnoughDeposit) {

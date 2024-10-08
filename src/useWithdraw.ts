@@ -75,7 +75,7 @@ export function useWithdraw({
         PythERC7412WrapperContract,
         priceIds,
       });
-      log({ freshPriceUpdateTxn });
+      log('freshPriceUpdateTxn: %O', freshPriceUpdateTxn);
 
       const freshAccountAvailableCollateral = await fetchAccountAvailableCollateral({
         provider,
@@ -83,7 +83,7 @@ export function useWithdraw({
         accountId,
         collateralTypeTokenAddress,
       });
-      log({ freshAccountAvailableCollateral });
+      log('freshAccountAvailableCollateral: %O', freshAccountAvailableCollateral);
 
       const hasEnoughDeposit = freshAccountAvailableCollateral.gte(withdrawAmount);
       if (!hasEnoughDeposit) {

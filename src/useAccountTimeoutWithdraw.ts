@@ -28,7 +28,7 @@ export function useAccountTimeoutWithdraw({ provider }: { provider?: ethers.prov
       console.time('useAccountTimeoutWithdraw');
       const accountTimeoutWithdraw = await CoreProxy.getConfigUint(ethers.utils.formatBytes32String('accountTimeoutWithdraw'));
       console.timeEnd('useAccountTimeoutWithdraw');
-      log({ accountTimeoutWithdraw });
+      log('accountTimeoutWithdraw: %O', accountTimeoutWithdraw);
       return accountTimeoutWithdraw;
     },
     throwOnError: (error) => {

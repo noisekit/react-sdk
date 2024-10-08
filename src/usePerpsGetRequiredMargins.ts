@@ -36,7 +36,7 @@ export function usePerpsGetRequiredMargins({
         PerpsMarketProxyContract,
         perpsAccountId,
       });
-      log({ requiredMargins });
+      log('requiredMargins: %O', requiredMargins);
       return requiredMargins;
     },
     throwOnError: (error) => {

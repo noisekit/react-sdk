@@ -43,7 +43,7 @@ export function usePriceUpdateTxn({
           PythERC7412WrapperContract,
           priceIds,
         });
-        log({ priceUpdateTxn });
+        log('priceUpdateTxn: %O', priceUpdateTxn);
         return priceUpdateTxn;
       },
       throwOnError: (error) => {

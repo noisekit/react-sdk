@@ -30,7 +30,7 @@ export async function fetchMintUsd({
     collateralTypeTokenAddress,
     mintUsdAmount,
   ];
-  log({ mintUsdTxnArgs });
+  log('mintUsdTxnArgs: %O', mintUsdTxnArgs);
 
   console.time('mintUsd');
   const tx: ethers.ContractTransaction = await CoreProxy.mintUsd(...mintUsdTxnArgs);

@@ -44,7 +44,7 @@ export async function fetchPriceUpdateTxn({
       requireSuccess: false,
     };
   }
-  log({ stalePriceIds });
+  log('stalePriceIds: %O', stalePriceIds);
 
   const priceService = new EvmPriceServiceConnection('https://hermes.pyth.network');
   const signedOffchainData = await priceService.getPriceFeedsUpdateData(stalePriceIds);

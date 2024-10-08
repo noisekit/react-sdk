@@ -43,7 +43,7 @@ export function usePerpsGetSettlementStrategy({
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const settlementStrategy = await PerpsMarketProxy.getSettlementStrategy(perpsMarketId, settlementStrategyId);
-      log({ settlementStrategy });
+      log('settlementStrategy: %O', settlementStrategy);
       return settlementStrategy;
     },
     throwOnError: (error) => {

@@ -43,7 +43,7 @@ export function useAccountAvailableCollateral({
         accountId,
         collateralTypeTokenAddress,
       });
-      log({ accountAvailableCollateral });
+      log('accountAvailableCollateral: %O', accountAvailableCollateral);
       return accountAvailableCollateral;
     },
     throwOnError: (error) => {

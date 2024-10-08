@@ -35,7 +35,7 @@ export function usePerpsMetadata({
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const { symbol, name } = await PerpsMarketProxy.metadata(perpsMarketId);
-      log({ symbol, name });
+      log('metadata: %O', { symbol, name });
       return { symbol, name };
     },
     throwOnError: (error) => {

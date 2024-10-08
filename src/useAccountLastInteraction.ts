@@ -39,7 +39,7 @@ export function useAccountLastInteraction({
       console.time('useAccountLastInteraction');
       const accountLastInteraction = CoreProxy.getAccountLastInteraction(accountId);
       console.timeEnd('useAccountLastInteraction');
-      log({ accountLastInteraction });
+      log('accountLastInteraction: %O', accountLastInteraction);
       return accountLastInteraction;
     },
     throwOnError: (error) => {

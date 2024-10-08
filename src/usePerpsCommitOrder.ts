@@ -79,7 +79,7 @@ export function usePerpsCommitOrder({
         perpsAccountId,
         PerpsMarketProxyContract,
       });
-      log({ availableMargin });
+      log('availableMargin: %O', availableMargin);
 
       if (availableMargin.lt(sizeDelta)) {
         throw new Error('Not enough available margin');
@@ -90,14 +90,14 @@ export function usePerpsCommitOrder({
         PerpsMarketProxyContract,
         perpsAccountId,
       });
-      log({ totalCollateralValue });
+      log('totalCollateralValue: %O', totalCollateralValue);
 
       if (totalCollateralValue.lt(sizeDelta)) {
         throw new Error('Total collateral value is less than the size delta');
       }
 
       const pythPrice = await getPythPrice({ feedId });
-      log({ pythPrice });
+      log('pythPrice: %O', pythPrice);
 
       const orderCommitmentArgs = {
         perpsMarketId,
@@ -108,9 +108,9 @@ export function usePerpsCommitOrder({
         referrer: ethers.constants.AddressZero,
         trackingCode: ethers.utils.formatBytes32String('VD'),
       };
-      log({ orderCommitmentArgs });
+      log('orderCommitmentArgs: %O', orderCommitmentArgs);
 
-      log({ priceUpdateTxn });
+      log('priceUpdateTxn: %O', priceUpdateTxn);
 
       if (priceUpdateTxn.value) {
         log('-> fetchPerpsCommitOrderWithPriceUpdate');

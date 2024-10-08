@@ -18,7 +18,7 @@ export async function fetchAccountCollateral({
   console.time('fetchAccountCollateral');
   const accountCollateral = await CoreProxy.getAccountCollateral(accountId, collateralTypeTokenAddress);
   console.timeEnd('fetchAccountCollateral');
-  log({ accountCollateral });
+  log('accountCollateral: %O', accountCollateral);
   return {
     totalAssigned: accountCollateral.totalAssigned,
     totalDeposited: accountCollateral.totalDeposited,

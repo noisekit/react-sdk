@@ -39,7 +39,7 @@ export async function fetchMintUsdWithPriceUpdate({
     collateralTypeTokenAddress,
     mintUsdAmount,
   ];
-  log({ mintUsdTxnArgs });
+  log('mintUsdTxnArgs: %O', mintUsdTxnArgs);
 
   const mintUsdTxn = {
     target: CoreProxyContract.address,
@@ -47,7 +47,7 @@ export async function fetchMintUsdWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  log({ mintUsdTxn });
+  log('mintUsdTxn: %O', mintUsdTxn);
 
   const signer = provider.getSigner(walletAddress);
   const multicallTxn = {
@@ -56,7 +56,7 @@ export async function fetchMintUsdWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, mintUsdTxn]]),
     value: priceUpdateTxn.value,
   };
-  log({ multicallTxn });
+  log('multicallTxn: %O', multicallTxn);
 
   console.time('mintUsd');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);

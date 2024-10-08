@@ -91,7 +91,7 @@ export function useSpotSell({
         ownerAddress: walletAddress,
         collateralTypeTokenAddress: synthTokenAddress,
       });
-      log({ freshBalance });
+      log('freshBalance: %O', freshBalance);
 
       if (freshBalance.lt(amount)) {
         throw new Error('Not enough balance');
@@ -103,7 +103,7 @@ export function useSpotSell({
         collateralTypeTokenAddress: synthTokenAddress,
         spenderAddress: SpotMarketProxyContract.address,
       });
-      log({ freshAllowance });
+      log('freshAllowance: %O', freshAllowance);
 
       if (freshAllowance.lt(amount)) {
         await fetchApproveToken({
@@ -122,7 +122,7 @@ export function useSpotSell({
         priceIds: [spotSettlementStrategy.feedId],
         stalenessTolerance: priceData.strictPriceStalenessTolerance,
       });
-      log({ freshPriceUpdateTxn });
+      log('freshPriceUpdateTxn: %O', freshPriceUpdateTxn);
 
       if (freshPriceUpdateTxn.value) {
         log('-> fetchSpotSellWithPriceUpdate');

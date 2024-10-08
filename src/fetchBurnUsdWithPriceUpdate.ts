@@ -39,7 +39,7 @@ export async function fetchBurnUsdWithPriceUpdate({
     collateralTypeTokenAddress,
     burnUsdAmount,
   ];
-  log({ burnUsdTxnArgs });
+  log('burnUsdTxnArgs: %O', burnUsdTxnArgs);
 
   const burnUsdTxn = {
     target: CoreProxyContract.address,
@@ -50,7 +50,7 @@ export async function fetchBurnUsdWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  log({ burnUsdTxn });
+  log('burnUsdTxn: %O', burnUsdTxn);
 
   const signer = provider.getSigner(walletAddress);
 
@@ -60,7 +60,7 @@ export async function fetchBurnUsdWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, burnUsdTxn]]),
     value: priceUpdateTxn.value,
   };
-  log({ multicallTxn });
+  log('multicallTxn: %O', multicallTxn);
 
   console.time('burnUsd');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);

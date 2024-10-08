@@ -16,6 +16,6 @@ export async function fetchCollateralPrice({
   console.time('fetchCollateralPrice');
   const collateralPrice = await CoreProxy.getCollateralPrice(collateralTypeTokenAddress);
   console.timeEnd('fetchCollateralPrice');
-  log({ collateralPrice });
+  log('collateralPrice: %O', collateralPrice);
   return collateralPrice;
 }

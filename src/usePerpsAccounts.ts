@@ -34,7 +34,7 @@ export function usePerpsAccounts({
       }
       const accountIndexes = Array.from(Array(numberOfAccountTokens.toNumber()).keys());
       const accounts = await Promise.all(accountIndexes.map((i) => PerpsAccountProxy.tokenOfOwnerByIndex(walletAddress, i)));
-      log({ accounts });
+      log('accounts: %O', accounts);
       return accounts;
     },
     select: (accounts) => accounts.map((accountId) => ethers.BigNumber.from(accountId)),

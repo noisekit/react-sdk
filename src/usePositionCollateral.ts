@@ -50,7 +50,7 @@ export function usePositionCollateral({
         poolId,
         collateralTypeTokenAddress,
       });
-      log({ positionCollateral });
+      log('positionCollateral: %O', positionCollateral);
       return positionCollateral;
     },
     throwOnError: (error) => {

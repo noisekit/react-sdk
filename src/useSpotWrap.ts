@@ -87,7 +87,7 @@ export function useSpotWrap({
         collateralTypeTokenAddress,
         ownerAddress: walletAddress,
       });
-      log({ freshBalance });
+      log('freshBalance: %O', freshBalance);
 
       if (freshBalance.lt(amount)) {
         throw new Error('Not enough balance');
@@ -99,7 +99,7 @@ export function useSpotWrap({
         ownerAddress: walletAddress,
         spenderAddress: SpotMarketProxyContract.address,
       });
-      log({ freshAllowance });
+      log('freshAllowance: %O', freshAllowance);
 
       if (freshAllowance.lt(amount)) {
         await fetchApproveToken({
@@ -118,7 +118,7 @@ export function useSpotWrap({
         priceIds: [spotSettlementStrategy.feedId],
         stalenessTolerance: priceData.strictPriceStalenessTolerance,
       });
-      log({ freshPriceUpdateTxn });
+      log('freshPriceUpdateTxn: %O', freshPriceUpdateTxn);
 
       if (freshPriceUpdateTxn.value) {
         log('-> fetchSpotWrapWithPriceUpdate');

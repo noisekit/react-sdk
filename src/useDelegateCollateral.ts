@@ -80,7 +80,7 @@ export function useDelegateCollateral({
         PythERC7412WrapperContract,
         priceIds,
       });
-      log({ freshPriceUpdateTxn });
+      log('freshPriceUpdateTxn: %O', freshPriceUpdateTxn);
 
       const freshAccountAvailableCollateral = await fetchAccountAvailableCollateral({
         provider,
@@ -88,7 +88,7 @@ export function useDelegateCollateral({
         accountId,
         collateralTypeTokenAddress,
       });
-      log({ freshAccountAvailableCollateral });
+      log('freshAccountAvailableCollateral: %O', freshAccountAvailableCollateral);
 
       const hasEnoughDeposit = freshAccountAvailableCollateral.gte(delegateAmountDelta);
       if (!hasEnoughDeposit) {
@@ -102,10 +102,10 @@ export function useDelegateCollateral({
         poolId,
         collateralTypeTokenAddress,
       });
-      log({ freshPositionCollateral });
+      log('freshPositionCollateral: %O', freshPositionCollateral);
 
       const delegateAmount = freshPositionCollateral.add(delegateAmountDelta);
-      log({ delegateAmount });
+      log('delegateAmount: %O', delegateAmount);
 
       if (freshPriceUpdateTxn.value) {
         log('-> delegateCollateralWithPriceUpdate');

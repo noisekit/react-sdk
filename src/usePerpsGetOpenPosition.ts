@@ -45,7 +45,7 @@ export function usePerpsGetOpenPosition({
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const openPosition = await PerpsMarketProxy.getOpenPosition(perpsAccountId, perpsMarketId);
-      log({ openPosition });
+      log('openPosition: %O', openPosition);
       return openPosition;
     },
     throwOnError: (error) => {

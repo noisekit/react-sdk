@@ -48,7 +48,7 @@ export function useDeposit({
         ownerAddress: walletAddress,
         collateralTypeTokenAddress,
       });
-      log({ freshBalance });
+      log('freshBalance: %O', freshBalance);
 
       if (freshBalance.lt(depositAmount)) {
         throw new Error('Not enough balance');
@@ -60,7 +60,7 @@ export function useDeposit({
         collateralTypeTokenAddress,
         spenderAddress: CoreProxyContract?.address,
       });
-      log({ freshAllowance });
+      log('freshAllowance: %O', freshAllowance);
 
       if (freshAllowance.lt(depositAmount)) {
         await fetchApproveToken({

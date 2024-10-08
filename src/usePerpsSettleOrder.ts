@@ -72,7 +72,7 @@ export function usePerpsSettleOrder({
         commitmentPriceDelay: settlementStrategy.commitmentPriceDelay,
         PythERC7412WrapperContract,
       });
-      log({ freshStrictPriceUpdateTxn });
+      log('freshStrictPriceUpdateTxn: %O', freshStrictPriceUpdateTxn);
 
       if (freshStrictPriceUpdateTxn.value) {
         log('-> fetchPerpsSettleOrderWithPriceUpdate');

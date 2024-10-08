@@ -40,7 +40,7 @@ export function usePerpsModifyCollateral({
         ownerAddress: walletAddress,
         collateralTypeTokenAddress: systemToken?.address,
       });
-      log({ freshBalance });
+      log('freshBalance: %O', freshBalance);
 
       if (freshBalance.lt(depositAmount)) {
         throw new Error('Not enough balance');
@@ -52,7 +52,7 @@ export function usePerpsModifyCollateral({
         collateralTypeTokenAddress: systemToken.address,
         spenderAddress: PerpsMarketProxyContract.address,
       });
-      log({ freshAllowance });
+      log('freshAllowance: %O', freshAllowance);
 
       if (freshAllowance.lt(depositAmount)) {
         await fetchApproveToken({
@@ -68,7 +68,7 @@ export function usePerpsModifyCollateral({
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, signer);
 
       const modifyCollateralTxnArgs = [perpsAccountId, USDx_MARKET_ID, depositAmount];
-      log({ modifyCollateralTxnArgs });
+      log('modifyCollateralTxnArgs: %O', modifyCollateralTxnArgs);
       const tx = await PerpsMarketProxy.modifyCollateral(...modifyCollateralTxnArgs);
       log({ tx });
       const txResult = await tx.wait();

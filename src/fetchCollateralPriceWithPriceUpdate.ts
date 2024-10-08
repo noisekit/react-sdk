@@ -52,16 +52,16 @@ export async function fetchCollateralPriceWithPriceUpdate({
     value: priceUpdateTxn.value,
   });
   console.timeEnd('fetchCollateralPriceWithPriceUpdate');
-  log({ response });
+  log('response: %O', response);
 
   if (response) {
     const decodedMulticall = MulticallInterface.decodeFunctionResult('aggregate3Value', response);
-    log({ decodedMulticall });
+    log('decodedMulticall: %O', decodedMulticall);
     if (decodedMulticall?.returnData?.[1]?.returnData) {
       const getCollateralPriceTxnData = decodedMulticall.returnData[1].returnData;
-      log({ getCollateralPriceTxnData });
+      log('getCollateralPriceTxnData: %O', getCollateralPriceTxnData);
       const collateralPrice = CoreProxyInterface.decodeFunctionResult('getCollateralPrice', getCollateralPriceTxnData);
-      log({ collateralPrice });
+      log('collateralPrice: %O', collateralPrice);
       return collateralPrice[0];
     }
     console.error({ decodedMulticall });

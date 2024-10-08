@@ -20,6 +20,6 @@ export async function fetchPositionDebt({
   console.time('fetchPositionDebt');
   const positionDebt = await CoreProxy.callStatic.getPositionDebt(accountId, poolId, collateralTypeTokenAddress);
   console.timeEnd('fetchPositionDebt');
-  log({ positionDebt });
+  log('positionDebt: %O', positionDebt);
   return positionDebt;
 }

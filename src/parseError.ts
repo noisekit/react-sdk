@@ -38,7 +38,7 @@ export async function parseError({
       }
       const AllErrorsInterface = new ethers.utils.Interface(AllErrorsContract.abi);
       const data = AllErrorsInterface.parseError(errorData);
-      log({ decodedError: data });
+      log('decodedError: %O', data);
 
       if (data?.name === 'OracleDataRequired' && data?.args?.oracleContract && data?.args?.oracleQuery) {
         const oracleAddress = data?.args?.oracleContract;

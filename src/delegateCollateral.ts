@@ -31,7 +31,7 @@ export async function delegateCollateral({
     delegateAmount,
     ethers.utils.parseEther('1'), // Leverage
   ];
-  log({ delegateCollateralTxnArgs });
+  log('delegateCollateralTxnArgs: %O', delegateCollateralTxnArgs);
 
   console.time('delegateCollateral');
   const tx: ethers.ContractTransaction = await CoreProxy.delegateCollateral(...delegateCollateralTxnArgs);

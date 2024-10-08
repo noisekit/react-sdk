@@ -40,7 +40,7 @@ export function usePerpsGetCollateralAmount({
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const collateralAmount = await PerpsMarketProxy.getCollateralAmount(perpsAccountId, USDx_MARKET_ID);
-      log({ collateralAmount });
+      log('collateralAmount: %O', collateralAmount);
       return collateralAmount;
     },
     throwOnError: (error) => {

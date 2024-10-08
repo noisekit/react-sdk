@@ -16,6 +16,6 @@ export async function getPythPrice({ feedId }: { feedId: string }) {
   const [feed] = feeds;
   const uncheckedPrice = feed.getPriceUnchecked();
   const price = uncheckedPrice.getPriceAsNumberUnchecked();
-  log({ price });
+  log('price: %O', price);
   return price;
 }

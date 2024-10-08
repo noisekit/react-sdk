@@ -31,13 +31,13 @@ export function useTokenAllowance({
 
       log({ chainId, provider, collateralTypeTokenAddress, ownerAddress, spenderAddress });
 
-      const allowance = fetchTokenAllowance({
+      const allowance = await fetchTokenAllowance({
         provider,
         collateralTypeTokenAddress,
         ownerAddress,
         spenderAddress,
       });
-      log({ allowance });
+      log('allowance: %O', allowance);
       return allowance;
     },
     throwOnError: (error) => {

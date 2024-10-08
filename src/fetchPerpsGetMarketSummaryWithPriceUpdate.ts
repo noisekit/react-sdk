@@ -49,7 +49,7 @@ export async function fetchPerpsGetMarketSummaryWithPriceUpdate({
     if (decodedMulticall?.returnData?.[1]?.returnData) {
       const getMarketSummaryTxnData = decodedMulticall.returnData[1].returnData;
       const perpsMarketSummary = PerpsMarketProxyInterface.decodeFunctionResult('getMarketSummary', getMarketSummaryTxnData);
-      log({ perpsMarketSummary });
+      log('perpsMarketSummary: %O', perpsMarketSummary);
       return perpsMarketSummary[0];
     }
 
