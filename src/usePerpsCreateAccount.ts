@@ -12,7 +12,7 @@ export function usePerpsCreateAccount({
   walletAddress,
   handleAccountCreated,
 }: { walletAddress?: string; provider?: ethers.providers.Web3Provider; handleAccountCreated: (accountId: string) => void }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
@@ -22,7 +22,7 @@ export function usePerpsCreateAccount({
     mutationFn: async () => {
       if (!(chainId && PerpsMarketProxyContract && PerpsAccountProxyContract && walletAddress && provider && queryClient)) throw 'OMFG';
 
-      log({ chainId, PerpsMarketProxyContract, PerpsAccountProxyContract, walletAddress, provider, queryClient });
+      log({ chainId, preset, PerpsMarketProxyContract, PerpsAccountProxyContract, walletAddress });
 
       const signer = provider.getSigner(walletAddress);
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, signer);

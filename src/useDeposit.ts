@@ -37,7 +37,7 @@ export function useDeposit({
         throw 'OMFG';
       }
 
-      log({ chainId, CoreProxyContract, walletAddress, accountId, poolId, collateralTypeTokenAddress });
+      log({ chainId, preset, CoreProxyContract, walletAddress, accountId, poolId, collateralTypeTokenAddress });
 
       if (ethers.BigNumber.from(depositAmount).lte(0)) {
         throw new Error('Amount required');

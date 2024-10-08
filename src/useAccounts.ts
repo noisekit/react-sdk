@@ -18,7 +18,7 @@ export function useAccounts({ provider, walletAddress }: { walletAddress?: strin
     queryFn: async () => {
       if (!(chainId && AccountProxyContract?.address && walletAddress && provider)) throw 'OMFG';
 
-      log({ chainId, AccountProxyContract, walletAddress, provider });
+      log({ chainId, preset, AccountProxyContract, walletAddress });
 
       const AccountProxy = new ethers.Contract(AccountProxyContract.address, AccountProxyContract.abi, provider);
       const numberOfAccountTokens = await AccountProxy.balanceOf(walletAddress);

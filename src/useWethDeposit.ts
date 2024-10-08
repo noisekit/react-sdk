@@ -32,7 +32,7 @@ export function useWethDeposit({
         throw 'OMFG';
       }
 
-      log({ chainId, provider, walletAddress, perpsAccountId, WethContract });
+      log({ chainId, preset, walletAddress, perpsAccountId, WethContract });
 
       const signer = provider.getSigner(walletAddress);
       const Weth = new ethers.Contract(WethContract.address, WethContract.abi, signer);

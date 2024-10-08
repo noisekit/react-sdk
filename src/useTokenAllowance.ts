@@ -29,7 +29,7 @@ export function useTokenAllowance({
         throw 'OMFG';
       }
 
-      log({ chainId, provider, collateralTypeTokenAddress, ownerAddress, spenderAddress });
+      log({ chainId, preset, collateralTypeTokenAddress, ownerAddress, spenderAddress });
 
       const allowance = await fetchTokenAllowance({
         provider,

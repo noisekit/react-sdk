@@ -18,7 +18,7 @@ export function useEthBalance({ provider, walletAddress }: { provider?: ethers.p
         throw 'OMFG';
       }
 
-      log({ chainId, provider, walletAddress });
+      log({ chainId, preset, walletAddress });
 
       const signer = provider.getSigner();
       const address = await signer.getAddress();

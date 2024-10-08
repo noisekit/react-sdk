@@ -42,7 +42,7 @@ export function usePerpsGetOpenPosition({
         throw 'OMFG';
       }
 
-      log({ chainId, provider, PerpsMarketProxyContract, walletAddress, perpsAccountId, perpsMarketId });
+      log({ chainId, preset, PerpsMarketProxyContract, walletAddress, perpsAccountId, perpsMarketId });
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const openPosition = await PerpsMarketProxy.getOpenPosition(perpsAccountId, perpsMarketId);

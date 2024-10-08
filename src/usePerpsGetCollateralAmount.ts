@@ -37,7 +37,7 @@ export function usePerpsGetCollateralAmount({
         throw 'OMFG';
       }
 
-      log({ chainId, PerpsMarketProxyContract, provider, perpsAccountId });
+      log({ chainId, preset, PerpsMarketProxyContract, perpsAccountId });
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const collateralAmount = await PerpsMarketProxy.getCollateralAmount(perpsAccountId, USDx_MARKET_ID);

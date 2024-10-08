@@ -36,7 +36,7 @@ export function useAccountAvailableCollateral({
         throw 'OMFG';
       }
 
-      log({ chainId, provider, CoreProxyContract, accountId, collateralTypeTokenAddress });
+      log({ chainId, preset, CoreProxyContract, accountId, collateralTypeTokenAddress });
 
       const accountAvailableCollateral = fetchAccountAvailableCollateral({
         provider,

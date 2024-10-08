@@ -21,7 +21,7 @@ export function useAccountTimeoutWithdraw({ provider }: { provider?: ethers.prov
         throw 'OMFG';
       }
 
-      log({ chainId, provider, CoreProxyContract });
+      log({ chainId, preset, CoreProxyContract });
 
       const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
 

@@ -11,7 +11,7 @@ export function useCreateAccount({
   walletAddress,
   handleAccountCreated,
 }: { provider?: ethers.providers.Web3Provider; walletAddress?: string; handleAccountCreated: (accountId: string) => void }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
   const { data: AccountProxyContract } = useImportContract('AccountProxy');
@@ -20,7 +20,7 @@ export function useCreateAccount({
     mutationFn: async () => {
       if (!(chainId && provider && CoreProxyContract && AccountProxyContract && walletAddress && queryClient)) throw 'OMFG';
 
-      log({ chainId, provider, CoreProxyContract, AccountProxyContract, walletAddress, queryClient });
+      log({ chainId, preset, CoreProxyContract, AccountProxyContract, walletAddress, queryClient });
 
       const signer = provider.getSigner(walletAddress);
       const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, signer);

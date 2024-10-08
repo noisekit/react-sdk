@@ -19,7 +19,7 @@ export function useAllPriceFeeds() {
         throw 'OMFG';
       }
 
-      log({ chainId, extras });
+      log({ chainId, preset, extras });
 
       const result = Object.entries(extras)
         .filter(

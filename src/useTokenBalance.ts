@@ -27,7 +27,7 @@ export function useTokenBalance({
         throw 'OMFG';
       }
 
-      log({ chainId, provider, collateralTypeTokenAddress, ownerAddress });
+      log({ chainId, preset, collateralTypeTokenAddress, ownerAddress });
 
       const balance = await fetchTokenBalance({ provider, collateralTypeTokenAddress, ownerAddress });
       log('balance: %O', balance);

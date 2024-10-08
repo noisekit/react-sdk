@@ -33,7 +33,7 @@ export function useAccountLastInteraction({
         throw 'OMFG';
       }
 
-      log({ chainId, provider, CoreProxyContract, accountId });
+      log({ chainId, preset, CoreProxyContract, accountId });
 
       const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
 

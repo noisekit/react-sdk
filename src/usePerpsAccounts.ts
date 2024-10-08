@@ -30,7 +30,7 @@ export function usePerpsAccounts({
     queryFn: async () => {
       if (!(chainId && provider && walletAddress && PerpsAccountProxyContract?.address)) throw 'OMFG';
 
-      log({ chainId, provider, walletAddress, PerpsAccountProxyContract });
+      log({ chainId, preset, walletAddress, PerpsAccountProxyContract });
 
       const PerpsAccountProxy = new ethers.Contract(PerpsAccountProxyContract.address, PerpsAccountProxyContract.abi, provider);
       const numberOfAccountTokens = await PerpsAccountProxy.balanceOf(walletAddress);

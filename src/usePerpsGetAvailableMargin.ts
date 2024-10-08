@@ -25,7 +25,7 @@ export function usePerpsGetAvailableMargin({
         throw 'OMFG';
       }
 
-      log({ chainId, provider, perpsAccountId, PerpsMarketProxyContract });
+      log({ chainId, preset, perpsAccountId, PerpsMarketProxyContract });
 
       const availableMargin = await fetchPerpsGetAvailableMargin({
         provider,
