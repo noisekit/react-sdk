@@ -21,7 +21,7 @@ export function usePositionDebt({
   poolId?: ethers.BigNumberish;
   collateralTypeTokenAddress?: string;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider });
@@ -42,6 +42,7 @@ export function usePositionDebt({
     ),
     queryKey: [
       chainId,
+      preset,
       'PositionDebt',
       { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
       { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined, collateralTypeTokenAddress },
@@ -62,7 +63,7 @@ export function usePositionDebt({
         throw 'OMFG';
       }
 
-      log({ chainId, provider, CoreProxyContract, MulticallContract, accountId, poolId, collateralTypeTokenAddress, priceUpdateTxn });
+      log({ chainId, preset, CoreProxyContract, MulticallContract, accountId, poolId, collateralTypeTokenAddress, priceUpdateTxn });
 
       if (priceUpdateTxn.value) {
         log('-> fetchPositionDebtWithPriceUpdate');

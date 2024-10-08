@@ -7,12 +7,12 @@ import { useSynthetix } from './useSynthetix';
 const log = debug('snx:useEthBalance');
 
 export function useEthBalance({ provider, walletAddress }: { provider?: ethers.providers.Web3Provider; walletAddress?: string }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber>({
     enabled: Boolean(chainId && provider && walletAddress),
-    queryKey: [chainId, 'EthBalance', { ownerAddress: walletAddress }],
+    queryKey: [chainId, preset, 'EthBalance', { ownerAddress: walletAddress }],
     queryFn: async () => {
       if (!(chainId && provider && walletAddress)) {
         throw 'OMFG';

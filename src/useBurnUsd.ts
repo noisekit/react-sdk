@@ -27,7 +27,7 @@ export function useBurnUsd({
   poolId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: systemToken } = useImportSystemToken();
@@ -61,7 +61,7 @@ export function useBurnUsd({
 
       log({
         chainId,
-        provider,
+        preset,
         walletAddress,
         accountId,
         poolId,
@@ -136,7 +136,7 @@ export function useBurnUsd({
 
       if (priceUpdated) {
         queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn'],
+          queryKey: [chainId, preset, 'PriceUpdateTxn'],
         });
       }
 
@@ -144,6 +144,7 @@ export function useBurnUsd({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'PositionDebt',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
@@ -155,6 +156,7 @@ export function useBurnUsd({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
@@ -166,6 +168,7 @@ export function useBurnUsd({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'AccountLastInteraction',
           { CoreProxy: CoreProxyContract?.address },
           { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined },

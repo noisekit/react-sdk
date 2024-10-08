@@ -14,13 +14,19 @@ export function usePerpsAccounts({
   provider?: ethers.providers.BaseProvider;
   walletAddress?: string;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const { data: PerpsAccountProxyContract } = useImportContract('PerpsAccountProxy');
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber[]>({
     enabled: Boolean(chainId && provider && walletAddress && PerpsAccountProxyContract?.address),
-    queryKey: [chainId, 'Perps Accounts', { PerpsAccountProxy: PerpsAccountProxyContract?.address }, { ownerAddress: walletAddress }],
+    queryKey: [
+      chainId,
+      preset,
+      'Perps Accounts',
+      { PerpsAccountProxy: PerpsAccountProxyContract?.address },
+      { ownerAddress: walletAddress },
+    ],
     queryFn: async () => {
       if (!(chainId && provider && walletAddress && PerpsAccountProxyContract?.address)) throw 'OMFG';
 

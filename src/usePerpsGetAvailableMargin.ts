@@ -12,14 +12,14 @@ export function usePerpsGetAvailableMargin({
   provider,
   perpsAccountId,
 }: { provider?: ethers.providers.BaseProvider; perpsAccountId?: ethers.BigNumberish }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
 
   return useQuery<ethers.BigNumber>({
     enabled: Boolean(chainId && provider && perpsAccountId && PerpsMarketProxyContract?.address),
-    queryKey: [chainId, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+    queryKey: [chainId, preset, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
     queryFn: async () => {
       if (!(chainId && provider && perpsAccountId && PerpsMarketProxyContract?.address)) {
         throw 'OMFG';

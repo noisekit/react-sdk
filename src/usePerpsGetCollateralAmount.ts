@@ -16,7 +16,7 @@ export function usePerpsGetCollateralAmount({
   provider?: ethers.providers.BaseProvider;
   perpsAccountId?: ethers.BigNumberish;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
 
@@ -26,6 +26,7 @@ export function usePerpsGetCollateralAmount({
     enabled: Boolean(chainId && PerpsMarketProxyContract?.address && provider && perpsAccountId),
     queryKey: [
       chainId,
+      preset,
       'PerpsGetCollateralAmount',
       { PerpsMarketProxy: PerpsMarketProxyContract?.address },
       { collateral: USDx_MARKET_ID },

@@ -12,7 +12,7 @@ export function useSpotGetSettlementStrategy({
   synthMarketId,
   settlementStrategyId,
 }: { provider?: ethers.providers.BaseProvider; synthMarketId?: ethers.BigNumberish; settlementStrategyId?: ethers.BigNumberish }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
 
   const { data: SpotMarketProxyContract } = useImportContract('SpotMarketProxy');
 
@@ -22,6 +22,7 @@ export function useSpotGetSettlementStrategy({
     enabled: Boolean(chainId && SpotMarketProxyContract?.address && provider && synthMarketId && settlementStrategyId),
     queryKey: [
       chainId,
+      preset,
       'SpotGetSettlementStrategy',
       { SpotMarketProxy: SpotMarketProxyContract?.address },
       { synthMarketId, settlementStrategyId },
@@ -31,7 +32,7 @@ export function useSpotGetSettlementStrategy({
         throw 'OMFG';
       }
 
-      log({ chainId, SpotMarketProxyContract, provider, synthMarketId, settlementStrategyId });
+      log({ chainId, preset, SpotMarketProxyContract, synthMarketId, settlementStrategyId });
 
       const SpotMarketProxy = new ethers.Contract(SpotMarketProxyContract.address, SpotMarketProxyContract.abi, provider);
       const settlementStrategy = await SpotMarketProxy.getSettlementStrategy(synthMarketId, settlementStrategyId);

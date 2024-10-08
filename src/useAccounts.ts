@@ -8,13 +8,13 @@ import { useSynthetix } from './useSynthetix';
 const log = debug('snx:useAccounts');
 
 export function useAccounts({ provider, walletAddress }: { walletAddress?: string; provider?: ethers.providers.BaseProvider }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
   const { data: AccountProxyContract } = useImportContract('AccountProxy');
 
   return useQuery<ethers.BigNumber[]>({
     enabled: Boolean(chainId && AccountProxyContract?.address && walletAddress && provider),
-    queryKey: [chainId, 'Accounts', { AccountProxy: AccountProxyContract?.address }, { ownerAddress: walletAddress }],
+    queryKey: [chainId, preset, 'Accounts', { AccountProxy: AccountProxyContract?.address }, { ownerAddress: walletAddress }],
     queryFn: async () => {
       if (!(chainId && AccountProxyContract?.address && walletAddress && provider)) throw 'OMFG';
 

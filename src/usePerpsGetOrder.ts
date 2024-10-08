@@ -11,7 +11,7 @@ export function usePerpsGetOrder({
   provider,
   perpsAccountId,
 }: { provider?: ethers.providers.BaseProvider; perpsAccountId?: ethers.BigNumberish }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
 
   const errorParser = useErrorParser();
@@ -29,13 +29,13 @@ export function usePerpsGetOrder({
     };
   }>({
     enabled: Boolean(chainId && PerpsMarketProxyContract?.address && provider && perpsAccountId),
-    queryKey: [chainId, 'PerpsGetOrder', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
+    queryKey: [chainId, preset, 'PerpsGetOrder', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],
     queryFn: async () => {
       if (!(chainId && PerpsMarketProxyContract?.address && provider && perpsAccountId)) {
         throw 'OMFG';
       }
 
-      log({ chainId, PerpsMarketProxyContract, provider, perpsAccountId });
+      log({ chainId, preset, PerpsMarketProxyContract, perpsAccountId });
 
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const order = await PerpsMarketProxy.getOrder(perpsAccountId);

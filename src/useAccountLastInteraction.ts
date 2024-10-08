@@ -14,7 +14,7 @@ export function useAccountLastInteraction({
   provider?: ethers.providers.BaseProvider;
   accountId?: ethers.BigNumberish;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
@@ -23,6 +23,7 @@ export function useAccountLastInteraction({
     enabled: Boolean(chainId && provider && CoreProxyContract?.address && accountId),
     queryKey: [
       chainId,
+      preset,
       'AccountLastInteraction',
       { CoreProxy: CoreProxyContract?.address },
       { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined },

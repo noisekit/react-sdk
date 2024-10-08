@@ -16,12 +16,12 @@ export function useTokenBalance({
   collateralTypeTokenAddress?: string;
   ownerAddress?: string;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber>({
     enabled: Boolean(chainId && provider && collateralTypeTokenAddress && ownerAddress),
-    queryKey: [chainId, 'Balance', { collateralTypeTokenAddress, ownerAddress }],
+    queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress, ownerAddress }],
     queryFn: async () => {
       if (!(chainId && provider && collateralTypeTokenAddress && ownerAddress)) {
         throw 'OMFG';

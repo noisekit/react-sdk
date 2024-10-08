@@ -25,7 +25,7 @@ export function useMintUsd({
   poolId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const { data: systemToken } = useImportSystemToken();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
@@ -56,7 +56,7 @@ export function useMintUsd({
 
       log({
         chainId,
-        provider,
+        preset,
         walletAddress,
         CoreProxyContract,
         MulticallContract,
@@ -109,7 +109,7 @@ export function useMintUsd({
 
       if (priceUpdated) {
         queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn'],
+          queryKey: [chainId, preset, 'PriceUpdateTxn'],
         });
       }
 
@@ -117,6 +117,7 @@ export function useMintUsd({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'PositionDebt',
           { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
           {
@@ -128,6 +129,7 @@ export function useMintUsd({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'AccountAvailableCollateral',
           { CoreProxy: CoreProxyContract?.address },
           {
@@ -139,6 +141,7 @@ export function useMintUsd({
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'AccountLastInteraction',
           { CoreProxy: CoreProxyContract?.address },
           { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined },

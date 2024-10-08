@@ -17,7 +17,7 @@ export function useCollateralPrice({
   provider?: ethers.providers.BaseProvider;
   collateralTypeTokenAddress?: string;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider });
@@ -31,6 +31,7 @@ export function useCollateralPrice({
     ),
     queryKey: [
       chainId,
+      preset,
       'CollateralPrice',
       { CoreProxy: CoreProxyContract?.address, Multicall: MulticallContract?.address },
       { collateralTypeTokenAddress },
@@ -44,7 +45,7 @@ export function useCollateralPrice({
 
       log({
         chainId,
-        provider,
+        preset,
         CoreProxyContract,
         MulticallContract,
         collateralTypeTokenAddress,

@@ -18,7 +18,7 @@ export function usePerpsGetOpenPosition({
   perpsAccountId?: ethers.BigNumberish;
   perpsMarketId?: ethers.BigNumberish;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
@@ -32,6 +32,7 @@ export function usePerpsGetOpenPosition({
     enabled: Boolean(chainId && provider && PerpsMarketProxyContract?.address && walletAddress && perpsAccountId && perpsMarketId),
     queryKey: [
       chainId,
+      preset,
       'PerpsGetOpenPosition',
       { PerpsMarketProxy: PerpsMarketProxyContract?.address },
       { walletAddress, perpsAccountId, perpsMarketId },

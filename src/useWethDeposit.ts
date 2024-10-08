@@ -20,7 +20,7 @@ export function useWethDeposit({
   collateralTypeTokenAddress?: string;
   onSuccess: () => void;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
 
   const { data: WethContract } = useImportWethContract();
 
@@ -53,10 +53,10 @@ export function useWethDeposit({
       if (!queryClient) return;
 
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'EthBalance', { ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'EthBalance', { ownerAddress: walletAddress }],
       });
       onSuccess();
     },

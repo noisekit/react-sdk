@@ -7,13 +7,13 @@ import { useSynthetix } from './useSynthetix';
 const log = debug('snx:useAllPriceFeeds');
 
 export function useAllPriceFeeds() {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const { data: extras } = useImportExtras();
   const errorParser = useErrorParser();
 
   return useQuery<string[]>({
     enabled: Boolean(chainId && extras),
-    queryKey: [chainId, 'AllPriceFeeds'],
+    queryKey: [chainId, preset, 'AllPriceFeeds'],
     queryFn: async () => {
       if (!(chainId && extras)) {
         throw 'OMFG';

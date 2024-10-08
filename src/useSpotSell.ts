@@ -31,7 +31,7 @@ export function useSpotSell({
   synthTokenAddress?: string;
   onSuccess: () => void;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: priceIds } = useAllPriceFeeds();
@@ -69,6 +69,7 @@ export function useSpotSell({
 
       log({
         chainId,
+        preset,
         SpotMarketProxyContract,
         MulticallContract,
         PythERC7412WrapperContract,
@@ -76,7 +77,6 @@ export function useSpotSell({
         synthMarketId,
         synthTokenAddress,
         systemToken,
-        provider,
         priceIds,
         spotSettlementStrategy,
         priceData,
@@ -158,14 +158,14 @@ export function useSpotSell({
 
       if (priceUpdated) {
         queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn'],
+          queryKey: [chainId, preset, 'PriceUpdateTxn'],
         });
       }
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: systemToken?.address, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: systemToken?.address, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
       });
       onSuccess();
     },

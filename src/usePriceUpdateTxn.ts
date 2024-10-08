@@ -14,7 +14,7 @@ export function usePriceUpdateTxn({
 }: {
   provider?: ethers.providers.BaseProvider;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
   const { data: priceIds } = useAllPriceFeeds();
 
@@ -24,7 +24,7 @@ export function usePriceUpdateTxn({
   return useQuery(
     {
       enabled: Boolean(chainId && provider && priceIds && MulticallContract && PythERC7412WrapperContract),
-      queryKey: [chainId, 'PriceUpdateTxn', { priceIds: priceIds?.map((p) => p.slice(2, 8)).sort() }],
+      queryKey: [chainId, preset, 'PriceUpdateTxn', { priceIds: priceIds?.map((p) => p.slice(2, 8)).sort() }],
       queryFn: async (): Promise<{
         target: string;
         callData: string;
@@ -35,7 +35,7 @@ export function usePriceUpdateTxn({
           throw 'OMFG';
         }
 
-        log({ chainId, provider, priceIds, MulticallContract, PythERC7412WrapperContract });
+        log({ chainId, preset, priceIds, MulticallContract, PythERC7412WrapperContract });
 
         const priceUpdateTxn = await fetchPriceUpdateTxn({
           provider,

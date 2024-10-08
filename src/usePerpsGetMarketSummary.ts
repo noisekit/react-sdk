@@ -14,7 +14,7 @@ export function usePerpsGetMarketSummary({
   provider,
   perpsMarketId,
 }: { provider?: ethers.providers.BaseProvider; perpsMarketId: ethers.BigNumberish }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const { data: priceUpdateTxn } = usePriceUpdateTxn({ provider });
 
   const { data: PerpsMarketProxyContract } = useImportContract('PerpsMarketProxy');
@@ -28,6 +28,7 @@ export function usePerpsGetMarketSummary({
     ),
     queryKey: [
       chainId,
+      preset,
       'Perps GetMarketSummary',
       { PerpsMarketProxy: PerpsMarketProxyContract?.address, Multicall: MulticallContract?.address },
       { perpsMarketId: perpsMarketId.toString() },
@@ -39,7 +40,7 @@ export function usePerpsGetMarketSummary({
 
       log({
         chainId,
-        provider,
+        preset,
         perpsMarketId,
         PerpsMarketProxyContract,
         MulticallContract,

@@ -32,7 +32,7 @@ export function useSpotWrap({
   settlementStrategyId?: ethers.BigNumberish;
   onSuccess: () => void;
 }) {
-  const { chainId, queryClient } = useSynthetix();
+  const { chainId, preset, queryClient } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: SpotMarketProxyContract } = useImportContract('SpotMarketProxy');
@@ -67,7 +67,7 @@ export function useSpotWrap({
 
       log({
         chainId,
-        provider,
+        preset,
         walletAddress,
         collateralTypeTokenAddress,
         synthTokenAddress,
@@ -154,21 +154,22 @@ export function useSpotWrap({
 
       if (priceUpdated) {
         await queryClient.invalidateQueries({
-          queryKey: [chainId, 'PriceUpdateTxn'],
+          queryKey: [chainId, preset, 'PriceUpdateTxn'],
         });
       }
       queryClient.invalidateQueries({
         queryKey: [
           chainId,
+          preset,
           'Allowance',
           { collateralTypeTokenAddress, ownerAddress: walletAddress, spenderAddress: SpotMarketProxyContract?.address },
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, 'Balance', { collateralTypeTokenAddress: collateralTypeTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: collateralTypeTokenAddress, ownerAddress: walletAddress }],
       });
 
       onSuccess();

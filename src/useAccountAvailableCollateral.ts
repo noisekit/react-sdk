@@ -17,7 +17,7 @@ export function useAccountAvailableCollateral({
   accountId?: ethers.BigNumberish;
   collateralTypeTokenAddress?: string;
 }) {
-  const { chainId } = useSynthetix();
+  const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   const { data: CoreProxyContract } = useImportContract('CoreProxy');
@@ -26,6 +26,7 @@ export function useAccountAvailableCollateral({
     enabled: Boolean(chainId && provider && CoreProxyContract?.address && accountId && collateralTypeTokenAddress),
     queryKey: [
       chainId,
+      preset,
       'AccountAvailableCollateral',
       { CoreProxy: CoreProxyContract?.address },
       { accountId: accountId ? ethers.BigNumber.from(accountId).toHexString() : undefined, collateralTypeTokenAddress },
