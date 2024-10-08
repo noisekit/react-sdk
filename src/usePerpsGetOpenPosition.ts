@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:usePerpsGetOpenPosition');
 
 export function usePerpsGetOpenPosition({
   provider,
@@ -38,9 +41,11 @@ export function usePerpsGetOpenPosition({
         throw 'OMFG';
       }
 
+      log({ chainId, provider, PerpsMarketProxyContract, walletAddress, perpsAccountId, perpsMarketId });
+
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const openPosition = await PerpsMarketProxy.getOpenPosition(perpsAccountId, perpsMarketId);
-      console.log({ openPosition });
+      log('openPosition: %O', openPosition);
       return openPosition;
     },
     throwOnError: (error) => {

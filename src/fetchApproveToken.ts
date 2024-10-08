@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:fetchApproveToken');
 
 export async function fetchApproveToken({
   provider,
@@ -20,8 +23,8 @@ export async function fetchApproveToken({
     signer
   );
   const tx: ethers.ContractTransaction = await Token.approve(spenderAddress, allowance);
-  console.log({ tx });
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
+  log({ txResult });
   return txResult;
 }

@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:fetchPositionDebtWithPriceUpdate');
 
 export async function fetchPositionDebtWithPriceUpdate({
   provider,
@@ -43,15 +46,16 @@ export async function fetchPositionDebtWithPriceUpdate({
     value: priceUpdateTxn.value,
   });
   console.timeEnd('fetchPositionDebtWithPriceUpdate');
-  console.log({ response });
+  log('response: %O', response);
 
   if (response) {
     const decodedMulticall = MulticallInterface.decodeFunctionResult('aggregate3Value', response);
-    console.log({ decodedMulticall });
+    log('decodedMulticall: %O', decodedMulticall);
     if (decodedMulticall?.returnData?.[1]?.returnData) {
       const getPositionDebtTxnData = decodedMulticall.returnData[1].returnData;
-      console.log({ getPositionDebtTxnData });
+      log('getPositionDebtTxnData: %O', getPositionDebtTxnData);
       const positionDebt = CoreProxyInterface.decodeFunctionResult('getPositionDebt', getPositionDebtTxnData);
+      log('positionDebt: %O', positionDebt);
       return positionDebt.debt;
     }
     console.error({ decodedMulticall });

@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:fetchPerpsGetMarketSummaryWithPriceUpdate');
 
 export async function fetchPerpsGetMarketSummaryWithPriceUpdate({
   provider,
@@ -45,9 +48,9 @@ export async function fetchPerpsGetMarketSummaryWithPriceUpdate({
     const decodedMulticall = MulticallInterface.decodeFunctionResult('aggregate3Value', response);
     if (decodedMulticall?.returnData?.[1]?.returnData) {
       const getMarketSummaryTxnData = decodedMulticall.returnData[1].returnData;
-      const marketSummary = PerpsMarketProxyInterface.decodeFunctionResult('getMarketSummary', getMarketSummaryTxnData);
-      console.log('>>>>> marketSummary', marketSummary);
-      return marketSummary[0];
+      const perpsMarketSummary = PerpsMarketProxyInterface.decodeFunctionResult('getMarketSummary', getMarketSummaryTxnData);
+      log('perpsMarketSummary: %O', perpsMarketSummary);
+      return perpsMarketSummary[0];
     }
 
     console.error({ decodedMulticall });

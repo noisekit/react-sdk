@@ -13,6 +13,5 @@ export async function fetchPerpsGetRequiredMargins({
   console.time('fetchPerpsGetRequiredMargins');
   const requiredMargins = await PerpsMarketProxy.getRequiredMargins(perpsAccountId);
   console.timeEnd('fetchPerpsGetRequiredMargins');
-  console.log({ requiredMargins });
   return requiredMargins;
 }

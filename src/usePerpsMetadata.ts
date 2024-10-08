@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:usePerpsMetadata');
 
 export function usePerpsMetadata({
   provider,
@@ -28,9 +31,11 @@ export function usePerpsMetadata({
         throw 'OMFG';
       }
 
+      log({ chainId, provider, perpsMarketId, PerpsMarketProxyContract });
+
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const { symbol, name } = await PerpsMarketProxy.metadata(perpsMarketId);
-      console.log({ symbol, name });
+      log('metadata: %O', { symbol, name });
       return { symbol, name };
     },
     throwOnError: (error) => {

@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:useAccountLastInteraction');
 
 export function useAccountLastInteraction({
   provider,
@@ -29,11 +32,14 @@ export function useAccountLastInteraction({
         throw 'OMFG';
       }
 
+      log({ chainId, provider, CoreProxyContract, accountId });
+
       const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
 
       console.time('useAccountLastInteraction');
       const accountLastInteraction = CoreProxy.getAccountLastInteraction(accountId);
       console.timeEnd('useAccountLastInteraction');
+      log('accountLastInteraction: %O', accountLastInteraction);
       return accountLastInteraction;
     },
     throwOnError: (error) => {

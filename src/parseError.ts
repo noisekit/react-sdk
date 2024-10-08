@@ -1,7 +1,10 @@
+import debug from 'debug';
 /* eslint-disable no-console */
 import { ethers } from 'ethers';
 import { decodeBuiltinErrors } from './decodeBuiltinErrors';
 import { decodePythErrors } from './decodePythErrors';
+
+const log = debug('snx:parseError');
 
 export async function parseError({
   error,
@@ -20,7 +23,7 @@ export async function parseError({
     error?.data;
 
   if (typeof errorData !== 'string') {
-    console.log('Error data missing', { error });
+    log('Error data missing', { error });
     throw error;
   }
   const errorParsed = (() => {
@@ -35,7 +38,7 @@ export async function parseError({
       }
       const AllErrorsInterface = new ethers.utils.Interface(AllErrorsContract.abi);
       const data = AllErrorsInterface.parseError(errorData);
-      console.log({ decodedError: data });
+      log('decodedError: %O', data);
 
       if (data?.name === 'OracleDataRequired' && data?.args?.oracleContract && data?.args?.oracleQuery) {
         const oracleAddress = data?.args?.oracleContract;
@@ -76,7 +79,7 @@ export async function parseError({
       }
       return data;
     } catch (e) {
-      console.log(e);
+      log(e);
     }
     return error;
   })();

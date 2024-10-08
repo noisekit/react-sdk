@@ -1,4 +1,7 @@
 import { EvmPriceServiceConnection } from '@pythnetwork/pyth-evm-js';
+import debug from 'debug';
+
+const log = debug('snx:getPythPrice');
 
 const PYTH_MAINNET_ENDPOINT = process.env.PYTH_MAINNET_ENDPOINT || 'https://hermes.pyth.network';
 
@@ -13,5 +16,6 @@ export async function getPythPrice({ feedId }: { feedId: string }) {
   const [feed] = feeds;
   const uncheckedPrice = feed.getPriceUnchecked();
   const price = uncheckedPrice.getPriceAsNumberUnchecked();
+  log('price: %O', price);
   return price;
 }

@@ -600,6 +600,7 @@ __metadata:
     "@pythnetwork/pyth-evm-js": "npm:^1.56.1"
     "@synthetixio/v3-contracts": "npm:^6.14.0"
     "@tanstack/react-query": "npm:^5.50.1"
+    "@types/debug": "npm:^4.1.12"
     "@types/react": "npm:^18.3.3"
     debug: "npm:^4.3.5"
     ethers: "npm:^5.7.2"
@@ -631,6 +632,22 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
   checksum: 10/ab70f213ae77f9d59172cb571c0832d3d443b85c6cfb6540d4a15235373d26af18dd5214cd1f62275cfbc54164f64f6f2ef5a85e7cb442639b411a41fb65aae6
+  languageName: node
+  linkType: hard
+
+"@types/debug@npm:^4.1.12":
+  version: 4.1.12
+  resolution: "@types/debug@npm:4.1.12"
+  dependencies:
+    "@types/ms": "npm:*"
+  checksum: 10/47876a852de8240bfdaf7481357af2b88cb660d30c72e73789abf00c499d6bc7cd5e52f41c915d1b9cd8ec9fef5b05688d7b7aef17f7f272c2d04679508d1053
+  languageName: node
+  linkType: hard
+
+"@types/ms@npm:*":
+  version: 0.7.34
+  resolution: "@types/ms@npm:0.7.34"
+  checksum: 10/f38d36e7b6edecd9badc9cf50474159e9da5fa6965a75186cceaf883278611b9df6669dc3a3cc122b7938d317b68a9e3d573d316fcb35d1be47ec9e468c6bd8a
   languageName: node
   linkType: hard
 

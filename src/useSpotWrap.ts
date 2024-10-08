@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchApproveToken } from './fetchApproveToken';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
@@ -11,6 +12,8 @@ import { useImportContract } from './useImports';
 import { useSpotGetPriceData } from './useSpotGetPriceData';
 import { useSpotGetSettlementStrategy } from './useSpotGetSettlementStrategy';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:useSpotWrap');
 
 export function useSpotWrap({
   provider,
@@ -62,6 +65,19 @@ export function useSpotWrap({
         throw 'OMFG';
       }
 
+      log({
+        chainId,
+        provider,
+        walletAddress,
+        collateralTypeTokenAddress,
+        synthTokenAddress,
+        synthMarketId,
+        SpotMarketProxyContract,
+        MulticallContract,
+        PythERC7412WrapperContract,
+        priceData,
+      });
+
       if (ethers.BigNumber.from(amount).lte(0)) {
         throw new Error('Amount required');
       }
@@ -71,6 +87,7 @@ export function useSpotWrap({
         collateralTypeTokenAddress,
         ownerAddress: walletAddress,
       });
+      log('freshBalance: %O', freshBalance);
 
       if (freshBalance.lt(amount)) {
         throw new Error('Not enough balance');
@@ -82,6 +99,7 @@ export function useSpotWrap({
         ownerAddress: walletAddress,
         spenderAddress: SpotMarketProxyContract.address,
       });
+      log('freshAllowance: %O', freshAllowance);
 
       if (freshAllowance.lt(amount)) {
         await fetchApproveToken({
@@ -100,11 +118,11 @@ export function useSpotWrap({
         priceIds: [spotSettlementStrategy.feedId],
         stalenessTolerance: priceData.strictPriceStalenessTolerance,
       });
-      console.log('fetchPriceUpdateTxn', freshPriceUpdateTxn);
+      log('freshPriceUpdateTxn: %O', freshPriceUpdateTxn);
 
       if (freshPriceUpdateTxn.value) {
-        console.log('-> fetchSpotWrapWithPriceUpdate');
-        await fetchSpotWrapWithPriceUpdate({
+        log('-> fetchSpotWrapWithPriceUpdate');
+        const { tx, txResult } = await fetchSpotWrapWithPriceUpdate({
           provider,
           walletAddress,
           SpotMarketProxyContract,
@@ -113,18 +131,18 @@ export function useSpotWrap({
           amount,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
-        return { priceUpdated: true };
+        return { priceUpdated: true, tx, txResult };
       }
 
-      console.log('-> fetchSpotWrap');
-      await fetchSpotWrap({
+      log('-> fetchSpotWrap');
+      const { tx, txResult } = await fetchSpotWrap({
         provider,
         walletAddress,
         SpotMarketProxyContract,
         synthMarketId,
         amount,
       });
-      return { priceUpdated: false };
+      return { priceUpdated: false, tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

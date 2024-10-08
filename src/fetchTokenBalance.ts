@@ -10,5 +10,6 @@ export async function fetchTokenBalance({
   ownerAddress: string;
 }) {
   const Token = new ethers.Contract(collateralTypeTokenAddress, ['function balanceOf(address account) view returns (uint256)'], provider);
-  return Token.balanceOf(ownerAddress);
+  const balance = Token.balanceOf(ownerAddress);
+  return balance;
 }

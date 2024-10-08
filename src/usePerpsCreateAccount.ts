@@ -1,8 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:usePerpsCreateAccount');
 
 export function usePerpsCreateAccount({
   provider,
@@ -19,12 +22,14 @@ export function usePerpsCreateAccount({
     mutationFn: async () => {
       if (!(chainId && PerpsMarketProxyContract && PerpsAccountProxyContract && walletAddress && provider && queryClient)) throw 'OMFG';
 
+      log({ chainId, PerpsMarketProxyContract, PerpsAccountProxyContract, walletAddress, provider, queryClient });
+
       const signer = provider.getSigner(walletAddress);
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, signer);
       const tx: ethers.ContractTransaction = await PerpsMarketProxy['createAccount()']();
-      console.log({ tx });
+      log({ tx });
       const txResult = await tx.wait();
-      console.log({ txResult });
+      log({ txResult });
 
       const event = txResult.events?.find((e) => e.event === 'AccountCreated');
       if (event) {
@@ -38,7 +43,7 @@ export function usePerpsCreateAccount({
         }
       }
 
-      return txResult;
+      return { tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

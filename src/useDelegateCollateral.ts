@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { delegateCollateral } from './delegateCollateral';
 import { delegateCollateralWithPriceUpdate } from './delegateCollateralWithPriceUpdate';
@@ -9,6 +10,8 @@ import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:useDelegateCollateral');
 
 export function useDelegateCollateral({
   provider,
@@ -54,6 +57,19 @@ export function useDelegateCollateral({
         throw 'OMFG';
       }
 
+      log({
+        chainId,
+        CoreProxyContract,
+        MulticallContract,
+        PythERC7412WrapperContract,
+        priceIds,
+        provider,
+        walletAddress,
+        accountId,
+        poolId,
+        collateralTypeTokenAddress,
+      });
+
       if (ethers.BigNumber.from(delegateAmountDelta).eq(0)) {
         throw new Error('Amount required');
       }
@@ -64,7 +80,7 @@ export function useDelegateCollateral({
         PythERC7412WrapperContract,
         priceIds,
       });
-      console.log('freshPriceUpdateTxn', freshPriceUpdateTxn);
+      log('freshPriceUpdateTxn: %O', freshPriceUpdateTxn);
 
       const freshAccountAvailableCollateral = await fetchAccountAvailableCollateral({
         provider,
@@ -72,7 +88,7 @@ export function useDelegateCollateral({
         accountId,
         collateralTypeTokenAddress,
       });
-      console.log('freshAccountAvailableCollateral', freshAccountAvailableCollateral);
+      log('freshAccountAvailableCollateral: %O', freshAccountAvailableCollateral);
 
       const hasEnoughDeposit = freshAccountAvailableCollateral.gte(delegateAmountDelta);
       if (!hasEnoughDeposit) {
@@ -86,14 +102,14 @@ export function useDelegateCollateral({
         poolId,
         collateralTypeTokenAddress,
       });
-      console.log('freshPositionCollateral', freshPositionCollateral);
+      log('freshPositionCollateral: %O', freshPositionCollateral);
 
       const delegateAmount = freshPositionCollateral.add(delegateAmountDelta);
-      console.log('delegateAmount', delegateAmount);
+      log('delegateAmount: %O', delegateAmount);
 
       if (freshPriceUpdateTxn.value) {
-        console.log('-> delegateCollateralWithPriceUpdate');
-        await delegateCollateralWithPriceUpdate({
+        log('-> delegateCollateralWithPriceUpdate');
+        const { tx, txResult } = await delegateCollateralWithPriceUpdate({
           provider,
           walletAddress,
           CoreProxyContract,
@@ -104,10 +120,10 @@ export function useDelegateCollateral({
           delegateAmount,
           priceUpdateTxn: freshPriceUpdateTxn,
         });
-        return { priceUpdated: true };
+        return { priceUpdated: true, tx, txResult };
       }
-      console.log('-> delegateCollateral');
-      await delegateCollateral({
+      log('-> delegateCollateral');
+      const { tx, txResult } = await delegateCollateral({
         provider,
         walletAddress,
         CoreProxyContract,
@@ -117,7 +133,7 @@ export function useDelegateCollateral({
         delegateAmount,
       });
 
-      return { priceUpdated: false };
+      return { priceUpdated: false, tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:fetchWithdrawCollateral');
 
 export async function fetchWithdrawCollateral({
   provider,
@@ -24,13 +27,13 @@ export async function fetchWithdrawCollateral({
     collateralTypeTokenAddress,
     withdrawAmount,
   ];
-  console.log({ withdrawCollateralTxnArgs });
+  log('withdrawCollateralTxnArgs: %O', withdrawCollateralTxnArgs);
 
   console.time('withdrawCollateral');
   const tx: ethers.ContractTransaction = await CoreProxy.withdraw(...withdrawCollateralTxnArgs);
   console.timeEnd('withdrawCollateral');
-  console.log({ tx });
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import type { ethers } from 'ethers';
 import { fetchPerpsGetRequiredMargins } from './fetchPerpsGetRequiredMargins';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:usePerpsGetRequiredMargins');
 
 export function usePerpsGetRequiredMargins({
   provider,
@@ -26,11 +29,15 @@ export function usePerpsGetRequiredMargins({
         throw 'OMFG';
       }
 
-      return await fetchPerpsGetRequiredMargins({
+      log({ chainId, provider, PerpsMarketProxyContract, perpsAccountId });
+
+      const requiredMargins = await fetchPerpsGetRequiredMargins({
         provider,
         PerpsMarketProxyContract,
         perpsAccountId,
       });
+      log('requiredMargins: %O', requiredMargins);
+      return requiredMargins;
     },
     throwOnError: (error) => {
       // TODO: show toast

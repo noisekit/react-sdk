@@ -1,8 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:usePerpsGetSettlementStrategy');
 
 export function usePerpsGetSettlementStrategy({
   provider,
@@ -36,9 +39,11 @@ export function usePerpsGetSettlementStrategy({
         throw 'OMFG';
       }
 
+      log({ chainId, provider, PerpsMarketProxyContract, settlementStrategyId, perpsMarketId });
+
       const PerpsMarketProxy = new ethers.Contract(PerpsMarketProxyContract.address, PerpsMarketProxyContract.abi, provider);
       const settlementStrategy = await PerpsMarketProxy.getSettlementStrategy(perpsMarketId, settlementStrategyId);
-      console.log({ settlementStrategy });
+      log('settlementStrategy: %O', settlementStrategy);
       return settlementStrategy;
     },
     throwOnError: (error) => {

@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:fetchPerpsCommitOrder');
 
 export async function fetchPerpsCommitOrder({
   provider,
@@ -33,7 +36,8 @@ export async function fetchPerpsCommitOrder({
     trackingCode: orderCommitmentArgs.trackingCode,
   });
   console.timeEnd('fetchPerpsCommitOrder');
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

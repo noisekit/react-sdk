@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:fetchPerpsSettleOrderWithPriceUpdate');
 
 export async function fetchPerpsSettleOrderWithPriceUpdate({
   provider,
@@ -29,7 +32,7 @@ export async function fetchPerpsSettleOrderWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  console.log({ settleOrderTxn });
+  log('settleOrderTxn: %O', settleOrderTxn);
 
   const signer = provider.getSigner(walletAddress);
 
@@ -39,13 +42,13 @@ export async function fetchPerpsSettleOrderWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, settleOrderTxn]]),
     value: priceUpdateTxn.value,
   };
-  console.log({ multicallTxn });
+  log('multicallTxn: %O', multicallTxn);
 
   console.time('fetchPerpsSettleOrderWithPriceUpdate');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);
   console.timeEnd('fetchPerpsSettleOrderWithPriceUpdate');
-
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

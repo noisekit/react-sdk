@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { useErrorParser } from './useErrorParser';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:useEthBalance');
 
 export function useEthBalance({ provider, walletAddress }: { provider?: ethers.providers.Web3Provider; walletAddress?: string }) {
   const { chainId } = useSynthetix();
@@ -15,9 +18,12 @@ export function useEthBalance({ provider, walletAddress }: { provider?: ethers.p
         throw 'OMFG';
       }
 
+      log({ chainId, provider, walletAddress });
+
       const signer = provider.getSigner();
       const address = await signer.getAddress();
       const balance = await provider.getBalance(address);
+      log('balance: %O', balance);
       return balance;
     },
     throwOnError: (error) => {

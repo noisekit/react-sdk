@@ -13,6 +13,5 @@ export async function fetchPerpsGetAvailableMargin({
   console.time('fetchPerpsGetAvailableMargin');
   const availableMargin = await PerpsMarketProxy.getAvailableMargin(perpsAccountId);
   console.timeEnd('fetchPerpsGetAvailableMargin');
-  console.log({ availableMargin });
   return availableMargin;
 }

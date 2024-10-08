@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:fetchCollateralPriceWithPriceUpdate');
 
 export async function fetchCollateralPriceWithPriceUpdate({
   provider,
@@ -34,7 +37,8 @@ export async function fetchCollateralPriceWithPriceUpdate({
 
   const blockNumber = await provider.getBlockNumber();
   const block = await provider.getBlock(blockNumber);
-  console.log({
+
+  log({
     block,
     now: Math.floor(new Date().getTime() / 1000),
     to: MulticallContract.address,
@@ -48,16 +52,16 @@ export async function fetchCollateralPriceWithPriceUpdate({
     value: priceUpdateTxn.value,
   });
   console.timeEnd('fetchCollateralPriceWithPriceUpdate');
-  console.log({ response });
+  log('response: %O', response);
 
   if (response) {
     const decodedMulticall = MulticallInterface.decodeFunctionResult('aggregate3Value', response);
-    console.log({ decodedMulticall });
+    log('decodedMulticall: %O', decodedMulticall);
     if (decodedMulticall?.returnData?.[1]?.returnData) {
       const getCollateralPriceTxnData = decodedMulticall.returnData[1].returnData;
-      console.log({ getCollateralPriceTxnData });
+      log('getCollateralPriceTxnData: %O', getCollateralPriceTxnData);
       const collateralPrice = CoreProxyInterface.decodeFunctionResult('getCollateralPrice', getCollateralPriceTxnData);
-      console.log('>>>>> collateralPrice', collateralPrice);
+      log('collateralPrice: %O', collateralPrice);
       return collateralPrice[0];
     }
     console.error({ decodedMulticall });

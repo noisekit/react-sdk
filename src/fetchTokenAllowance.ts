@@ -16,5 +16,6 @@ export async function fetchTokenAllowance({
     ['function allowance(address owner, address spender) view returns (uint256)'],
     provider
   );
-  return Token.allowance(ownerAddress, spenderAddress);
+  const allowance = Token.allowance(ownerAddress, spenderAddress);
+  return allowance;
 }

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { ethers } from 'ethers';
 import { fetchPositionDebt } from './fetchPositionDebt';
 import { fetchPositionDebtWithPriceUpdate } from './fetchPositionDebtWithPriceUpdate';
@@ -6,6 +7,8 @@ import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { usePriceUpdateTxn } from './usePriceUpdateTxn';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:usePositionDebt');
 
 export function usePositionDebt({
   provider,
@@ -58,18 +61,11 @@ export function usePositionDebt({
       ) {
         throw 'OMFG';
       }
-      console.log({
-        provider,
-        CoreProxyContract,
-        MulticallContract,
-        accountId,
-        poolId,
-        collateralTypeTokenAddress,
-        priceUpdateTxn,
-      });
+
+      log({ chainId, provider, CoreProxyContract, MulticallContract, accountId, poolId, collateralTypeTokenAddress, priceUpdateTxn });
 
       if (priceUpdateTxn.value) {
-        console.log('-> fetchPositionDebtWithPriceUpdate');
+        log('-> fetchPositionDebtWithPriceUpdate');
         return fetchPositionDebtWithPriceUpdate({
           provider,
           CoreProxyContract,
@@ -80,7 +76,7 @@ export function usePositionDebt({
           priceUpdateTxn,
         });
       }
-      console.log('-> fetchPositionDebt');
+      log('-> fetchPositionDebt');
       return fetchPositionDebt({
         provider,
         CoreProxyContract,

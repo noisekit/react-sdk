@@ -1,6 +1,9 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
 import React from 'react';
 import { useImportCollateralTokens } from './useImports';
+
+const log = debug('snx:useCollateralTokens');
 
 export function useCollateralTokens(): Array<{
   address: string;
@@ -18,7 +21,7 @@ export function useCollateralTokens(): Array<{
   const { data: tokens } = useImportCollateralTokens();
   return React.useMemo(() => {
     if (tokens) {
-      return tokens
+      const transformedTokens = tokens
         .filter(({ depositingEnabled }) => depositingEnabled)
         .map(({ issuanceRatioD18, liquidationRatioD18, liquidationRewardD18, minDelegationD18, ...rest }) => ({
           ...rest,
@@ -27,6 +30,9 @@ export function useCollateralTokens(): Array<{
           liquidationRewardD18: ethers.BigNumber.from(liquidationRewardD18),
           minDelegationD18: ethers.BigNumber.from(minDelegationD18),
         }));
+
+      log('transformedTokens: %O', transformedTokens);
+      return transformedTokens;
     }
     return [];
   }, [tokens]);

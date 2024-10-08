@@ -1,10 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import type { ethers } from 'ethers';
 import { fetchPriceUpdateTxn } from './fetchPriceUpdateTxn';
 import { useAllPriceFeeds } from './useAllPriceFeeds';
 import { useErrorParser } from './useErrorParser';
 import { useImportContract } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:usePriceUpdateTxn');
 
 export function usePriceUpdateTxn({
   provider,
@@ -31,12 +34,17 @@ export function usePriceUpdateTxn({
         if (!(chainId && provider && priceIds && MulticallContract && PythERC7412WrapperContract)) {
           throw 'OMFG';
         }
-        return await fetchPriceUpdateTxn({
+
+        log({ chainId, provider, priceIds, MulticallContract, PythERC7412WrapperContract });
+
+        const priceUpdateTxn = await fetchPriceUpdateTxn({
           provider,
           MulticallContract,
           PythERC7412WrapperContract,
           priceIds,
         });
+        log('priceUpdateTxn: %O', priceUpdateTxn);
+        return priceUpdateTxn;
       },
       throwOnError: (error) => {
         // TODO: show toast

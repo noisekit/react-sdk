@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:fetchSpotSell');
 
 export async function fetchSpotSell({
   provider,
@@ -19,7 +22,8 @@ export async function fetchSpotSell({
   console.time('fetchSpotSell');
   const tx: ethers.ContractTransaction = await SpotMarketProxy.sell(synthMarketId, amount, amount, ethers.constants.AddressZero);
   console.timeEnd('fetchSpotSell');
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

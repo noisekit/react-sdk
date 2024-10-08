@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import debug from 'debug';
 import { useErrorParser } from './useErrorParser';
 import { useImportExtras } from './useImports';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:useAllPriceFeeds');
 
 export function useAllPriceFeeds() {
   const { chainId } = useSynthetix();
@@ -15,12 +18,18 @@ export function useAllPriceFeeds() {
       if (!(chainId && extras)) {
         throw 'OMFG';
       }
-      return Object.entries(extras)
+
+      log({ chainId, extras });
+
+      const result = Object.entries(extras)
         .filter(
           ([key, value]) =>
             String(value).length === 66 && (key.startsWith('pyth_feed_id_') || (key.startsWith('pyth') && key.endsWith('FeedId')))
         )
         .map(([, value]) => value as string);
+
+      log('result: %O', result);
+      return result;
     },
     staleTime: 60 * 60 * 1000,
     throwOnError: (error) => {

@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
+import debug from 'debug';
 import type { ethers } from 'ethers';
 import { fetchPerpsSettleOrder } from './fetchPerpsSettleOrder';
 import { fetchPerpsSettleOrderWithPriceUpdate } from './fetchPerpsSettleOrderWithPriceUpdate';
@@ -8,6 +9,8 @@ import { useImportContract } from './useImports';
 import { usePerpsGetOrder } from './usePerpsGetOrder';
 import { usePerpsGetSettlementStrategy } from './usePerpsGetSettlementStrategy';
 import { useSynthetix } from './useSynthetix';
+
+const log = debug('snx:usePerpsSettleOrder');
 
 export function usePerpsSettleOrder({
   provider,
@@ -50,16 +53,30 @@ export function usePerpsSettleOrder({
         throw 'OMFG';
       }
 
+      log({
+        chainId,
+        provider,
+        walletAddress,
+        PerpsMarketProxyContract,
+        MulticallContract,
+        PythERC7412WrapperContract,
+        perpsAccountId,
+        perpsMarketId,
+        settlementStrategy,
+        order,
+      });
+
       const freshStrictPriceUpdateTxn = await fetchStrictPriceUpdateTxn({
         commitmentTime: order.commitmentTime,
         feedId: settlementStrategy.feedId,
         commitmentPriceDelay: settlementStrategy.commitmentPriceDelay,
         PythERC7412WrapperContract,
       });
+      log('freshStrictPriceUpdateTxn: %O', freshStrictPriceUpdateTxn);
 
       if (freshStrictPriceUpdateTxn.value) {
-        console.log('-> fetchPerpsSettleOrderWithPriceUpdate');
-        await fetchPerpsSettleOrderWithPriceUpdate({
+        log('-> fetchPerpsSettleOrderWithPriceUpdate');
+        const { tx, txResult } = await fetchPerpsSettleOrderWithPriceUpdate({
           provider,
           walletAddress,
           PerpsMarketProxyContract,
@@ -67,17 +84,17 @@ export function usePerpsSettleOrder({
           perpsAccountId,
           priceUpdateTxn: freshStrictPriceUpdateTxn,
         });
-        return { priceUpdated: true };
+        return { priceUpdated: true, tx, txResult };
       }
 
-      console.log('-> fetchPerpsSettleOrder');
-      await fetchPerpsSettleOrder({
+      log('-> fetchPerpsSettleOrder');
+      const { tx, txResult } = await fetchPerpsSettleOrder({
         provider,
         walletAddress,
         PerpsMarketProxyContract,
         perpsAccountId,
       });
-      return { priceUpdated: false };
+      return { priceUpdated: false, tx, txResult };
     },
     throwOnError: (error) => {
       // TODO: show toast

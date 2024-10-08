@@ -28,6 +28,5 @@ export async function fetchStrictPriceUpdateTxn({
     value: ethers.BigNumber.from(1),
     requireSuccess: true,
   };
-  console.log({ priceUpdateTxn });
   return priceUpdateTxn;
 }

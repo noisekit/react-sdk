@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:delegateCollateral');
 
 export async function delegateCollateral({
   provider,
@@ -28,13 +31,13 @@ export async function delegateCollateral({
     delegateAmount,
     ethers.utils.parseEther('1'), // Leverage
   ];
-  console.log('delegateCollateralTxnArgs', delegateCollateralTxnArgs);
+  log('delegateCollateralTxnArgs: %O', delegateCollateralTxnArgs);
 
   console.time('delegateCollateral');
   const tx: ethers.ContractTransaction = await CoreProxy.delegateCollateral(...delegateCollateralTxnArgs);
   console.timeEnd('delegateCollateral');
-  console.log({ tx });
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }

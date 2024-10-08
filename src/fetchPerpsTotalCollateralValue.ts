@@ -13,6 +13,5 @@ export async function fetchPerpsTotalCollateralValue({
   console.time('fetchPerpsTotalCollateralValue');
   const totalCollateralValue = await PerpsMarketProxy.totalCollateralValue(perpsAccountId);
   console.timeEnd('fetchPerpsTotalCollateralValue');
-  console.log({ totalCollateralValue });
   return totalCollateralValue;
 }

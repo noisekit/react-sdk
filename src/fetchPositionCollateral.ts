@@ -15,6 +15,5 @@ export async function fetchPositionCollateral({
 }) {
   const CoreProxy = new ethers.Contract(CoreProxyContract.address, CoreProxyContract.abi, provider);
   const positionCollateral = await CoreProxy.getPositionCollateral(accountId, poolId, collateralTypeTokenAddress);
-  console.log({ positionCollateral });
   return positionCollateral;
 }

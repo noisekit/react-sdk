@@ -1,4 +1,7 @@
+import debug from 'debug';
 import { ethers } from 'ethers';
+
+const log = debug('snx:delegateCollateralWithPriceUpdate');
 
 export async function delegateCollateralWithPriceUpdate({
   provider,
@@ -37,7 +40,7 @@ export async function delegateCollateralWithPriceUpdate({
     delegateAmount,
     ethers.utils.parseEther('1'), // Leverage
   ];
-  console.log('delegateCollateralTxnArgs', delegateCollateralTxnArgs);
+  log('delegateCollateralTxnArgs: %O', delegateCollateralTxnArgs);
 
   const delegateCollateralTxn = {
     target: CoreProxyContract.address,
@@ -48,7 +51,7 @@ export async function delegateCollateralWithPriceUpdate({
     value: 0,
     requireSuccess: true,
   };
-  console.log({ delegateCollateralTxn });
+  log('delegateCollateralTxn: %O', delegateCollateralTxn);
 
   const signer = provider.getSigner(walletAddress);
 
@@ -58,13 +61,13 @@ export async function delegateCollateralWithPriceUpdate({
     data: MulticallInterface.encodeFunctionData('aggregate3Value', [[priceUpdateTxn, delegateCollateralTxn]]),
     value: priceUpdateTxn.value,
   };
-  console.log({ multicallTxn });
+  log('multicallTxn: %O', multicallTxn);
 
   console.time('delegateCollateralWithPriceUpdate');
   const tx: ethers.ContractTransaction = await signer.sendTransaction(multicallTxn);
   console.timeEnd('delegateCollateralWithPriceUpdate');
-  console.log({ tx });
+  log({ tx });
   const txResult = await tx.wait();
-  console.log({ txResult });
-  return txResult;
+  log({ txResult });
+  return { tx, txResult };
 }
