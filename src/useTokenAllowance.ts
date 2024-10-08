@@ -9,12 +9,12 @@ const log = debug('snx:useTokenAllowance');
 
 export function useTokenAllowance({
   provider,
-  collateralTypeTokenAddress,
+  tokenAddress,
   ownerAddress,
   spenderAddress,
 }: {
   provider?: ethers.providers.BaseProvider;
-  collateralTypeTokenAddress?: string;
+  tokenAddress?: string;
   ownerAddress?: string;
   spenderAddress?: string;
 }) {
@@ -22,18 +22,18 @@ export function useTokenAllowance({
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress),
-    queryKey: [chainId, preset, 'Allowance', { collateralTypeTokenAddress, ownerAddress, spenderAddress }],
+    enabled: Boolean(chainId && preset && provider && tokenAddress && ownerAddress && spenderAddress),
+    queryKey: [chainId, preset, 'Allowance', { tokenAddress, ownerAddress, spenderAddress }],
     queryFn: async () => {
-      if (!(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress && spenderAddress)) {
+      if (!(chainId && preset && provider && tokenAddress && ownerAddress && spenderAddress)) {
         throw 'OMFG';
       }
 
-      log({ chainId, preset, collateralTypeTokenAddress, ownerAddress, spenderAddress });
+      log({ chainId, preset, tokenAddress, ownerAddress, spenderAddress });
 
       const allowance = await fetchTokenAllowance({
         provider,
-        collateralTypeTokenAddress,
+        tokenAddress,
         ownerAddress,
         spenderAddress,
       });

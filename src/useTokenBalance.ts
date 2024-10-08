@@ -9,27 +9,27 @@ const log = debug('snx:useTokenBalance');
 
 export function useTokenBalance({
   provider,
-  collateralTypeTokenAddress,
+  tokenAddress,
   ownerAddress,
 }: {
   provider?: ethers.providers.BaseProvider;
-  collateralTypeTokenAddress?: string;
+  tokenAddress?: string;
   ownerAddress?: string;
 }) {
   const { chainId, preset } = useSynthetix();
   const errorParser = useErrorParser();
 
   return useQuery<ethers.BigNumber>({
-    enabled: Boolean(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress),
-    queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress, ownerAddress }],
+    enabled: Boolean(chainId && preset && provider && tokenAddress && ownerAddress),
+    queryKey: [chainId, preset, 'Balance', { tokenAddress, ownerAddress }],
     queryFn: async () => {
-      if (!(chainId && preset && provider && collateralTypeTokenAddress && ownerAddress)) {
+      if (!(chainId && preset && provider && tokenAddress && ownerAddress)) {
         throw 'OMFG';
       }
 
-      log({ chainId, preset, collateralTypeTokenAddress, ownerAddress });
+      log({ chainId, preset, tokenAddress, ownerAddress });
 
-      const balance = await fetchTokenBalance({ provider, collateralTypeTokenAddress, ownerAddress });
+      const balance = await fetchTokenBalance({ provider, tokenAddress, ownerAddress });
       log('balance: %O', balance);
       return balance;
     },

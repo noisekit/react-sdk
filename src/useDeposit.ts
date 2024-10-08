@@ -46,7 +46,7 @@ export function useDeposit({
       const freshBalance = await fetchTokenBalance({
         provider,
         ownerAddress: walletAddress,
-        collateralTypeTokenAddress,
+        tokenAddress: collateralTypeTokenAddress,
       });
       log('freshBalance: %O', freshBalance);
 
@@ -57,7 +57,7 @@ export function useDeposit({
       const freshAllowance = await fetchTokenAllowance({
         provider,
         ownerAddress: walletAddress,
-        collateralTypeTokenAddress,
+        tokenAddress: collateralTypeTokenAddress,
         spenderAddress: CoreProxyContract?.address,
       });
       log('freshAllowance: %O', freshAllowance);
@@ -118,7 +118,7 @@ export function useDeposit({
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { tokenAddress: collateralTypeTokenAddress, ownerAddress: walletAddress }],
       });
 
       onSuccess();
