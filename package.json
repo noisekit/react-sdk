@@ -28,7 +28,6 @@
     "build": "tsc",
     "lint": "biome check . --verbose --log-level=info",
     "lint:fix": "biome check . --verbose --write --unsafe",
-    "prepublish": "tsc",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
     "postpublish": "git push --follow-tags",
