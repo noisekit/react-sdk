@@ -53,7 +53,7 @@ export function useWethDeposit({
       if (!queryClient) return;
 
       queryClient.invalidateQueries({
-        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { tokenAddress: collateralTypeTokenAddress, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
         queryKey: [chainId, preset, 'EthBalance', { ownerAddress: walletAddress }],

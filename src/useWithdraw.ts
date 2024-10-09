@@ -162,7 +162,7 @@ export function useWithdraw({
           preset,
           'Balance',
           {
-            collateralTypeTokenAddress,
+            tokenAddress: collateralTypeTokenAddress,
             ownerAddress: walletAddress,
           },
         ],

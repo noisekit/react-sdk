@@ -38,7 +38,7 @@ export function usePerpsModifyCollateral({
       const freshBalance = await fetchTokenBalance({
         provider,
         ownerAddress: walletAddress,
-        collateralTypeTokenAddress: systemToken?.address,
+        tokenAddress: systemToken?.address,
       });
       log('freshBalance: %O', freshBalance);
 
@@ -49,7 +49,7 @@ export function usePerpsModifyCollateral({
       const freshAllowance = await fetchTokenAllowance({
         provider,
         ownerAddress: walletAddress,
-        collateralTypeTokenAddress: systemToken.address,
+        tokenAddress: systemToken.address,
         spenderAddress: PerpsMarketProxyContract.address,
       });
       log('freshAllowance: %O', freshAllowance);
@@ -95,7 +95,7 @@ export function usePerpsModifyCollateral({
       });
 
       queryClient.invalidateQueries({
-        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: systemToken?.address, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { tokenAddress: systemToken?.address, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
         queryKey: [chainId, preset, 'Perps GetAvailableMargin', { PerpsMarketProxy: PerpsMarketProxyContract?.address }, perpsAccountId],

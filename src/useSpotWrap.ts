@@ -85,7 +85,7 @@ export function useSpotWrap({
 
       const freshBalance = await fetchTokenBalance({
         provider,
-        collateralTypeTokenAddress,
+        tokenAddress: collateralTypeTokenAddress,
         ownerAddress: walletAddress,
       });
       log('freshBalance: %O', freshBalance);
@@ -96,7 +96,7 @@ export function useSpotWrap({
 
       const freshAllowance = await fetchTokenAllowance({
         provider,
-        collateralTypeTokenAddress,
+        tokenAddress: collateralTypeTokenAddress,
         ownerAddress: walletAddress,
         spenderAddress: SpotMarketProxyContract.address,
       });
@@ -163,14 +163,14 @@ export function useSpotWrap({
           chainId,
           preset,
           'Allowance',
-          { collateralTypeTokenAddress, ownerAddress: walletAddress, spenderAddress: SpotMarketProxyContract?.address },
+          { tokenAddress: collateralTypeTokenAddress, ownerAddress: walletAddress, spenderAddress: SpotMarketProxyContract?.address },
         ],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { tokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: collateralTypeTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { tokenAddress: collateralTypeTokenAddress, ownerAddress: walletAddress }],
       });
 
       onSuccess();

@@ -90,7 +90,7 @@ export function useSpotSell({
       const freshBalance = await fetchTokenBalance({
         provider,
         ownerAddress: walletAddress,
-        collateralTypeTokenAddress: synthTokenAddress,
+        tokenAddress: synthTokenAddress,
       });
       log('freshBalance: %O', freshBalance);
 
@@ -101,7 +101,7 @@ export function useSpotSell({
       const freshAllowance = await fetchTokenAllowance({
         provider,
         ownerAddress: walletAddress,
-        collateralTypeTokenAddress: synthTokenAddress,
+        tokenAddress: synthTokenAddress,
         spenderAddress: SpotMarketProxyContract.address,
       });
       log('freshAllowance: %O', freshAllowance);
@@ -163,10 +163,10 @@ export function useSpotSell({
         });
       }
       queryClient.invalidateQueries({
-        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: systemToken?.address, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { tokenAddress: systemToken?.address, ownerAddress: walletAddress }],
       });
       queryClient.invalidateQueries({
-        queryKey: [chainId, preset, 'Balance', { collateralTypeTokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
+        queryKey: [chainId, preset, 'Balance', { tokenAddress: synthTokenAddress, ownerAddress: walletAddress }],
       });
       onSuccess();
     },

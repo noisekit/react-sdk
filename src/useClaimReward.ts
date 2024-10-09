@@ -162,7 +162,7 @@ export function useClaimReward({
           preset,
           'Balance',
           {
-            collateralTypeTokenAddress,
+            tokenAddress: collateralTypeTokenAddress,
             ownerAddress: walletAddress,
           },
         ],
