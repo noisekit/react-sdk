@@ -17,3 +17,5 @@ updates:
           - '@synthetixio/*'
     reviewers:
       - 'noisekit'
+    ignore:
+      - dependency-name: "ethers"
