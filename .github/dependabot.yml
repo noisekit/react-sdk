@@ -1,0 +1,19 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    groups:
+      synthetix:
+        patterns:
+          - '@synthetixio/*'
+      deps:
+        patterns:
+          - "*"
+        # excluding all patterns from other groups
+        exclude-patterns:
+          # synthetix
+          - '@synthetixio/*'
+    reviewers:
+      - 'noisekit'
