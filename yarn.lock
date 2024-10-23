@@ -617,21 +617,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.59.13":
-  version: 5.59.13
-  resolution: "@tanstack/query-core@npm:5.59.13"
-  checksum: 10/dc28f8a667095a98e22411a0f067f0c03701c9c92355d1cb74e9b160c49acdf0e5e362cc027ece6a70e4faec721170da2ee38e71f07814c664a2c4cbd494d736
+"@tanstack/query-core@npm:5.59.16":
+  version: 5.59.16
+  resolution: "@tanstack/query-core@npm:5.59.16"
+  checksum: 10/c001282dfeb682b18f3eb8231f6b00d5b3304dd033ef0da5cd252d9a2cf42507d9879590e16bfe15549def3e8ef83033ee71cee259f60402fc8992581fb9cd5e
   languageName: node
   linkType: hard
 
 "@tanstack/react-query@npm:^5.59.15":
-  version: 5.59.15
-  resolution: "@tanstack/react-query@npm:5.59.15"
+  version: 5.59.16
+  resolution: "@tanstack/react-query@npm:5.59.16"
   dependencies:
-    "@tanstack/query-core": "npm:5.59.13"
+    "@tanstack/query-core": "npm:5.59.16"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10/a55168650140c6e0a3a20adad9e1ef2088a6834a26d7f3455e90177c7dcff2b9ba92fdc330f4d2b1afe246233330b27f71dec003e883ed6aa195490fcf43e803
+  checksum: 10/7496d4c798268a204b5327d3e42591396da70202e8b1c7cb266fb4632c59053dbb5d759edee55a2eea838a6df6cf2bec8f3751e9033dd243bcca9d6da5bdc2c8
   languageName: node
   linkType: hard
 
@@ -668,12 +668,12 @@ __metadata:
   linkType: hard
 
 "@types/react@npm:^18.3.11":
-  version: 18.3.11
-  resolution: "@types/react@npm:18.3.11"
+  version: 18.3.12
+  resolution: "@types/react@npm:18.3.12"
   dependencies:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 10/a36f0707fdfe9fe19cbe5892bcdab0f042ecadb501ea4e1c39519943f3e74cffbd31e892d3860f5c87cf33f5f223552b246a552bed0087b95954f2cb39d5cf65
+  checksum: 10/c9bbdfeacd5347d2240e0d2cb5336bc57dbc1b9ff557b6c4024b49df83419e4955553518169d3736039f1b62608e15b35762a6c03d49bd86e33add4b43b19033
   languageName: node
   linkType: hard
 
@@ -1077,8 +1077,8 @@ __metadata:
   linkType: hard
 
 "viem@npm:^2.21.31":
-  version: 2.21.31
-  resolution: "viem@npm:2.21.31"
+  version: 2.21.33
+  resolution: "viem@npm:2.21.33"
   dependencies:
     "@adraffy/ens-normalize": "npm:1.11.0"
     "@noble/curves": "npm:1.6.0"
@@ -1094,7 +1094,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/32de694c848fb839b60246433fa3c664f8f391612aa8702c55f4528cc3790593cd0c766216ddad16ad049606a8d583b8ba2a3457f314d1cb193e3f358bfa172a
+  checksum: 10/a453ac7065a1e7031571ffc1681363486c2482ea852b0f15ba468e8d9d6fed1f935a13a26714e2491d466cdc202709a43990c49060647d6b19128ca4213c22f8
   languageName: node
   linkType: hard
 
