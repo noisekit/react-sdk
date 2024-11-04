@@ -1,7 +1,7 @@
 {
   "name": "@synthetixio/react-sdk",
   "description": "Synthetix V3 SDK for React",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "license": "MIT",
   "author": "Synthetix",
   "publishConfig": {
