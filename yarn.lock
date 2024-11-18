@@ -617,21 +617,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.59.20":
-  version: 5.59.20
-  resolution: "@tanstack/query-core@npm:5.59.20"
-  checksum: 10/efe34f0a05f4cdef833c3885f466bab8ecee22677a9056d161087658539c1dd14063cc19c08b8f2e56cafc4692fcde7fb4fc4962df59159b1da12c49e69892df
+"@tanstack/query-core@npm:5.60.5":
+  version: 5.60.5
+  resolution: "@tanstack/query-core@npm:5.60.5"
+  checksum: 10/2c85ed3a26db31ea9fb2e44f94afee4564c8a5e47fc2c9f4e7a3b477e90642d1330ecdbc48f3b503205401772cedd94545eff23e628badd2bff5509b1da62e94
   languageName: node
   linkType: hard
 
 "@tanstack/react-query@npm:^5.59.19":
-  version: 5.60.2
-  resolution: "@tanstack/react-query@npm:5.60.2"
+  version: 5.60.5
+  resolution: "@tanstack/react-query@npm:5.60.5"
   dependencies:
-    "@tanstack/query-core": "npm:5.59.20"
+    "@tanstack/query-core": "npm:5.60.5"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10/d33f81f78a0a324ec4cadfa23461c361039b60a3a27f0d7a6cc6489d7d612cea23472aacd31eac269a2dae1bbba91fcc96c43e3a2864941c41bb6c40028effff
+  checksum: 10/00a5ef74ceb50f6bbacec2545392de65d3d9e6dc6de2a7107943460a83d1988eb66740f40b8682c8de0e9a1faff76256ab1584a816c70dd4ff9205dedc209f0a
   languageName: node
   linkType: hard
 
@@ -1104,8 +1104,8 @@ __metadata:
   linkType: hard
 
 "viem@npm:^2.21.40":
-  version: 2.21.45
-  resolution: "viem@npm:2.21.45"
+  version: 2.21.47
+  resolution: "viem@npm:2.21.47"
   dependencies:
     "@noble/curves": "npm:1.6.0"
     "@noble/hashes": "npm:1.5.0"
@@ -1121,7 +1121,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/93428588882620de5ed442a5a568367762d39660bdb4ff9c430d5409da1dca085a3648bf0afedb6631bb219b410e58ccabf600ed26228ab9ae73a77a1031c576
+  checksum: 10/378390c9367b124632a63b37b2871faf74d87b6dd6f15cf98a7416cb36db864c07ef9a4edc231ae5410f30a5f97b29e609d65423e3dff0238d149ac0c3fb5a97
   languageName: node
   linkType: hard
 
