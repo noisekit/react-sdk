@@ -625,13 +625,13 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-query@npm:^5.60.6":
-  version: 5.60.6
-  resolution: "@tanstack/react-query@npm:5.60.6"
+  version: 5.61.0
+  resolution: "@tanstack/react-query@npm:5.61.0"
   dependencies:
     "@tanstack/query-core": "npm:5.60.6"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10/6dccb520f3328449c4473542d75c8fd500534c44b02b11c8b1564e17027bb7ac3e4d7cb94a4cd6dfd873e71bb41959be066528256e64a00f843c0a8d82f70dba
+  checksum: 10/e98d1396cd157626f29fb0d0d10c75dbdde6e2efa55463540c9d8e33b58ec4b72eeb58b7d2eea6e625a8316235777f128222adeb10533ddfade77b23ec209872
   languageName: node
   linkType: hard
 
