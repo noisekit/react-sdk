@@ -554,7 +554,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pythnetwork/pyth-evm-js@npm:^1.73.0":
+"@pythnetwork/pyth-evm-js@npm:^1.76.0":
   version: 1.76.0
   resolution: "@pythnetwork/pyth-evm-js@npm:1.76.0"
   dependencies:
@@ -597,41 +597,41 @@ __metadata:
   resolution: "@synthetixio/react-sdk@workspace:."
   dependencies:
     "@biomejs/biome": "npm:^1.9.4"
-    "@pythnetwork/pyth-evm-js": "npm:^1.73.0"
-    "@synthetixio/v3-contracts": "npm:^7.6.0"
-    "@tanstack/react-query": "npm:^5.59.19"
+    "@pythnetwork/pyth-evm-js": "npm:^1.76.0"
+    "@synthetixio/v3-contracts": "npm:^7.9.0"
+    "@tanstack/react-query": "npm:^5.60.6"
     "@types/debug": "npm:^4.1.12"
     "@types/react": "npm:^18.3.12"
     debug: "npm:^4.3.7"
     ethers: "npm:^5.7.2"
     react: "npm:^18.3.1"
     typescript: "npm:^5.6.3"
-    viem: "npm:^2.21.40"
+    viem: "npm:^2.21.48"
   languageName: unknown
   linkType: soft
 
-"@synthetixio/v3-contracts@npm:^7.6.0":
-  version: 7.8.0
-  resolution: "@synthetixio/v3-contracts@npm:7.8.0"
-  checksum: 10/1cc8f6c757a3129e384a0ca23b977d5d294069309c57c2e73404f150a2b7cfbb60fdbe316f595905e7e2ac3367c4cc1f6a0de9c1fdfea1b363b5a42faab1bfa3
+"@synthetixio/v3-contracts@npm:^7.9.0":
+  version: 7.9.0
+  resolution: "@synthetixio/v3-contracts@npm:7.9.0"
+  checksum: 10/d6409b1937d471672dc015079cef9781ad42e06430a57690152c5119a9dbd5fbbedffe8cb7f5f17ed55e1a2080a8ee895dbc34f43dfd996cf59d78d1c316a0a0
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.60.5":
-  version: 5.60.5
-  resolution: "@tanstack/query-core@npm:5.60.5"
-  checksum: 10/2c85ed3a26db31ea9fb2e44f94afee4564c8a5e47fc2c9f4e7a3b477e90642d1330ecdbc48f3b503205401772cedd94545eff23e628badd2bff5509b1da62e94
+"@tanstack/query-core@npm:5.60.6":
+  version: 5.60.6
+  resolution: "@tanstack/query-core@npm:5.60.6"
+  checksum: 10/a87613d85b3a280f2fef69037dd0ad512052d49b8dc979ed289ee538452d331926a720678bbd3b4485a8b38d5baf65c42869179f2fdeefa3f7b6dda04e878e56
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.59.19":
-  version: 5.60.5
-  resolution: "@tanstack/react-query@npm:5.60.5"
+"@tanstack/react-query@npm:^5.60.6":
+  version: 5.60.6
+  resolution: "@tanstack/react-query@npm:5.60.6"
   dependencies:
-    "@tanstack/query-core": "npm:5.60.5"
+    "@tanstack/query-core": "npm:5.60.6"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10/00a5ef74ceb50f6bbacec2545392de65d3d9e6dc6de2a7107943460a83d1988eb66740f40b8682c8de0e9a1faff76256ab1584a816c70dd4ff9205dedc209f0a
+  checksum: 10/6dccb520f3328449c4473542d75c8fd500534c44b02b11c8b1564e17027bb7ac3e4d7cb94a4cd6dfd873e71bb41959be066528256e64a00f843c0a8d82f70dba
   languageName: node
   linkType: hard
 
@@ -1103,9 +1103,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"viem@npm:^2.21.40":
-  version: 2.21.47
-  resolution: "viem@npm:2.21.47"
+"viem@npm:^2.21.48":
+  version: 2.21.48
+  resolution: "viem@npm:2.21.48"
   dependencies:
     "@noble/curves": "npm:1.6.0"
     "@noble/hashes": "npm:1.5.0"
@@ -1121,7 +1121,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/378390c9367b124632a63b37b2871faf74d87b6dd6f15cf98a7416cb36db864c07ef9a4edc231ae5410f30a5f97b29e609d65423e3dff0238d149ac0c3fb5a97
+  checksum: 10/160fcd88585137426402286b35d5be3021e8a74b97199936bd4fdb3d1ac93fd624fede1141c4266896901a4eca45e796b0bc54d71dfcbb1cfc5b26764d3cc951
   languageName: node
   linkType: hard
 
