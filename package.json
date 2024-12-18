@@ -35,18 +35,18 @@
   },
   "dependencies": {
     "@pythnetwork/pyth-evm-js": "^1.76.0",
-    "@synthetixio/v3-contracts": "^7.9.0",
-    "@tanstack/react-query": "^5.60.6",
-    "debug": "^4.3.7",
+    "@synthetixio/v3-contracts": "^7.15.0",
+    "@tanstack/react-query": "^5.62.8",
+    "debug": "^4.4.0",
     "ethers": "^5.7.2",
     "react": "^18.3.1",
-    "viem": "^2.21.48"
+    "viem": "^2.21.55"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/debug": "^4.1.12",
-    "@types/react": "^18.3.12",
-    "typescript": "^5.6.3"
+    "@types/react": "^18.3.17",
+    "typescript": "^5.7.2"
   },
-  "packageManager": "yarn@4.5.1"
+  "packageManager": "yarn@4.5.3"
 }
