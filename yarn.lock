@@ -1000,9 +1000,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ox@npm:0.4.4":
-  version: 0.4.4
-  resolution: "ox@npm:0.4.4"
+"ox@npm:0.6.0":
+  version: 0.6.0
+  resolution: "ox@npm:0.6.0"
   dependencies:
     "@adraffy/ens-normalize": "npm:^1.10.1"
     "@noble/curves": "npm:^1.6.0"
@@ -1016,7 +1016,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/7e6624a91b2064c160af1bde0febb8044a35a4353885afa1cf2993f4755cad5f485857469393455a4fce3f4bc0e95f18b3dd34d5f59fd07c25fcc7ddb3047bf4
+  checksum: 10/b089b2d09035def8d3f6d17ab1dd792fd7f1a4d8e008aa96bc50a8cef24ddb8e608ec828f4d83cf959b080a7c854921449e4d061f45f6dee944f48bd0971e60f
   languageName: node
   linkType: hard
 
@@ -1083,8 +1083,8 @@ __metadata:
   linkType: hard
 
 "viem@npm:^2.21.55":
-  version: 2.21.60
-  resolution: "viem@npm:2.21.60"
+  version: 2.22.1
+  resolution: "viem@npm:2.22.1"
   dependencies:
     "@noble/curves": "npm:1.7.0"
     "@noble/hashes": "npm:1.6.1"
@@ -1092,7 +1092,7 @@ __metadata:
     "@scure/bip39": "npm:1.5.0"
     abitype: "npm:1.0.7"
     isows: "npm:1.0.6"
-    ox: "npm:0.4.4"
+    ox: "npm:0.6.0"
     webauthn-p256: "npm:0.0.10"
     ws: "npm:8.18.0"
   peerDependencies:
@@ -1100,7 +1100,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10/ba4eea4c3dda1e3b4942dd4e495f9fd996e860f5e552c7e25977683e97244314f81f4057e92b6d336ae451caf0c7eec8fc9747edb22433d558402efa26579e26
+  checksum: 10/4a6b101ee98b86b55406c81ca44703b9622b635e6ce441dc21f7dcf26accf2a6c96530556d38f101c629a24a5aa38d6fbfb0ec37601da9d0a30969cf96b48559
   languageName: node
   linkType: hard
 
