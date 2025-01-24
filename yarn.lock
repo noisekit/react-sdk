@@ -605,7 +605,7 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:^1.9.4"
     "@pythnetwork/pyth-evm-js": "npm:^1.76.0"
-    "@synthetixio/v3-contracts": "npm:^7.15.0"
+    "@synthetixio/v3-contracts": "npm:^8.0.0"
     "@tanstack/react-query": "npm:^5.62.8"
     "@types/debug": "npm:^4.1.12"
     "@types/react": "npm:^19.0.2"
@@ -617,10 +617,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@synthetixio/v3-contracts@npm:^7.15.0":
-  version: 7.18.0
-  resolution: "@synthetixio/v3-contracts@npm:7.18.0"
-  checksum: 10/0a45e707b377cfd8a12bb9bcb45e50eb4b0615c5dde8bba20b8a05b9d12ae26be77f9fd07dda4d39738b1b5a51a028de4664649e921b60fcf010406b7c282f3f
+"@synthetixio/v3-contracts@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@synthetixio/v3-contracts@npm:8.0.0"
+  checksum: 10/14e3c87071e8c5bebc6916c542621b9800c2e6144b8fc24e07ddf873d08075bd0e7f98dd4e9bf89ee14606b1c9248f0e88e6a35b1f02f337f7662efc900c2ec4
   languageName: node
   linkType: hard
 
